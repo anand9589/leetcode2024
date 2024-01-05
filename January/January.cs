@@ -1,4 +1,6 @@
-﻿namespace January
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace January
 {
     public class January
     {
@@ -67,5 +69,30 @@
         }
         #endregion
 
+        #region Day 5 300. Longest Increasing Subsequence
+        public int LengthOfLIS(int[] nums)
+        {
+            int res = 1;
+
+            if (nums.Length > 1)
+            {
+                int[] dp = Enumerable.Repeat( 1, nums.Length).ToArray();
+
+                for (int i = 1; i < nums.Length; i++)
+                {
+                    for (int j = 0; j < i; j++)
+                    {
+                        if (nums[i] > nums[j])
+                        {
+                            dp[i] = Math.Max(dp[i], 1 + dp[j]);
+                        }
+                    }
+                    res = Math.Max(res, dp[i]);
+                }
+            }
+
+            return res;
+        }
+        #endregion
     }
 }
