@@ -69,6 +69,38 @@ namespace January
         }
         #endregion
 
+        #region Day 3 2125. Number of Laser Beams in a Bank
+        public int NumberOfBeams(string[] bank)
+        {
+            int res = 0;
+
+            List<int> list = new List<int>();
+
+            foreach (string bankString in bank)
+            {
+                int count = 0;
+                foreach (char c in bankString)
+                {
+                    if (c == '1')
+                    {
+                        count++;
+                    }
+                }
+                if (count > 0) list.Add(count);
+            }
+
+            if (list.Count > 1)
+            {
+                for (int i = 0; i < list.Count-1; i++)
+                {
+                    res += list[i] * list[i+1];
+                }
+            }
+
+            return res;
+        }
+        #endregion
+
         #region Day 4 2870. Minimum Number of Operations to Make Array Empty
         public int MinOperations(int[] nums)
         {
@@ -95,7 +127,7 @@ namespace January
         private bool makeEmpty(int key, int count, ref int res)
         {
             if (count == 1) return false;
-            if(count <= 3)
+            if (count <= 3)
             {
                 res++;
                 return true;
@@ -103,7 +135,7 @@ namespace January
             if (count <= 6)
             {
                 count -= 3;
-                res+=2;
+                res += 2;
                 return true;
             }
 
@@ -120,7 +152,7 @@ namespace January
 
             if (nums.Length > 1)
             {
-                int[] dp = Enumerable.Repeat( 1, nums.Length).ToArray();
+                int[] dp = Enumerable.Repeat(1, nums.Length).ToArray();
 
                 for (int i = 1; i < nums.Length; i++)
                 {
