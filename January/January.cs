@@ -69,6 +69,50 @@ namespace January
         }
         #endregion
 
+        #region Day 4 2870. Minimum Number of Operations to Make Array Empty
+        public int MinOperations(int[] nums)
+        {
+            int res = 0;
+            Dictionary<int, int> dct = new Dictionary<int, int>();
+
+            foreach (int i in nums)
+            {
+                if (!dct.ContainsKey(i))
+                {
+                    dct.Add(i, 0);
+                }
+                dct[i]++;
+            }
+
+            foreach (var key in dct.Keys)
+            {
+                if (!makeEmpty(key, dct[key], ref res)) return -1;
+            }
+
+            return res;
+        }
+
+        private bool makeEmpty(int key, int count, ref int res)
+        {
+            if (count == 1) return false;
+            if(count <= 3)
+            {
+                res++;
+                return true;
+            }
+            if (count <= 6)
+            {
+                count -= 3;
+                res+=2;
+                return true;
+            }
+
+            res++;
+            count -= 3;
+            return makeEmpty(key, count, ref res);
+        }
+        #endregion
+
         #region Day 5 300. Longest Increasing Subsequence
         public int LengthOfLIS(int[] nums)
         {
