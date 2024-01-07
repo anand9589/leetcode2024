@@ -168,5 +168,46 @@
             return res;
         }
         #endregion
+
+        #region Day 7 446. Arithmetic Slices II - Subsequence
+        public int NumberOfArithmeticSlices(int[] A)
+        {
+            int counts = 0;
+            if (A.Length == 0)
+            {
+                return counts;
+            }
+
+            Dictionary<int, int>[] dp = new Dictionary<int, int>[A.Length];
+            dp[0] = new Dictionary<int, int>();
+            for (int i = 1; i < A.Length; i++)
+            {
+                dp[i] = new Dictionary<int, int>();
+                for (int j = i - 1; j >= 0; j--)
+                {
+                    long diff = (long)A[i] - (long)A[j];
+                    if (diff <= Int32.MinValue || diff > Int32.MaxValue) continue;
+                    int df = (int)diff;
+                    if (!dp[i].ContainsKey(df))
+                    {
+                        dp[i][df] = 0;
+                    }
+
+                    dp[i][df]++;
+
+                    // Get j's dictionary for the given diff.
+                    if (dp[j].ContainsKey(df))
+                    {
+                        var jsDiffCounts = dp[j][df];
+                        dp[i][df] += jsDiffCounts;
+                        counts += dp[j][df];
+                    }
+                }
+            }
+
+            return counts;
+
+        }
+        #endregion
     }
 }
