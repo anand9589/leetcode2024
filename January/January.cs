@@ -89,9 +89,9 @@
 
             if (list.Count > 1)
             {
-                for (int i = 0; i < list.Count-1; i++)
+                for (int i = 0; i < list.Count - 1; i++)
                 {
-                    res += list[i] * list[i+1];
+                    res += list[i] * list[i + 1];
                 }
             }
 
@@ -169,6 +169,35 @@
         }
         #endregion
 
+        #region Day 6 1235. Maximum Profit in Job Scheduling
+        public int JobScheduling(int[] start, int[] end, int[] points)
+        {
+            var intervals = new List<int[]>();
+            for (int i = 0; i < start.Length; i++)
+                intervals.Add(new int[] { start[i], end[i], points[i] });
+
+            intervals.Sort((x, y) => x[1].CompareTo(y[1]));
+            List<int> dpProfit = new List<int>() { 0 }, dpEndTime = new List<int>() { 0 };
+
+            foreach (var interval in intervals)
+            {
+                int s = interval[0], e = interval[1], p = interval[2];
+                int prevIndex = dpEndTime.BinarySearch(s + 1);
+                if (prevIndex < 0) prevIndex = ~prevIndex;
+                prevIndex--;
+                int currProfit = dpProfit[prevIndex] + p, maxProfit = dpProfit[dpProfit.Count - 1];
+                if (currProfit > maxProfit)
+                {
+                    dpProfit.Add(currProfit);
+                    dpEndTime.Add(e);
+                }
+            }
+
+            return dpProfit[dpProfit.Count - 1];
+        }
+
+        #endregion
+
         #region Day 7 446. Arithmetic Slices II - Subsequence
         public int NumberOfArithmeticSlices(int[] A)
         {
@@ -207,6 +236,45 @@
 
             return counts;
 
+        }
+        #endregion
+
+        #region Day 30 150. Evaluate Reverse Polish Notation
+        public int EvalRPN(string[] tokens)
+        {
+            Stack<int> stack = new Stack<int>();
+            foreach (string token in tokens)
+            {
+                int n1, n2;
+                switch (token)
+                {
+                    case "+":
+                        n1 = stack.Pop();
+                        n2 = stack.Pop();
+                        stack.Push(n1 + n2);
+                        break;
+                    case "-":
+                        n1 = stack.Pop();
+                        n2 = stack.Pop();
+                        stack.Push(n2 - n1);
+                        break;
+                    case "*":
+                        n1 = stack.Pop();
+                        n2 = stack.Pop();
+                        stack.Push(n2 * n1);
+                        break;
+                    case "/":
+                        n1 = stack.Pop();
+                        n2 = stack.Pop();
+                        stack.Push(n2 / n1);
+                        break;
+                    default:
+                        stack.Push(int.Parse(token));
+                        break;
+                }
+            }
+
+            return stack.Pop();
         }
         #endregion
     }
