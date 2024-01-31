@@ -277,5 +277,29 @@
             return stack.Pop();
         }
         #endregion
+
+        #region 152. Maximum Product Subarray
+        public int MaxProduct(int[] nums)
+        {
+            int length = nums.Length;
+
+            if (length == 0) return 0;
+
+            int min = nums[0];
+            int max = nums[0];
+            int result = nums[0];
+
+            for (int i = 1; i < length; i++)
+            {
+                int temp_max = Math.Max(nums[i] * max, Math.Max(nums[i] * min, nums[i]));
+                min = Math.Min(nums[i] * max, Math.Min(nums[i] * min, nums[i]));
+
+                max = temp_max;
+                result = Math.Max(result, max);
+            }
+
+            return result;
+        }
+        #endregion
     }
 }
