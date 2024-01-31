@@ -1,4 +1,6 @@
-﻿namespace January
+﻿using static System.Net.Mime.MediaTypeNames;
+
+namespace January
 {
     public class January
     {
@@ -275,6 +277,41 @@
             }
 
             return stack.Pop();
+        }
+        #endregion
+
+        #region Day 31 739. Daily Temperatures
+        public int[] DailyTemperatures(int[] temperatures)
+        {
+            int n = temperatures.Length;
+            int[] result = new int[n];
+
+            if (n > 1)
+            {
+                Stack<int> stack = new Stack<int>();
+                stack.Push(n - 1);
+
+                for (int i = n - 2; i >= 0; i--)
+                {
+                    while (stack.Count > 0 && temperatures[i] >= temperatures[stack.Peek()])
+                    {
+                        stack.Pop();
+                    }
+
+                    if (stack.Count == 0)
+                    {
+                        stack.Push(i);
+                        result[i] = 0;
+                    }
+                    else
+                    {
+                        result[i] = stack.Peek() - i;
+                        stack.Push(i);
+                    }
+                }
+            }
+
+            return result;
         }
         #endregion
 
