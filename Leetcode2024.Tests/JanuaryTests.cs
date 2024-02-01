@@ -1,6 +1,6 @@
-namespace January.Tests
+namespace Leetcode2024.Tests
 {
-    public class JanuaryTests
+    public class Tests
     {
         [SetUp]
         public void Setup()
