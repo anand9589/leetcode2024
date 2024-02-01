@@ -1,6 +1,4 @@
-﻿using static System.Net.Mime.MediaTypeNames;
-
-namespace January
+﻿namespace Leetcode2024
 {
     public class January
     {
