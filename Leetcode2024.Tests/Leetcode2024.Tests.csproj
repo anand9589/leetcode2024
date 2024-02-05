@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Leetcode2024.Common\Leetcode2024.Common.csproj" />
     <ProjectReference Include="..\Leetcode2024\Leetcode2024.csproj" />
   </ItemGroup>
 
