@@ -27,5 +27,13 @@ namespace Leetcode2024.Tests
 
             february.ReorderList(listNode.next);
         }
+
+        [Test]
+        public void FirstUniqCharTest()
+        {
+            int res = february.FirstUniqChar("loveleetcode");
+
+            Assert.AreEqual(2, res);
+        }
     }
 }

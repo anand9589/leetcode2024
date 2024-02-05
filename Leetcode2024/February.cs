@@ -27,6 +27,40 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region Day 5 387. First Unique Character in a String
+        public int FirstUniqChar(string s)
+        {
+            if (s.Length == 1) { return 0; }
+
+            int[] arr = Enumerable.Repeat(-2,26).ToArray();
+
+            int index = -1;
+
+            while (++index < s.Length)
+            {
+                int norm =  s[index]-97;
+                if (arr[norm] == -2)
+                {
+                    arr[norm] = index;
+                }
+                else
+                {
+                    arr[norm] = -1;
+                }
+            }
+
+            int minIndex = int.MaxValue;
+            for(int i = 0; i<26; i++) 
+            {
+                if (arr[i] < 0) continue;
+
+                minIndex = Math.Min(minIndex, arr[i]);
+            }
+
+            return minIndex == int.MaxValue ? -1 : minIndex;
+        }
+        #endregion
+
         #region 143. Reorder List
 
         public void ReorderList(ListNode head)
@@ -44,7 +78,7 @@ namespace Leetcode2024
             slow.next = null;
             ListNode first = head;
 
-            while (second!=null)
+            while (second != null)
             {
                 ListNode temp1 = first.next;
                 ListNode temp2 = second.next;
