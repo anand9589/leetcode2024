@@ -32,13 +32,13 @@ namespace Leetcode2024
         {
             if (s.Length == 1) { return 0; }
 
-            int[] arr = Enumerable.Repeat(-2,26).ToArray();
+            int[] arr = Enumerable.Repeat(-2, 26).ToArray();
 
             int index = -1;
 
             while (++index < s.Length)
             {
-                int norm =  s[index]-97;
+                int norm = s[index] - 97;
                 if (arr[norm] == -2)
                 {
                     arr[norm] = index;
@@ -50,7 +50,7 @@ namespace Leetcode2024
             }
 
             int minIndex = int.MaxValue;
-            for(int i = 0; i<26; i++) 
+            for (int i = 0; i < 26; i++)
             {
                 if (arr[i] < 0) continue;
 
@@ -59,6 +59,30 @@ namespace Leetcode2024
 
             return minIndex == int.MaxValue ? -1 : minIndex;
         }
+        #endregion
+
+        #region Day 6 49. Group Anagrams
+
+        public IList<IList<string>> GroupAnagrams(string[] strs)
+        {
+            Dictionary<string, List<string>> map = new Dictionary<string, List<string>>();
+
+            foreach (string str in strs)
+            {
+                char[] ch = str.ToCharArray();
+                Array.Sort(ch);
+
+                if (!map.ContainsKey(new string(ch)))
+                {
+                    map.Add(new string(ch), new List<string>());
+                }
+
+                map[new string(ch)].Add(str);
+            }
+
+            return new List<IList<string>>(map.Values);
+        }
+
         #endregion
 
         #region 143. Reorder List
