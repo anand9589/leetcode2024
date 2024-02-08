@@ -121,8 +121,9 @@ namespace Leetcode2024
         private bool IsSymmetric(TreeNode left, TreeNode right)
         {
             if (left == null && right == null) return true;
+            if (left == null || right == null) return false;
 
-            return left?.val == right?.val && IsSymmetric(left.left, right.right) && IsSymmetric(left.right, right.left);
+            return left.val == right.val && IsSymmetric(left.left, right.right) && IsSymmetric(left.right, right.left);
         }
 
         #endregion
