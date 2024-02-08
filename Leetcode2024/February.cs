@@ -113,19 +113,47 @@ namespace Leetcode2024
 
         #region Day 8 101. Symmetric Tree
 
-        public bool IsSymmetric(TreeNode root)
+        public bool IsSymmetric_V1(TreeNode root)
         {
-            return IsSymmetric(root.left, root.right);
+            IList<int> left = new List<int>();
+            IList<int> right = new List<int>();
+
+            Traverse(root.left, left, true);
+            Traverse(root.right, right, false);
+
+            return left.SequenceEqual(right);
         }
 
-        private bool IsSymmetric(TreeNode left, TreeNode right)
+        private bool IsSymmetric_V1(TreeNode left, TreeNode right)
         {
             if (left == null && right == null) return true;
             if (left == null || right == null) return false;
 
-            return left.val == right.val && IsSymmetric(left.left, right.right) && IsSymmetric(left.right, right.left);
+            return left.val == right.val && IsSymmetric_V1(left.left, right.right) && IsSymmetric_V1(left.right, right.left);
+        }
+        public bool IsSymmetric(TreeNode root)
+        {
+            return IsSymmetric_V1(root.left, root.right);
         }
 
+        private void Traverse(TreeNode root,IList<int> lst,bool leftflag)
+        {
+            if (root == null) return;
+
+            lst.Add(root.val);
+
+            if(leftflag)
+            {
+                Traverse(root.left, lst, true);
+                Traverse(root.right, lst, true);
+            }
+            else
+            {
+
+                Traverse(root.right, lst, false);
+                Traverse(root.left, lst, false);
+            }
+        }
         #endregion
 
         #region 143. Reorder List
