@@ -1,4 +1,5 @@
 ﻿using Leetcode2024.Common.Models;
+using System.Text;
 
 namespace Leetcode2024
 {
@@ -83,6 +84,31 @@ namespace Leetcode2024
             return new List<IList<string>>(map.Values);
         }
 
+        #endregion
+
+        #region Day 7 451. Sort Characters By Frequency
+        public string FrequencySort(string s)
+        {
+            int[] arr = new int[123];
+
+            foreach (char c in s)
+            {
+                arr[(int)c]++;
+            }
+
+            var sortedDictionary = arr.Select((count, ch)=>new { count, ch}).Where(x=>x.count>0).OrderByDescending(x=>x.count);
+            StringBuilder stringBuilder = new StringBuilder();
+            foreach (var item in sortedDictionary)
+            {
+                int count = item.count;
+                while (count>0)
+                {
+                    stringBuilder.Append(item.ch);
+                    count--;
+                }
+            }
+            return stringBuilder.ToString();
+        }
         #endregion
 
         #region 143. Reorder List

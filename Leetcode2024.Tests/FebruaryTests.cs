@@ -35,5 +35,13 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(2, res);
         }
+
+        [Test]
+        public void FrequencySortTest()
+        {
+            string res = february.FrequencySort("cccaaa");
+
+            Assert.AreEqual(res, "eetr", "eert");
+        }
     }
 }
