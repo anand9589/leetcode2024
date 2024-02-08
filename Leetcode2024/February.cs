@@ -103,7 +103,7 @@ namespace Leetcode2024
                 int count = item.count;
                 while (count>0)
                 {
-                    stringBuilder.Append(item.ch);
+                    stringBuilder.Append((char)item.ch);
                     count--;
                 }
             }
