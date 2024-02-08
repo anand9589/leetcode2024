@@ -96,12 +96,12 @@ namespace Leetcode2024
                 arr[(int)c]++;
             }
 
-            var sortedDictionary = arr.Select((count, ch)=>new { count, ch}).Where(x=>x.count>0).OrderByDescending(x=>x.count);
+            var sortedDictionary = arr.Select((count, ch) => new { count, ch }).Where(x => x.count > 0).OrderByDescending(x => x.count);
             StringBuilder stringBuilder = new StringBuilder();
             foreach (var item in sortedDictionary)
             {
                 int count = item.count;
-                while (count>0)
+                while (count > 0)
                 {
                     stringBuilder.Append((char)item.ch);
                     count--;
@@ -109,6 +109,22 @@ namespace Leetcode2024
             }
             return stringBuilder.ToString();
         }
+        #endregion
+
+        #region Day 8 101. Symmetric Tree
+
+        public bool IsSymmetric(TreeNode root)
+        {
+            return IsSymmetric(root.left, root.right);
+        }
+
+        private bool IsSymmetric(TreeNode left, TreeNode right)
+        {
+            if (left == null && right == null) return true;
+
+            return left?.val == right?.val && IsSymmetric(left.left, right.right) && IsSymmetric(left.right, right.left);
+        }
+
         #endregion
 
         #region 143. Reorder List
