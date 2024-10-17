@@ -1,5 +1,6 @@
 ﻿using Leetcode2024.Common.Helper;
 using Leetcode2024.Common.Models;
+using System.Text;
 
 namespace Leetcode2024
 {
@@ -11,15 +12,15 @@ namespace Leetcode2024
             int result = 0;
 
             int n = nums.Length;
-            if(n < 2) return result;
+            if (n < 2) return result;
 
             int min = nums.Min();
             int max = nums.Max();
             int bucketSize = Math.Max(1, (max - min) / (n - 1));
 
-            int bucketCount = (max - min)/bucketSize + 1;
+            int bucketCount = (max - min) / bucketSize + 1;
 
-            (int min,int max)[] buckets = Enumerable.Repeat((int.MaxValue, int.MinValue), bucketCount).ToArray();
+            (int min, int max)[] buckets = Enumerable.Repeat((int.MaxValue, int.MinValue), bucketCount).ToArray();
 
             for (int i = 0; i < nums.Length; i++)
             {
@@ -44,6 +45,118 @@ namespace Leetcode2024
         }
 
         #endregion
+
+        #region 165. Compare Version Numbers
+        public int CompareVersion(string version1, string version2)
+        {
+            if (version1 != version2)
+            {
+                string[] ver1 = version1.Split('.');
+                string[] ver2 = version2.Split('.');
+
+                int minLength = Math.Min(ver1.Length, ver2.Length);
+
+                for (int i = 0; i < minLength; i++)
+                {
+                    int n1 = int.Parse(ver1[i]);
+                    int n2 = int.Parse(ver2[i]);
+
+                    if (n1 == n2) continue;
+
+                    if (n1 < n2) return -1;
+
+                    return 1;
+                }
+
+                if (ver1.Length != ver2.Length)
+                {
+                    int result;
+                    if (ver1.Length > ver2.Length)
+                    {
+                        result = returnResult(ver1, minLength);
+                    }
+                    else
+                    {
+                        result = returnResult(ver2, minLength);
+
+                        if (result != 0) result *= -1;
+                    }
+
+                    return result;
+                }
+            }
+            return 0;
+        }
+
+        static int returnResult(string[] arr, int startIndex)
+        {
+            for (int i = startIndex; i < arr.Length; i++)
+            {
+                int n = int.Parse(arr[i]);
+
+                if (n == 0) continue;
+
+                if (n < 0) return -1;
+                return 1;
+            }
+            return 0;
+        }
+
+        #endregion
+
+        #region 166. Fraction to Recurring Decimal
+        public string FractionToDecimal(int numerator, int denominator)
+        {
+            if (numerator == 0) return "0";
+            bool posAns = (numerator > 0 && denominator > 0) || (numerator < 0 && denominator < 0);
+
+            long numerator1 = numerator < 0 ? (long)numerator * -1 : (long)numerator;
+            long denominator1 = denominator < 0 ? (long)denominator * -1 : (long)denominator;
+            StringBuilder stringBuilder = new StringBuilder();
+            long division = numerator1 / denominator1;
+            long reminder = numerator1 % denominator1;
+
+            stringBuilder.Append(division);
+            if (reminder != 0)
+            {
+                stringBuilder.Append('.');
+                int decimalIndex = stringBuilder.Length;
+                Dictionary<long, int> map = new Dictionary<long, int>();
+
+                map.Add(reminder, decimalIndex++);
+                while (reminder > 0)
+                {
+                    reminder *= 10;
+
+                    division = reminder / denominator1;
+
+                    stringBuilder.Append(division);
+
+                    reminder = reminder % denominator1;
+
+                    if (map.ContainsKey(reminder))
+                    {
+                        stringBuilder.Insert(map[reminder], '(');
+                        stringBuilder.Append(')');
+                        break;
+                    }
+                    else
+                    {
+                        map.Add(reminder, decimalIndex++);
+                    }
+                }
+            }
+
+            if (!posAns)
+            {
+                stringBuilder.Insert(0, '-');
+            }
+
+            return stringBuilder.ToString();
+        }
+        #endregion
+
+
         #region 432. All O`one Data Structure
         /*
             Design a data structure to store the strings' count with the ability to return the strings with minimum and maximum counts.
@@ -735,6 +848,60 @@ namespace Leetcode2024
             }
 
             return maxlen;
+        }
+        #endregion
+
+        #region 1405. Longest Happy String
+        public string LongestDiverseString(int a, int b, int c)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            PriorityQueue<(char c, int count), int> priorityQueue = new PriorityQueue<(char, int), int>(Comparer<int>.Create((x, y) => y - x));
+
+            if (a > 0) priorityQueue.Enqueue(('a', a), a);
+            if (b > 0) priorityQueue.Enqueue(('b', b), b);
+            if (c > 0) priorityQueue.Enqueue(('c', c), c);
+
+            (char c, int count) characterOnHold = (' ', 0);
+            char prevChar = ' ';
+            int prevCount = 0;
+            while (priorityQueue.Count > 0)
+            {
+                var dq = priorityQueue.Dequeue();
+
+                if (prevCount == 2 && prevChar == dq.c)
+                {
+                    if (priorityQueue.Count == 0) break;
+
+                    characterOnHold = dq;
+
+                    dq = priorityQueue.Dequeue();
+                    int maxChar = 1;
+                    if (characterOnHold.count >= dq.count * 2) maxChar = 2;
+                    appendToString(stringBuilder, priorityQueue, dq, 1);
+                    appendToString(stringBuilder, priorityQueue, characterOnHold, maxChar);
+                    prevCount = maxChar;
+                }
+                else
+                {
+                    prevChar = dq.c;
+                    prevCount++;
+                    appendToString(stringBuilder, priorityQueue, dq);
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private static void appendToString(StringBuilder stringBuilder, PriorityQueue<(char c, int count), int> priorityQueue, (char c, int count) dq, int maxChar = 1)
+        {
+            stringBuilder.Append(dq.c, maxChar);
+            if (dq.count > maxChar)
+            {
+                dq.count -= maxChar;
+
+                priorityQueue.Enqueue(dq, dq.count);
+            }
         }
         #endregion
 

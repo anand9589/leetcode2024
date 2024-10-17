@@ -79,7 +79,89 @@ namespace Leetcode2024.Tests
         {
             int res = leetcode.MaximumGap(new int[] {/*2, 999999*//*3, 6, 9, 1*/100, 3, 2, 1 });
 
-            Assert.AreEqual(999999-2, res);
+            Assert.AreEqual(999999 - 2, res);
+        }
+
+        [Test]
+        public void LongestDiverseStringTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.LongestDiverseString(1, 1, 7);
+            //Assert.AreEqual(999999 - 2, res);
+        }
+
+        [Test]
+        public void CompareVersionTest()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.CompareVersion("1", "1.1");
+            //Assert.AreEqual(999999 - 2, res);
+        }
+
+
+        [Test]
+        public void FractionToDecimalTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.FractionToDecimal(16, 4);
+            Assert.AreEqual("4", res1);
+        }
+
+        [Test]
+        public void FractionToDecimalTest2()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.FractionToDecimal(18, 4);
+            Assert.AreEqual("4.5", res1);
+        }
+
+        [Test]
+        public void FractionToDecimalTest3()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.FractionToDecimal(17, 6);
+            Assert.AreEqual("2.8(3)", res1);
+        }
+
+        [Test]
+        public void FractionToDecimalTest4()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.FractionToDecimal(-50, 8);
+            Assert.AreEqual("-6.25", res1);
+        }
+
+        [Test]
+        public void FractionToDecimalTest5()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.FractionToDecimal(50, -8);
+            Assert.AreEqual("-6.25", res1);
+        }
+
+        [Test]
+        public void FractionToDecimalTest6()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.FractionToDecimal(-50, -8);
+            Assert.AreEqual("6.25", res1);
+        }
+
+        [Test]
+        public void FractionToDecimalTest7()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.FractionToDecimal(-1, -2147483648);
+            Assert.AreEqual("0.0000000004656612873077392578125", res1);
         }
     }
 }
