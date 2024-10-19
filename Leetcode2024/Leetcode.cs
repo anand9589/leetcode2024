@@ -279,7 +279,21 @@ namespace Leetcode2024
         #region 213. House Robber II
         public int Rob(int[] nums)
         {
+            if (nums.Length <= 3) return nums.Max();
 
+            return Math.Max(rob_helper(nums, 0, nums.Length - 1), rob_helper(nums, 1, nums.Length));
+        }
+
+        private int rob_helper(int[] nums, int startIndex, int endIndex)
+        {
+            int rob1 = 0, rob2 = 0;
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                int newRob = Math.Max(rob1 + nums[i], rob2);
+                rob1 = rob2;
+                rob2 = newRob;
+            }
+            return rob2;
         }
 
         #endregion
