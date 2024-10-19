@@ -276,6 +276,54 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 213. House Robber II
+        public int Rob(int[] nums)
+        {
+
+        }
+
+        #endregion
+
+        #region 221. Maximal Square
+        public int MaximalSquare(char[][] matrix)
+        {
+            int result = 0;
+            int[][] intArray = new int[matrix.Length][];
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                intArray[i] = new int[matrix[i].Length];
+            }
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+                    if (matrix[i][j] == '1')
+                    {
+                        if (i == 0 || j == 0)
+                        {
+                            intArray[i][j] = 1;
+                        }
+                        else if (matrix[i - 1][j] == '1' && matrix[i][j - 1] == '1' && matrix[i - 1][j - 1] == '1')
+                        {
+                            int minNeighbor = Math.Min(intArray[i - 1][j - 1], Math.Min(intArray[i - 1][j], intArray[i][j - 1]));
+                            intArray[i][j] = minNeighbor + 1;
+                            result = Math.Max(result, intArray[i][j]);
+                        }
+                        else
+                        {
+                            intArray[i][j] = 1;
+                        }
+
+                        result = Math.Max(result, intArray[i][j]);
+                    }
+                }
+            }
+            return result * result;
+        }
+
+        #endregion
+
         #region 432. All O`one Data Structure
         /*
             Design a data structure to store the strings' count_2044 with the ability to return the strings with minimum and maximum counts.
