@@ -163,5 +163,79 @@ namespace Leetcode2024.Tests
             var res1 = leetcode.FractionToDecimal(-1, -2147483648);
             Assert.AreEqual("0.0000000004656612873077392578125", res1);
         }
+
+        [Test]
+        public void MaximumSwapTes1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.MaximumSwap(47483648);
+            Assert.AreEqual(87483644, res1);
+        }
+
+        [Test]
+        public void MaximumSwapTes2()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.MaximumSwap(98368);
+            Assert.AreEqual(98863, res1);
+        }
+
+        [Test]
+        public void LargestNumberTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            int[] nums = new int[] { 3, 30, 34, 5, 9 };
+            var res1 = leetcode.LargestNumber(nums);
+            Assert.AreEqual("9534330", res1);
+        }
+
+        
+
+        [Test]
+        public void LargestNumberTest2()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            int[] nums = new int[] { 10, 2 };
+            var res1 = leetcode.LargestNumber(nums);
+            Assert.AreEqual("210", res1);
+        }
+
+        [Test]
+        public void LargestNumberTest3()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            int[] nums = new int[] { 8308, 8308, 830 };
+            var res1 = leetcode.LargestNumber(nums);
+            Assert.AreEqual("83088308830", res1);
+        }
+
+        [Test]
+        public void LargestNumberTest4()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            int[] nums = new int[] { 34323, 3432 };
+            var res1 = leetcode.LargestNumber(nums);
+            Assert.AreEqual("343234323", res1);
+        }
+
+        [Test]
+        public void CountMaxOrSubsetsTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            int[] nums = new int[] { 3,1 };
+            var res1 = leetcode.CountMaxOrSubsets(nums);
+            Assert.AreEqual(2, res1);
+        }
+
+        [Test]
+        public void FindKthBitTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.FindKthBit(4,11);
+            Assert.AreEqual('1', res1);
+        }
     }
 }

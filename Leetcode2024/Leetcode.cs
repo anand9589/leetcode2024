@@ -156,20 +156,140 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 172. Factorial Trailing Zeroes
+        public int TrailingZeroes(int n)
+        {
+            int zeroes = 0;
+
+            while (n >= 5)
+            {
+                n /= 5;
+                zeroes += n;
+            }
+
+            return zeroes;
+        }
+        #endregion
+
+        #region 179. Largest Number
+        public string LargestNumber(int[] nums)
+        {
+            var numStrArr = Array.ConvertAll(nums, x => x.ToString());
+
+            Array.Sort(numStrArr, (x, y) => string.Compare(y + x, x + y));
+
+            if (numStrArr[0] == "0")
+            {
+                return "0";
+            }
+
+            return string.Join("", numStrArr);
+        }
+        public string LargestNumber_1(int[] nums)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            PriorityQueue<int, int> pq = new PriorityQueue<int, int>(new CustomSort_179());
+
+            foreach (var n in nums)
+            {
+                pq.Enqueue(n, n);
+            }
+
+            while (pq.Count > 0)
+            {
+                stringBuilder.Append(pq.Dequeue());
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        class CustomSort_179 : IComparer<int>
+        {
+
+            public int Compare(int x, int y)
+            {
+                if (x == y) return 0;
+
+                List<int> lst1 = new List<int>();
+                List<int> lst2 = new List<int>();
+
+                int x1 = x;
+                int y1 = y;
+
+                while (x1 > 0)
+                {
+                    lst1.Insert(0, x1 % 10);
+                    x1 /= 10;
+                }
+
+                while (y1 > 0)
+                {
+                    lst2.Insert(0, y1 % 10);
+                    y1 /= 10;
+
+                }
+
+                if (lst1.Count == lst2.Count)
+                {
+                    return compare1(x, y);
+                }
+
+                int indexCounter = 0;
+
+
+                while (lst1.Count > indexCounter || lst2.Count > indexCounter)
+                {
+                    x1 = lst1[indexCounter % lst1.Count];
+                    y1 = lst2[indexCounter % lst2.Count];
+                    indexCounter++;
+                    if (x1 == y1) continue;
+
+                    return compare1(x1, y1);
+                }
+
+                //if (lst1.Count < lst2.Count)
+                //{
+                //    x1 = lst1[0];
+                //    y1 = lst2[indexCounter];
+                //    if (x1 == y1) return 1;
+                //    return compare1(x1, y1);
+                //}
+                //x1 = lst1[indexCounter];
+                //y1 = lst2[0];
+
+                //if (x1 == y1) return 1;
+                x1 = lst1.Last();
+                y1 = lst2.Last();
+
+                return compare1(x1, y1);
+
+            }
+
+            private int compare1(int x, int y)
+            {
+                if (x < y) return 1;
+                return -1;
+            }
+        }
+
+
+        #endregion
+
         #region 432. All O`one Data Structure
         /*
-            Design a data structure to store the strings' count with the ability to return the strings with minimum and maximum counts.
+            Design a data structure to store the strings' count_2044 with the ability to return the strings with minimum and maximum counts.
 
             Implement the AllOne class:
 
             AllOne() Initializes the object of the data structure.
-            inc(String key) Increments the count of the string key by 1. If key does not exist in the data structure, insert it with count 1.
-            dec(String key) Decrements the count of the string key by 1. If the count of key is 0 after the decrement, remove it from the data structure. It is guaranteed that key exists in the data structure before the decrement.
-            getMaxKey() Returns one of the keys with the maximal count. If no element exists, return an empty string "".
-            getMinKey() Returns one of the keys with the minimum count. If no element exists, return an empty string "".
+            inc(String key) Increments the count_2044 of the string key by 1. If key does not exist in the data structure, insert it with count_2044 1.
+            dec(String key) Decrements the count_2044 of the string key by 1. If the count_2044 of key is 0 after the decrement, remove it from the data structure. It is guaranteed that key exists in the data structure before the decrement.
+            getMaxKey() Returns one of the keys with the maximal count_2044. If no element exists, return an empty string "".
+            getMinKey() Returns one of the keys with the minimum count_2044. If no element exists, return an empty string "".
             Note that each function must run in O(1) average time complexity.
 
- 
+
 
             Example 1:
 
@@ -188,7 +308,7 @@ namespace Leetcode2024
             allOne.inc("leet");
             allOne.getMaxKey(); // return "hello"
             allOne.getMinKey(); // return "leet"
- 
+
 
             Constraints:
 
@@ -308,13 +428,13 @@ namespace Leetcode2024
 
             Input: timePoints = ["00:00","23:59","00:00"]
             Output: 0
- 
+
 
             Constraints:
 
             2 <= timePoints.length <= 2 * 104
             timePoints[i] is in the format "HH:MM".
-         
+
          */
 
         public int FindMinDifference(IList<string> timePoints)
@@ -416,7 +536,7 @@ namespace Leetcode2024
             int getRear() Returns the last item from Deque. Returns -1 if the deque is empty.
             boolean isEmpty() Returns true if the deque is empty, or false otherwise.
             boolean isFull() Returns true if the deque is full, or false otherwise.
- 
+
 
             Example 1:
 
@@ -437,7 +557,7 @@ namespace Leetcode2024
             myCircularDeque.deleteLast();   // return True
             myCircularDeque.insertFront(4); // return True
             myCircularDeque.getFront();     // return 4
- 
+
 
             Constraints:
 
@@ -712,6 +832,47 @@ namespace Leetcode2024
          */
         #endregion
 
+        #region 670. Maximum Swap
+        public int MaximumSwap(int num)
+        {
+            List<int> swap = new List<int>();
+
+            while (num > 0)
+            {
+                swap.Insert(0, num % 10);
+                num /= 10;
+            }
+
+            for (int i = 0; i < swap.Count - 1; i++)
+            {
+                int index = i;
+                for (int j = swap.Count - 1; j > i; j--)
+                {
+                    if (swap[index] < swap[j])
+                    {
+                        index = j;
+                    }
+                }
+                if (index != i)
+                {
+                    int temp = swap[index];
+                    swap[index] = swap[i];
+                    swap[i] = temp;
+                    break;
+                }
+            }
+
+            num = swap[0];
+
+            for (int i = 1; i < swap.Count; i++)
+            {
+                num = num * 10 + swap[i];
+            }
+
+            return num;
+        }
+        #endregion
+
         #region 884. Uncommon Words from Two Sentences
 
         /*
@@ -721,7 +882,7 @@ namespace Leetcode2024
 
             Given two sentences s1 and s2, return a list of all the uncommon words. You may return the answer in any order.
 
- 
+
 
             Example 1:
 
@@ -739,7 +900,7 @@ namespace Leetcode2024
 
             Output: ["banana"]
 
- 
+
 
             Constraints:
 
@@ -809,7 +970,7 @@ namespace Leetcode2024
             Input: s = "bcbcbc"
             Output: 6
             Explanation: In this case, the given string "bcbcbc" is the longest because all vowels: a, e, i, o and u appear zero times.
- 
+
 
             Constraints:
 
@@ -901,6 +1062,71 @@ namespace Leetcode2024
 
                 priorityQueue.Enqueue(dq, dq.count);
             }
+        }
+        #endregion
+
+        #region 1545. Find Kth Bit in Nth Binary String
+        public char FindKthBit(int n, int k)
+        {
+            if (n == 1) return '0';
+
+            string str = getString(n);
+
+            return str[k - 1];
+
+        }
+
+        private string getString(int n)
+        {
+            if (n == 1) return "0";
+
+            string prefix = getString(n - 1);
+
+            char[] chs = invert(prefix);
+
+            return prefix + '1' + new string(chs);
+        }
+
+        private char[] invert(string prefix)
+        {
+            int len = prefix.Length;
+            char[] chs = new char[len];
+
+            for (int i = 0; i < len; i++)
+            {
+                chs[len - 1 - i] = prefix[i] == '0' ? '1' : '0';
+            }
+
+            return chs;
+        }
+
+        #endregion
+
+        #region 2044. Count Number of Maximum Bitwise-OR Subsets
+        int maxOr_2044 = 0, count_2044 = 0;
+        public int CountMaxOrSubsets(int[] nums)
+        {
+
+            foreach (var n in nums)
+            {
+                maxOr_2044 |= n;
+            }
+            getSubSets(nums, 0, 0);
+            return count_2044;
+        }
+        private void getSubSets(int[] nums, int i, int currOr)
+        {
+            if (i == nums.Length)
+            {
+                if (currOr == maxOr_2044)
+                {
+                    count_2044++;
+                }
+                return;
+            }
+
+            getSubSets(nums, i + 1, currOr | nums[i]);
+            getSubSets(nums, i + 1, currOr);
         }
         #endregion
 
