@@ -237,5 +237,41 @@ namespace Leetcode2024.Tests
             var res1 = leetcode.FindKthBit(4,11);
             Assert.AreEqual('1', res1);
         }
+
+        [Test]
+        public void ParseBoolExprTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.ParseBoolExpr("&(|(f))");
+            Assert.IsFalse(res1);
+        }
+
+        [Test]
+        public void ParseBoolExprTest2()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.ParseBoolExpr("|(f,f,f,t)");
+            Assert.IsTrue(res1);
+        }
+
+        [Test]
+        public void ParseBoolExprTest3()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.ParseBoolExpr("!(&(f,t))");
+            Assert.IsTrue(res1);
+        }
+
+        [Test]
+        public void ParseBoolExprTest4()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.ParseBoolExpr("|(f,f,f,!(&(t,t)),t,t)");
+            Assert.IsTrue(res1);
+        }
     }
 }

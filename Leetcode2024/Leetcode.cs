@@ -1012,6 +1012,274 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1106. Parsing A Boolean Expression
+        public bool ParseBoolExpr(string expression)
+        {
+            if (expression == "t") return true;
+
+            if (expression == "f") return false;
+
+            char res = 'f';
+            int processedIndex = 0;
+
+            if (expression[0] == '&') processedIndex = processAnd(expression, 2, out res);
+
+            return res == 't';
+        }
+
+        private int processAnd(string expression, int startIndex, out char res)
+        {
+            res = 'f';
+            while (startIndex < expression.Length)
+            {
+                switch (expression[startIndex])
+                {
+                    case '|':
+                        startIndex = processOr(expression, startIndex + 2, out res);
+                        break;
+                    default: break;
+                }
+                startIndex++;
+            }
+            return startIndex;
+        }
+
+        private int processOr(string expression, int startIndex, out char res)
+        {
+            res = 't';
+
+            while (startIndex < expression.Length)
+            {
+                switch ((char)expression[startIndex])
+                {
+                    case '|':
+                        break;
+                    default: break;
+                }
+            }
+
+            return startIndex;
+        }
+
+        //public bool ParseBoolExpr(string expression)
+        //{
+        //    return ParseBoolExpr_helper(expression);
+        //}
+
+        //private bool ParseBoolExpr_helper(string expr)
+        //{
+        //    if (expr == "t") return true;
+        //    if (expr == "f") return false;
+
+        //    if (expr[0] == '!')
+        //    {
+        //        return !ParseBoolExpr_helper(expr.Substring(2, expr.Length - 3));
+        //    }
+        //    else if (expr[0] == '&')
+        //    {
+        //        List<string> subExprs = SplitExpr(expr.Substring(2, expr.Length - 3));
+        //        foreach (var sub in subExprs)
+        //        {
+        //            if (!ParseBoolExpr_helper(sub)) return false;
+        //        }
+        //        return true;
+        //    }
+        //    else if (expr[0] == '|')
+        //    {
+        //        List<string> subExprs = SplitExpr(expr.Substring(2, expr.Length - 3));
+        //        foreach (var sub in subExprs)
+        //        {
+        //            if (ParseBoolExpr_helper(sub)) return true;
+        //        }
+        //        return false;
+        //    }
+
+        //    return false;
+        //}
+
+        //private List<string> SplitExpr(string expr)
+        //{
+        //    List<string> subExprs = new List<string>();
+        //    int balance = 0;
+        //    int start = 0;
+
+        //    for (int i = 0; i < expr.Length; i++)
+        //    {
+        //        char ch = expr[i];
+        //        if (ch == '(') balance++;
+        //        else if (ch == ')') balance--;
+        //        else if (ch == ',' && balance == 0)
+        //        {
+        //            subExprs.Add(expr.Substring(start, i - start));
+        //            start = i + 1;
+        //        }
+        //    }
+
+        //    subExprs.Add(expr.Substring(start)); 
+        //    return subExprs;
+        //}
+
+
+        //public bool ParseBoolExpr(string expression)
+        //{
+        //    int processedIndex = -1;
+        //    switch (expression[0])
+        //    {
+        //        case 't': return true;
+        //        case '!': return processNot(expression, 2, out processedIndex) == 't';
+        //        case '&': return processAnd(expression, 2, out processedIndex) == 't';
+        //        case '|': return processOr(expression, 2, out processedIndex) == 't';
+        //        default:
+        //            return false;
+        //    }
+
+        //}
+
+        //private char processString(string expression, out int processedIndex)
+        //{
+        //    processedIndex = 0;
+        //    if (expression.Length == 1) return expression[0];
+
+        //    Stack<char> stack = new Stack<char>();
+
+        //    int i = -1;
+        //    char op = ' ';
+        //    int testIOndex;
+        //    while (++i < expression.Length)
+        //    {
+        //        char c = expression[i];
+
+        //        switch (c)
+        //        {
+        //            case 't':
+        //            case 'f':
+        //                stack.Push(c);
+        //                break;
+        //            case '!':
+
+        //                op = processString(expression.Substring(i + 2), out testIOndex);
+        //                i = testIOndex;
+        //                break;
+        //            case '|':
+
+        //                op = processString(expression.Substring(i + 2), out testIOndex);
+        //                i = testIOndex;
+        //                break;
+        //            case '&':
+
+        //                op = processString(expression.Substring(i + 2), out testIOndex);
+        //                i = testIOndex;
+        //                break;
+        //            case '(':
+
+        //                break;
+        //            case ')':
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+
+        //    return stack.Pop();
+        //}
+
+
+        //private char processOr(string expression, int startIndex, out int processedIndex)
+        //{
+        //    char res = 'f';
+        //    int i = startIndex-1;
+
+        //    while (++i < expression.Length)
+        //    {
+        //        char c = expression[i];
+        //        switch (c)
+        //        {
+        //            case 't':
+        //                res = 't';
+        //                break;
+        //            case '!':
+        //                char not = processNot(expression, i + 2, out processedIndex);
+
+        //                if (not == 't')
+        //                {
+        //                    res = 't';
+        //                }
+
+        //                break;
+        //            case '|':
+        //                char or = processOr(expression, i + 2, out processedIndex);
+
+        //                if (or == 't')
+        //                {
+        //                    res = 't';
+        //                }
+        //                break;
+        //            case '&':
+        //                char and = processAnd(expression, i + 2, out processedIndex);
+
+        //                if (and == 't')
+        //                {
+        //                    res = 't';
+        //                }
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+
+        //    processedIndex = i;
+        //    return res;
+        //}
+        //private char processNot(string expression, int startIndex, out int processedIndex)
+        //{
+        //    char res = 'f';
+        //    int i = startIndex;
+
+        //    while (i < expression.Length)
+        //    {
+        //        char c = expression[i];
+        //        switch (c)
+        //        {
+        //            case 't':
+        //                res = 't';
+        //                break;
+        //            case 'i':
+
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+
+        //    processedIndex = i;
+        //    return res;
+        //}
+        //private char processAnd(string expression, int startIndex, out int processedIndex)
+        //{
+        //    char res = 'f';
+        //    int i = startIndex;
+
+        //    while (i < expression.Length)
+        //    {
+        //        char c = expression[i];
+        //        switch (c)
+        //        {
+        //            case 't':
+        //                res = 't';
+        //                break;
+        //            case 'i':
+
+        //                break;
+        //            default:
+        //                break;
+        //        }
+        //    }
+
+        //    processedIndex = i;
+        //    return res;
+        //}
+        #endregion
+
         #region 1371. Find the Longest Substring Containing Vowels in Even Counts
 
         /*
@@ -1189,6 +1457,53 @@ namespace Leetcode2024
 
             getSubSets(nums, i + 1, currOr | nums[i]);
             getSubSets(nums, i + 1, currOr);
+        }
+        #endregion
+
+        #region 2583. Kth Largest Sum in a Binary Tree
+        public long KthLargestLevelSum(TreeNode root, int k)
+        {
+            if (root == null) return 0;
+            long result = 0;
+            List<long> levelSum = new List<long>();
+            Queue<(TreeNode node, int level)> queue = new Queue<(TreeNode node, int level)>();
+            queue.Enqueue((root, 0));
+            int lvl = 0;
+            while (queue.Count > 0)
+            {
+                var dq = queue.Dequeue();
+
+                levelSum.Add(dq.node.val);
+                lvl = dq.level;
+                if (dq.node.left != null) queue.Enqueue((dq.node.left, lvl + 1));
+                if (dq.node.right != null) queue.Enqueue((dq.node.right, lvl + 1));
+                while (queue.Count > 0 && queue.Peek().level == lvl)
+                {
+                    dq = queue.Dequeue();
+                    levelSum[lvl] += dq.node.val;
+                    if (dq.node.left != null) queue.Enqueue((dq.node.left, lvl + 1));
+                    if (dq.node.right != null) queue.Enqueue((dq.node.right, lvl + 1));
+                }
+
+            }
+
+            if(levelSum.Count < k) { return -1; }
+
+            PriorityQueue<long, long> pq = new PriorityQueue<long, long>(k);
+
+            foreach (var item in levelSum)
+            {
+                if (pq.Count < k)
+                {
+                    pq.Enqueue(item, item);
+                }
+                else
+                {
+                    pq.EnqueueDequeue(item, item);
+                }
+            }
+
+            return pq.Count < k ? -1 : pq.Dequeue();
         }
         #endregion
 
