@@ -1,4 +1,5 @@
 ﻿
+using Leetcode2024.Common.Models;
 using static Leetcode2024.Leetcode;
 
 namespace Leetcode2024.Tests
@@ -191,7 +192,7 @@ namespace Leetcode2024.Tests
             Assert.AreEqual("9534330", res1);
         }
 
-        
+
 
         [Test]
         public void LargestNumberTest2()
@@ -224,7 +225,7 @@ namespace Leetcode2024.Tests
         public void CountMaxOrSubsetsTest1()
         {
             //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
-            int[] nums = new int[] { 3,1 };
+            int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.CountMaxOrSubsets(nums);
             Assert.AreEqual(2, res1);
         }
@@ -234,7 +235,7 @@ namespace Leetcode2024.Tests
         {
             //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
-            var res1 = leetcode.FindKthBit(4,11);
+            var res1 = leetcode.FindKthBit(4, 11);
             Assert.AreEqual('1', res1);
         }
 
@@ -279,7 +280,7 @@ namespace Leetcode2024.Tests
         {
             //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
-            var res1 = leetcode.MajorityElement(new int[] {5,1,5,5,5,2,1,2,1,1,1,2,5,2,2,2} );
+            var res1 = leetcode.MajorityElement(new int[] { 5, 1, 5, 5, 5, 2, 1, 2, 1, 1, 1, 2, 5, 2, 2, 2 });
 
         }
 
@@ -310,7 +311,7 @@ namespace Leetcode2024.Tests
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 1, 2 });
 
-            CollectionAssert.AreEqual(new List<int>() { 1,2 }, res1);
+            CollectionAssert.AreEqual(new List<int>() { 1, 2 }, res1);
 
         }
 
@@ -321,7 +322,7 @@ namespace Leetcode2024.Tests
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 1, 2, 3 });
 
-            CollectionAssert.AreEqual(new List<int>() {  }, res1);
+            CollectionAssert.AreEqual(new List<int>() { }, res1);
 
         }
 
@@ -332,8 +333,36 @@ namespace Leetcode2024.Tests
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 2, 1, 1, 3, 1, 4, 5, 6 });
 
-            CollectionAssert.AreEqual(new List<int>() {1 }, res1);
+            CollectionAssert.AreEqual(new List<int>() { 1 }, res1);
 
+        }
+
+        [Test]
+        public void KthSmallestTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.KthSmallest(new TreeNode(3, new TreeNode(1, null, new TreeNode(2)), new TreeNode(4)), 1);
+
+            Assert.AreEqual(1, res1);
+        }
+
+        [Test]
+        public void KthSmallestTest2()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            //[5,3,6,2,4,null,null,1]
+            TreeNode treeNode = new TreeNode(5,
+                                    new TreeNode(3,
+                                        new TreeNode(2,
+                                            new TreeNode(1),
+                                            null),
+                                        new TreeNode(4)),
+                                    new TreeNode(6));
+            var res1 = leetcode.KthSmallest(treeNode, 3);
+
+            Assert.AreEqual(3, res1);
         }
     }
 }

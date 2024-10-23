@@ -359,15 +359,15 @@ namespace Leetcode2024
                 {
                     count2++;
                 }
-                else if(count1 == 0)
+                else if (count1 == 0)
                 {
                     count1 = 1;
                     n1 = nums[i];
                 }
-                else if(count2 == 0)
+                else if (count2 == 0)
                 {
                     count2++;
-                    n2= nums[i];
+                    n2 = nums[i];
                 }
                 else
                 {
@@ -385,7 +385,7 @@ namespace Leetcode2024
                 if (n == n2) count2++;
             }
 
-            if (count1 > nums.Length/3)
+            if (count1 > nums.Length / 3)
             {
                 lst.Add(n1);
             }
@@ -395,6 +395,85 @@ namespace Leetcode2024
                 lst.Add(n2);
             }
             return lst;
+        }
+        #endregion
+
+        #region 230. Kth Smallest Element in a BST
+        int k230 = -1;
+        int kCounter = 0;
+        public int KthSmallest(TreeNode root, int k)
+        {
+
+            inorder(root, k);
+
+            return k230;
+        }
+
+        private void inorder(TreeNode root, int k)
+        {
+            if (kCounter == k || root == null) return;
+
+            inorder(root.left, k);
+            if (kCounter == k) return;
+            kCounter++;
+            k230 = root.val;
+
+            inorder(root.right, k);
+        }
+
+        public int KthSmallest_V2(TreeNode root, int k)
+        {
+            List<int> lst = new List<int>();
+
+            inorder_230V1(root, lst, k);
+
+            return lst.Last();
+        }
+
+        private void inorder_230V1(TreeNode root, List<int> lst, int k)
+        {
+
+            if (root.left != null)
+            {
+                inorder_230V1(root.left, lst, k);
+            }
+
+            if (lst.Count == k) return;
+            lst.Add(root.val);
+
+            if (root.right != null)
+            {
+                inorder_230V1(root.right, lst, k);
+            }
+        }
+
+        public int KthSmallest_V1(TreeNode root, int k)
+        {
+            PriorityQueue<int, int> priorityQueue = new PriorityQueue<int, int>(k, Comparer<int>.Create((x, y) => y - x));
+
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            q.Enqueue(root);
+
+            while (q.Count > 0 && priorityQueue.Count < k)
+            {
+                var dq = q.Dequeue();
+                priorityQueue.Enqueue(dq.val, dq.val);
+
+                if (dq.right != null) q.Enqueue(dq.right);
+                if (dq.left != null) q.Enqueue(dq.left);
+            }
+
+            while (q.Count > 0)
+            {
+                var dq = q.Dequeue();
+
+                priorityQueue.EnqueueDequeue(dq.val, dq.val);
+
+                if (dq.right != null) q.Enqueue(dq.right);
+                if (dq.left != null) q.Enqueue(dq.left);
+            }
+
+            return priorityQueue.Dequeue();
         }
         #endregion
 
