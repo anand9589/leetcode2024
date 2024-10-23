@@ -338,6 +338,66 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 229. Majority Element II
+        public IList<int> MajorityElement(int[] nums)
+        {
+            if (nums.Length <= 2)
+                return nums.Distinct().ToList();
+
+            IList<int> lst = new List<int>();
+
+            int n1 = int.MinValue, n2 = int.MinValue, count1 = 0, count2 = 0;
+
+            int i = -1;
+            while (++i < nums.Length)
+            {
+                if (n1 == nums[i])
+                {
+                    count1++;
+                }
+                else if (n2 == nums[i])
+                {
+                    count2++;
+                }
+                else if(count1 == 0)
+                {
+                    count1 = 1;
+                    n1 = nums[i];
+                }
+                else if(count2 == 0)
+                {
+                    count2++;
+                    n2= nums[i];
+                }
+                else
+                {
+                    count1--;
+                    count2--;
+
+
+                }
+            }
+            count1 = 0;
+            count2 = 0;
+            foreach (var n in nums)
+            {
+                if (n == n1) count1++;
+                if (n == n2) count2++;
+            }
+
+            if (count1 > nums.Length/3)
+            {
+                lst.Add(n1);
+            }
+
+            if (count2 > nums.Length / 3)
+            {
+                lst.Add(n2);
+            }
+            return lst;
+        }
+        #endregion
+
         #region 432. All O`one Data Structure
         /*
             Design a data structure to store the strings' count_2044 with the ability to return the strings with minimum and maximum counts.
@@ -1487,7 +1547,7 @@ namespace Leetcode2024
 
             }
 
-            if(levelSum.Count < k) { return -1; }
+            if (levelSum.Count < k) { return -1; }
 
             PriorityQueue<long, long> pq = new PriorityQueue<long, long>(k);
 
@@ -1504,6 +1564,46 @@ namespace Leetcode2024
             }
 
             return pq.Count < k ? -1 : pq.Dequeue();
+        }
+        #endregion
+
+        #region 2641. Cousins in Binary Tree II
+        public TreeNode ReplaceValueInTree(TreeNode root)
+        {
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            q.Enqueue(root);
+            int currentLevelSum = root.val;
+            while (q.Count > 0)
+            {
+                int nextLeveSum = 0;
+                int qLen = q.Count;
+                for (int i = 0; i < qLen; i++)
+                {
+                    int siblingSum = 0;
+                    var dq = q.Dequeue();
+                    dq.val = currentLevelSum - dq.val;
+
+                    if (dq.right != null)
+                    {
+                        nextLeveSum += dq.right.val;
+                        siblingSum += dq.right.val;
+                    }
+
+                    if (dq.left != null)
+                    {
+                        nextLeveSum += dq.left.val;
+                        siblingSum += dq.left.val;
+                    }
+
+                    if (dq.right != null) { dq.right.val = siblingSum; q.Enqueue(dq.right); }
+                    if (dq.left != null) { dq.left.val = siblingSum; q.Enqueue(dq.left); }
+                }
+
+
+                currentLevelSum = nextLeveSum;
+            }
+
+            return root;
         }
         #endregion
 

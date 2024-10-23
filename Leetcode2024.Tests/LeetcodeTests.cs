@@ -273,5 +273,67 @@ namespace Leetcode2024.Tests
             var res1 = leetcode.ParseBoolExpr("|(f,f,f,!(&(t,t)),t,t)");
             Assert.IsTrue(res1);
         }
+
+        [Test]
+        public void MajorityElementTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.MajorityElement(new int[] {5,1,5,5,5,2,1,2,1,1,1,2,5,2,2,2} );
+
+        }
+
+        [Test]
+        public void MajorityElementTest2()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.MajorityElement(new int[] { 3, 2, 3 });
+
+            CollectionAssert.AreEqual(new List<int>() { 3 }, res1);
+        }
+
+        [Test]
+        public void MajorityElementTest3()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.MajorityElement(new int[] { 1 });
+            CollectionAssert.AreEqual(new List<int>() { 1 }, res1);
+
+        }
+
+        [Test]
+        public void MajorityElementTest4()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.MajorityElement(new int[] { 1, 2 });
+
+            CollectionAssert.AreEqual(new List<int>() { 1,2 }, res1);
+
+        }
+
+        [Test]
+        public void MajorityElementTest5()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.MajorityElement(new int[] { 1, 2, 3 });
+
+            CollectionAssert.AreEqual(new List<int>() {  }, res1);
+
+        }
+
+        [Test]
+        public void MajorityElementTest6()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.MajorityElement(new int[] { 2, 1, 1, 3, 1, 4, 5, 6 });
+
+            CollectionAssert.AreEqual(new List<int>() {1 }, res1);
+
+        }
     }
 }
