@@ -400,25 +400,25 @@ namespace Leetcode2024
 
         #region 230. Kth Smallest Element in a BST
         int k230 = -1;
-        int kCounter = 0;
+        int kCounter230 = 0;
         public int KthSmallest(TreeNode root, int k)
         {
 
-            inorder(root, k);
+            inorder_230(root, k);
 
             return k230;
         }
 
-        private void inorder(TreeNode root, int k)
+        private void inorder_230(TreeNode root, int k)
         {
-            if (kCounter == k || root == null) return;
+            if (kCounter230 == k || root == null) return;
 
-            inorder(root.left, k);
-            if (kCounter == k) return;
-            kCounter++;
+            inorder_230(root.left, k);
+            if (kCounter230 == k) return;
+            kCounter230++;
             k230 = root.val;
 
-            inorder(root.right, k);
+            inorder_230(root.right, k);
         }
 
         public int KthSmallest_V2(TreeNode root, int k)
