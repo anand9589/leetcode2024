@@ -1151,6 +1151,17 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 951. Flip Equivalent Binary Trees
+        public bool FlipEquiv(TreeNode root1, TreeNode root2)
+        {
+            if (root1 == null && root2 == null) return true;
+
+            if (root1 == null || root2 == null || root1.val != root2.val) return false;
+
+            return (FlipEquiv(root1.left, root2.right) && FlipEquiv(root1.right, root2.left)) || (FlipEquiv(root1.left, root2.left) && FlipEquiv(root1.right, root2.right));
+        }
+        #endregion
+
         #region 1106. Parsing A Boolean Expression
         public bool ParseBoolExpr(string expression)
         {

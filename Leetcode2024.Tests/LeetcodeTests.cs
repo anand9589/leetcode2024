@@ -364,5 +364,57 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(3, res1);
         }
+
+
+        [Test]
+        public void FlipEquivTest1()
+        {
+            int?[] r1 = { 1, 2, 3, 4, 5, 6, null, null, null, 7, 8 };
+            int?[] r2 = { 1, 3, 2, null, 6, 4, 5, null, null, null, null, 8, 7 };
+
+            TreeNode root1 = buildTree(r1);
+            TreeNode root2 = buildTree(r2);
+
+            var res = leetcode.FlipEquiv(root1, root2);
+
+            Assert.IsTrue(res);
+        }
+
+        private TreeNode buildTree(int?[] arr)
+        {
+            TreeNode treeNode = null;
+
+            //Dictionary<int, TreeNode> dict = new Dictionary<int, TreeNode>();
+
+
+            if (arr.Length > 0 && arr[0].HasValue)
+            {
+                Queue<(int index, TreeNode node)> q = new Queue<(int, TreeNode)>();
+                treeNode = new TreeNode((int)arr[0]);
+
+                q.Enqueue((0, treeNode));
+
+                while (q.Count > 0)
+                {
+                    var dq = q.Dequeue();
+
+                    int leftIndex = 2 * dq.index + 1;
+                    dq.node.left = enqueNode(arr, q,  leftIndex);
+                    dq.node.right = enqueNode(arr, q, leftIndex+1);
+                }
+            }
+            return treeNode;
+        }
+
+        private static TreeNode enqueNode(int?[] arr, Queue<(int index, TreeNode node)> q,  int leftIndex)
+        {
+            TreeNode node = null;
+            if (leftIndex < arr.Length && arr[leftIndex].HasValue)
+            {
+                node = new TreeNode(arr[leftIndex].Value);
+                q.Enqueue((leftIndex, node));
+            }
+            return node;
+        }
     }
 }
