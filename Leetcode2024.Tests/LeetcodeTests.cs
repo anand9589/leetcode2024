@@ -382,37 +382,68 @@ namespace Leetcode2024.Tests
 
         private TreeNode buildTree(int?[] arr)
         {
-            TreeNode treeNode = null;
+            TreeNode treeNode = new TreeNode(arr[0].Value);
 
-            //Dictionary<int, TreeNode> dict = new Dictionary<int, TreeNode>();
+            treeNode.left = new TreeNode(arr[1].Value);
+            treeNode.right = new TreeNode(arr[2].Value);
 
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(treeNode.left);
+            queue.Enqueue(treeNode.right);
 
-            if (arr.Length > 0 && arr[0].HasValue)
+            int i = 2;
+
+            while (queue.Count > 0 && ++i < arr.Length)
             {
-                Queue<(int index, TreeNode node)> q = new Queue<(int, TreeNode)>();
-                treeNode = new TreeNode((int)arr[0]);
-
-                q.Enqueue((0, treeNode));
-
-                while (q.Count > 0)
+                TreeNode node = queue.Dequeue();
+                if (arr[i].HasValue)
                 {
-                    var dq = q.Dequeue();
+                    node.left = new TreeNode((int)arr[i].Value);
 
-                    int leftIndex = 2 * dq.index + 1;
-                    dq.node.left = enqueNode(arr, q,  leftIndex);
-                    dq.node.right = enqueNode(arr, q, leftIndex+1);
+                    queue.Enqueue(node.left);
+                }
+
+                if (++i < arr.Length && arr[i].HasValue)
+                {
+                    node.right = new TreeNode((int)arr[i].Value);
+
+                    queue.Enqueue(node.right);
                 }
             }
+
+            ////Dictionary<int, TreeNode> dict = new Dictionary<int, TreeNode>();
+            //int nullIncr = 0;
+
+            //if (arr.Length > 0 && arr[0].HasValue)
+            //{
+            //    Queue<(int index, TreeNode node)> q = new Queue<(int, TreeNode)>();
+            //    treeNode = new TreeNode((int)arr[0]);
+
+            //    q.Enqueue((0, treeNode));
+
+            //    while (q.Count > 0)
+            //    {
+            //        var dq = q.Dequeue();
+
+            //        int leftIndex = 2 * dq.index + 1;
+            //        dq.node.left = enqueNode(arr, q,  leftIndex + nullIncr, ref nullIncr);
+            //        dq.node.right = enqueNode(arr, q, leftIndex+1 + nullIncr, ref nullIncr);
+            //    }
+            //}
             return treeNode;
         }
 
-        private static TreeNode enqueNode(int?[] arr, Queue<(int index, TreeNode node)> q,  int leftIndex)
+        private static TreeNode enqueNode(int?[] arr, Queue<(int index, TreeNode node)> q, int leftIndex, ref int nullIncr)
         {
             TreeNode node = null;
             if (leftIndex < arr.Length && arr[leftIndex].HasValue)
             {
                 node = new TreeNode(arr[leftIndex].Value);
                 q.Enqueue((leftIndex, node));
+            }
+            else
+            {
+                nullIncr += 2;
             }
             return node;
         }
