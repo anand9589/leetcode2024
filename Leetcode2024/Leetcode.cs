@@ -1430,6 +1430,60 @@ namespace Leetcode2024
         //}
         #endregion
 
+        #region 1233. Remove Sub-Folders from the Filesystem
+
+        public IList<string> RemoveSubfolders(string[] folder)
+        {
+            HashSet<string> prefix = new HashSet<string>(folder);
+            IList<string> strings = new List<string>();
+            foreach (var str in folder)
+            {
+                var dir = str.Split('/', StringSplitOptions.RemoveEmptyEntries);
+
+                bool includeFlag = true;
+                string fullDir = string.Empty;
+                for (int i = 0; i < dir.Length - 1; i++)
+                {
+                    fullDir += "/" + dir[i];
+
+                    if (prefix.Contains(fullDir))
+                    {
+                        includeFlag = false;
+                        break;
+                    }
+                }
+
+                if (includeFlag)
+                {
+                    strings.Add(str);
+                }
+            }
+            return strings;
+        }
+        public IList<string> RemoveSubfolders_V1(string[] folder)
+        {
+            Array.Sort(folder);
+            string previousFolder = folder[0];
+            IList<string> strings = new List<string>() { previousFolder };
+
+            for (int i = 1; i < folder.Length; i++)
+            {
+                string currFolder = folder[i];
+
+                if (currFolder.StartsWith(previousFolder))
+                {
+                    char c = currFolder[previousFolder.Length];
+
+                    if (c == '/') continue;
+                }
+                previousFolder = folder[i];
+                strings.Add(previousFolder);
+            }
+
+            return strings;
+        }
+        #endregion
+
         #region 1371. Find the Longest Substring Containing Vowels in Even Counts
 
         /*
