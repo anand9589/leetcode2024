@@ -1,5 +1,6 @@
 ﻿
 using Leetcode2024.Common.Models;
+using System.Linq;
 using static Leetcode2024.Leetcode;
 
 namespace Leetcode2024.Tests
@@ -378,6 +379,139 @@ namespace Leetcode2024.Tests
             var res = leetcode.FlipEquiv(root1, root2);
 
             Assert.IsTrue(res);
+        }
+
+        [Test]
+        public void SearchMatrixTest1()
+        {
+            int[][] matrix = { new int[] { 1, 4, 7, 11, 15 }, new int[] { 2, 5, 8, 12, 19 }, new int[] { 3, 6, 9, 16, 22 }, new int[] { 10, 13, 14, 17, 24 }, new int[] { 18, 21, 23, 26, 30 } };
+
+            var r = leetcode.SearchMatrix(matrix, 5);
+
+            Assert.IsTrue(r);
+        }
+
+        [Test]
+        public void SearchMatrixTest2()
+        {
+            int[][] matrix = { new int[] { 1, 4, 7, 11, 15 }, new int[] { 2, 5, 8, 12, 19 }, new int[] { 3, 6, 9, 16, 22 }, new int[] { 10, 13, 14, 17, 24 }, new int[] { 18, 21, 23, 26, 30 } };
+
+            var r = leetcode.SearchMatrix(matrix, 6);
+
+            Assert.IsTrue(r);
+        }
+
+        [Test]
+        public void SearchMatrixTest3()
+        {
+            int[][] matrix = { new int[] { 1, 4, 7, 11, 15 }, new int[] { 2, 5, 8, 12, 19 }, new int[] { 3, 6, 9, 16, 22 }, new int[] { 10, 13, 14, 17, 24 }, new int[] { 18, 21, 23, 26, 30 } };
+
+            var r = leetcode.SearchMatrix(matrix, 20);
+
+            Assert.IsFalse(r);
+        }
+
+        [Test]
+        public void SearchMatrixTest4()
+        {
+            int[][] matrix = { new int[] { 1, 4, 7, 11, 15 }, new int[] { 2, 5, 8, 12, 19 }, new int[] { 3, 6, 9, 16, 22 }, new int[] { 10, 13, 14, 17, 24 }, new int[] { 18, 21, 23, 26, 30 } };
+
+            var r = leetcode.SearchMatrix(matrix, 12);
+
+            Assert.IsTrue(r);
+        }
+
+        [Test]
+        public void SearchMatrixTest5()
+        {
+            int[][] matrix = { new int[] { 1, 4, 7, 11, 15 }, new int[] { 2, 5, 8, 12, 19 }, new int[] { 3, 6, 9, 16, 22 }, new int[] { 10, 13, 14, 17, 24 }, new int[] { 18, 21, 23, 26, 30 } };
+
+            int[] falseResult = { 0, 20, 25, 27, 28, 29, 31 };
+            bool result = false;
+
+            for (int i = 0; i < 32; i++)
+            {
+                result = leetcode.SearchMatrix(matrix, i);
+
+                if (falseResult.Contains(i))
+                {
+                    if (result)
+                    {
+
+                    }
+                    Assert.IsFalse(result);
+                }
+                else
+                {
+                    if (!result)
+                    {
+
+                    }
+                    Assert.IsTrue(result);
+                }
+            }
+
+        }
+        [Test]
+        public void SearchMatrixTest6()
+        {
+            int[][] matrix = { new int[] { -1, 3 } };
+
+            var r = leetcode.SearchMatrix(matrix, 3);
+
+            Assert.IsTrue(r);
+        }
+
+        [Test]
+        public void SearchMatrixTest7()
+        {
+            int[][] matrix = { new int[] { 2, 5 }, new int[] { 2, 8 }, new int[] { 7, 9 }, new int[] { 7, 11 }, new int[] { 9, 11 } };
+
+            var r = leetcode.SearchMatrix(matrix, 7);
+
+            Assert.IsTrue(r);
+        }
+
+        [Test]
+        public void RemoveSubfoldersTest1()
+        {
+            string[] folder = { "/a", "/a/b", "/c/d", "/c/d/e", "/c/f" };
+            var res = leetcode.RemoveSubfolders(folder);
+            IList<string> expected = new List<string>() { "/a", "/c/d", "/c/f" };
+            CollectionAssert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void RemoveSubfoldersTest2()
+        {
+            string[] folder = { "/a", "/a/b/c", "/a/b/d" };
+
+            var res = leetcode.RemoveSubfolders(folder);
+            IList<string> expected = new List<string>() { "/a" };
+            CollectionAssert.AreEqual(expected, res);
+
+        }
+
+        [Test]
+        public void RemoveSubfoldersTest3()
+        {
+            string[] folder = { "/a/b/c", "/a/b/ca", "/a/b/d" };
+
+            var res = leetcode.RemoveSubfolders(folder);
+            CollectionAssert.AreEqual(folder, res);
+
+        }
+
+
+        [Test]
+        public void RemoveSubfoldersTest4()
+        {
+            string[] folder = { "/ah/al/am", "/ah/al" };
+
+            var res = leetcode.RemoveSubfolders(folder);
+            IList<string> expected = new List<string>() { "/ah/al" };
+            CollectionAssert.AreEqual(expected, res);
+
         }
 
         private TreeNode buildTree(int?[] arr)

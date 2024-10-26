@@ -477,6 +477,249 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 240. Search a 2D Matrix II
+        public bool SearchMatrix(int[][] matrix, int target)
+        {
+            int row = 0;
+            int col = matrix[0].Length - 1;
+
+            while (row < matrix.Length && col >= 0)
+            {
+                if (matrix[row][col] == target) { return true; }
+
+                else if (matrix[row][col] > target)
+                {
+                    col--;
+                }
+                else
+                {
+                    row++;
+                }
+            }
+
+            return false;
+        }
+
+        public bool SearchMatrix_1(int[][] matrix, int target)
+        {
+            int rows = matrix.Length;
+            int cols = matrix[0].Length;
+
+            int colMin = 0, colMax = cols - 1, rowMin = 0, rowMax = rows - 1;
+
+            return SearchMatrix_Helper_1(matrix, target, rowMin, colMin, rowMax, colMax);
+
+        }
+
+        private bool SearchMatrix_Helper_1(int[][] matrix, int target, int rowMin, int colMin, int rowMax, int colMax)
+        {
+            if (rowMin == rowMax && rowMax == colMin && colMin == colMax)
+            {
+                return target == matrix[rowMax][colMax];
+            }
+
+            int topLeft = matrix[rowMin][colMin];
+            int topRight = matrix[rowMin][colMax];
+            int bottomLeft = matrix[rowMax][colMin];
+            int bottomRight = matrix[rowMax][colMax];
+
+            if (target == topLeft || target == bottomLeft || target == bottomRight || target == topRight) return true;
+
+            if (target < topLeft || target > bottomRight) return false;
+
+            int newColMin = -1, newRowMin = -1, newColMax = -1, newRowMax = -1;
+            bool targetFound = false;
+            if (target < topRight)
+            {
+                newColMax = findMaxCol(matrix, target, rowMin, colMin, colMax, out targetFound);
+
+                if (targetFound) return targetFound;
+            }
+            else
+            {
+                newRowMin = findMinRow(matrix, target, rowMin, rowMax, colMax, out targetFound);
+
+                if (targetFound) return targetFound;
+            }
+
+            if (target < bottomLeft)
+            {
+                newRowMax = findMaxRow(matrix, target, rowMin, colMin, rowMax, out targetFound);
+                if (targetFound) return targetFound;
+            }
+            else
+            {
+                newColMin = findMinCol(matrix, target, colMin, rowMax, colMax, out targetFound);
+                if (targetFound) return targetFound;
+            }
+
+            return SearchMatrix_Helper_1(matrix, target,
+                newRowMin == -1 ? rowMin : newRowMin,
+                newColMin == -1 ? colMin : newColMin,
+                newRowMax == -1 ? rowMax : newRowMax,
+                newColMax == -1 ? colMax : newColMax);
+
+        }
+
+        private int findMinCol(int[][] matrix, int target, int colMin, int rowMax, int colMax, out bool targetFound)
+        {
+            targetFound = false;
+            int low = colMin;
+            int high = colMax;
+
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+                if (matrix[rowMax][mid] == target)
+                {
+                    targetFound = true;
+                    break;
+                }
+
+                if (matrix[rowMax][mid] < target)
+                {
+                    low = mid + 1;
+
+                    if (matrix[rowMax][low] == target)
+                    {
+                        targetFound = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    high = mid - 1;
+
+                    if (matrix[rowMax][high] == target)
+                    {
+                        targetFound = true;
+                        break;
+                    }
+                }
+            }
+
+            return low == high ? matrix[rowMax][low] > target ? low : low + 1 : Math.Max(low, high);
+        }
+
+        private int findMaxRow(int[][] matrix, int target, int rowMin, int colMin, int rowMax, out bool targetFound)
+        {
+            targetFound = false;
+            int low = rowMin;
+            int high = rowMax;
+
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+
+                if (matrix[mid][colMin] == target)
+                {
+                    targetFound = true;
+                    break;
+                }
+
+                if (matrix[mid][colMin] > target)
+                {
+                    high = mid - 1;
+                    if (matrix[high][colMin] == target)
+                    {
+                        targetFound = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    low = mid + 1;
+                    if (matrix[low][colMin] == target)
+                    {
+                        targetFound = true;
+                        break;
+                    }
+                }
+            }
+
+            return low == high ? matrix[low][colMin] < target ? low : low - 1 : Math.Min(low, high);
+        }
+
+        private int findMinRow(int[][] matrix, int target, int rowMin, int rowMax, int colMax, out bool targetFound)
+        {
+            targetFound = false;
+
+            int low = rowMin;
+            int high = rowMax;
+
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+
+                if (matrix[mid][colMax] == target)
+                {
+                    targetFound = true;
+                    break;
+                }
+
+                if (matrix[mid][colMax] > target)
+                {
+                    high = mid - 1;
+
+                    if (matrix[high][colMax] == target)
+                    {
+                        targetFound = true;
+                        break;
+                    }
+                }
+                else
+                {
+                    low = mid + 1;
+
+                    if (matrix[low][colMax] == target)
+                    {
+                        targetFound = true;
+                        break;
+                    }
+                }
+            }
+
+            return low == high ? matrix[low][colMax] > target ? low : low + 1 : Math.Max(low, high);
+        }
+
+        private int findMaxCol(int[][] matrix, int target, int rowMin, int colMin, int colMax, out bool targetFound)
+        {
+            targetFound = false;
+            int low = colMin;
+            int high = colMax;
+
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+
+                if (matrix[rowMin][mid] == target)
+                {
+                    targetFound = true; break;
+                }
+
+                if (matrix[rowMin][mid] < target)
+                {
+                    low = mid + 1;
+                    if (matrix[rowMin][low] == target)
+                    {
+                        targetFound = true; break;
+                    }
+                }
+                else
+                {
+                    high = mid - 1;
+                    if (matrix[rowMin][high] == target)
+                    {
+                        targetFound = true; break;
+                    }
+                }
+            }
+
+
+            return low == high ? matrix[rowMin][low] < target ? low : low - 1 : Math.Min(low, high);
+        }
+        #endregion
+
         #region 432. All O`one Data Structure
         /*
             Design a data structure to store the strings' count_2044 with the ability to return the strings with minimum and maximum counts.
