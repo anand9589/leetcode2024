@@ -1,5 +1,6 @@
 ﻿
 using Leetcode2024.Common.Models;
+using NUnit.Framework;
 using System.Linq;
 using static Leetcode2024.Leetcode;
 
@@ -514,16 +515,95 @@ namespace Leetcode2024.Tests
 
         }
 
+        [Test]
+        public void TreeQueriesTest1()
+        {
+            TreeNode root = buildTree(new int?[] { 1, 3, 4, 2, null, 6, 5, null, null, null, null, null, 7 });
+            int[] queries = { 4 };
+
+            var res = leetcode.TreeQueries(root, queries);
+
+            CollectionAssert.AreEqual(new int[]{ 2 },     res);
+        }
+
+        //[5,8,9,2,1,3,7,4,6]
+        [Test]
+        public void TreeQueriesTest2()
+        {
+            TreeNode root = buildTree(new int?[] { 5, 8, 9, 2, 1, 3, 7, 4, 6 });
+            int[] queries = { 3, 2, 4, 8 };
+
+            var res = leetcode.TreeQueries(root, queries);
+
+            CollectionAssert.AreEqual(new int[] { 3, 2, 3, 2 }, res);
+        }
+
+
+        //[8,6,37,3,7,33,65,1,4,null,null,29,36,51,66,null,2,null,5,26,31,35,null,45,58,null,null,null,null,null,null,22,28,30,32,34,null,44,47,55,59,21,25,27,null,null,null,null,null,null,null,41,null,46,48,54,56,null,62,13,null,24,null,null,null,38,42,null,null,null,49,53,null,null,57,60,64,11,20,23,null,null,39,null,43,null,50,52,null,null,null,null,61,63,null,10,12,18,null,null,null,null,40,null,null,null,null,null,null,null,null,null,null,9,null,null,null,16,19,null,null,null,null,15,17,null,null,14]
+        [Test]
+        public void TreeQueriesTest3()
+        {
+            TreeNode root = buildTree(new int?[] { 8, 6, 37, 3, 7, 33, 65, 1, 4, null, null, 29, 36, 51, 66, null, 2, null, 5, 26, 31, 35, null, 45, 58, null, null, null, null, null, null, 22, 28, 30, 32, 34, null, 44, 47, 55, 59, 21, 25, 27, null, null, null, null, null, null, null, 41, null, 46, 48, 54, 56, null, 62, 13, null, 24, null, null, null, 38, 42, null, null, null, 49, 53, null, null, 57, 60, 64, 11, 20, 23, null, null, 39, null, 43, null, 50, 52, null, null, null, null, 61, 63, null, 10, 12, 18, null, null, null, null, 40, null, null, null, null, null, null, null, null, null, null, 9, null, null, null, 16, 19, null, null, null, null, 15, 17, null, null, 14 });
+            int[] queries = { 57, 7, 32, 55, 20, 25, 45, 34, 5, 19, 45, 30, 48, 1, 47, 32, 60, 31, 22, 15, 31 };
+
+            var res = leetcode.TreeQueries(root, queries);
+
+            CollectionAssert.AreEqual(new int[] { 12, 12, 12, 12, 10, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 9, 11, 12 }, res);
+        }
+
+        //[1,null,5,3,null,2,4]
+        [Test]
+        public void TreeQueriesTest4()
+        {
+            TreeNode root = buildTree(new int?[] { 1, null, 5, 3, null, 2, 4 });
+            int[] queries = { 3, 5, 4, 2, 4 };
+
+            var res = leetcode.TreeQueries(root, queries);
+
+            CollectionAssert.AreEqual(new int[] { 1, 0, 3, 3, 3 }, res);
+        }
+
+        [Test]
+        public void CountSquaresTest1()
+        {
+            int[][] matrix = { new int[] { 0, 1, 1, 1 }, new int[] { 1,1,1,1 }, new int[] { 0, 1, 1, 1 } };
+
+            var res = leetcode.CountSquares(matrix);
+
+            Assert.AreEqual(15, res);
+        }
+
+        //[[1,0,1],[1,1,0],[1,1,0]]
+        [Test]
+        public void CountSquaresTest2()
+        {
+            int[][] matrix = { new int[] { 1, 0, 1 }, new int[] { 1, 1, 0 }, new int[] { 1, 1, 0 } };
+
+            var res = leetcode.CountSquares(matrix);
+
+            Assert.AreEqual(7, res);
+        }
+
+        #region Private Methods
+
         private TreeNode buildTree(int?[] arr)
         {
             TreeNode treeNode = new TreeNode(arr[0].Value);
-
-            treeNode.left = new TreeNode(arr[1].Value);
-            treeNode.right = new TreeNode(arr[2].Value);
-
             Queue<TreeNode> queue = new Queue<TreeNode>();
-            queue.Enqueue(treeNode.left);
-            queue.Enqueue(treeNode.right);
+
+            if (arr.Length>1 && arr[1].HasValue)
+            {
+                treeNode.left = new TreeNode(arr[1].Value);
+                queue.Enqueue(treeNode.left);
+            }
+
+            if (arr.Length>2 && arr[2].HasValue)
+            {
+                treeNode.right = new TreeNode(arr[2].Value);
+
+                queue.Enqueue(treeNode.right);
+
+            }
 
             int i = 2;
 
@@ -545,25 +625,6 @@ namespace Leetcode2024.Tests
                 }
             }
 
-            ////Dictionary<int, TreeNode> dict = new Dictionary<int, TreeNode>();
-            //int nullIncr = 0;
-
-            //if (arr.Length > 0 && arr[0].HasValue)
-            //{
-            //    Queue<(int index, TreeNode node)> q = new Queue<(int, TreeNode)>();
-            //    treeNode = new TreeNode((int)arr[0]);
-
-            //    q.Enqueue((0, treeNode));
-
-            //    while (q.Count > 0)
-            //    {
-            //        var dq = q.Dequeue();
-
-            //        int leftIndex = 2 * dq.index + 1;
-            //        dq.node.left = enqueNode(arr, q,  leftIndex + nullIncr, ref nullIncr);
-            //        dq.node.right = enqueNode(arr, q, leftIndex+1 + nullIncr, ref nullIncr);
-            //    }
-            //}
             return treeNode;
         }
 
@@ -580,6 +641,7 @@ namespace Leetcode2024.Tests
                 nullIncr += 2;
             }
             return node;
-        }
+        } 
+        #endregion
     }
 }

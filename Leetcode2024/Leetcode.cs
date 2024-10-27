@@ -1,5 +1,6 @@
 ﻿using Leetcode2024.Common.Helper;
 using Leetcode2024.Common.Models;
+using System.Globalization;
 using System.Text;
 
 namespace Leetcode2024
@@ -1727,6 +1728,61 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1277. Count Square Submatrices with All Ones
+        public int CountSquares(int[][] matrix)
+        {
+            int max = -1;
+            Dictionary<int, int> resultMap = new Dictionary<int, int>() { { 1, 0 } };
+
+            for (int i = 0; i < matrix.Length; i++)
+            {
+                for (int j = 0; j < matrix[i].Length; j++)
+                {
+
+                    if (matrix[i][j] == 0) continue;
+
+                    if (i == 0 || j == 0)
+                    {
+                        resultMap[1]++;
+                        continue;
+                    }
+
+                    resultMap[1]++;
+
+                    int top = matrix[i - 1][j];
+                    if (top == 0) continue;
+
+                    int left = matrix[i][j - 1];
+                    if (left == 0) continue;
+
+                    int topLeft = matrix[i - 1][j - 1];
+                    if (topLeft == 0) continue;
+
+                    matrix[i][j] += Math.Min(topLeft, Math.Min(top, left));
+                    if (!resultMap.ContainsKey(matrix[i][j]))
+                    {
+                        max = matrix[i][j];
+                        resultMap.Add(matrix[i][j], 0);
+                    }
+
+                    resultMap[matrix[i][j]]++;
+                }
+            }
+
+            int oldCount = 0;
+            int result = resultMap[1];
+            for (int i = max; i > 1; i--)
+            {
+                int currCount = resultMap[i] + oldCount;
+
+                result += currCount;
+                oldCount = currCount;
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 1371. Find the Longest Substring Containing Vowels in Even Counts
 
         /*
@@ -1904,6 +1960,157 @@ namespace Leetcode2024
 
             getSubSets(nums, i + 1, currOr | nums[i]);
             getSubSets(nums, i + 1, currOr);
+        }
+        #endregion
+
+        #region 2458. Height of Binary Tree After Subtree Removal Queries
+
+        public int[] TreeQueries(TreeNode root, int[] queries)
+        {
+            int[] result = new int[queries.Length];
+            Dictionary<int, int> nodeHeights = new Dictionary<int, int>();
+            List<List<int>> levelNodes = new List<List<int>>();
+            int nodeHeight = calculateNodeHeights(root, nodeHeights, levelNodes, 1);
+
+            for (int i = 0; i < levelNodes.Count; i++)
+            {
+                levelNodes[i] = levelNodes[i].OrderByDescending(x => nodeHeights[x]).ToList();
+            }
+
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int level = -1;
+
+                for (int j = 0; j < levelNodes.Count; j++)
+                {
+                    if (levelNodes[j][0] == queries[i])
+                    {
+                        level = j;
+                        break;
+                    }
+                }
+
+                if (level == -1)
+                {
+                    result[i] = nodeHeight;
+                }
+                else
+                {
+                    int newHeight = nodeHeight - nodeHeights[queries[i]];
+
+                    if (levelNodes[level].Count > 1)
+                    {
+                        newHeight += nodeHeights[levelNodes[level][1]];
+                    }
+                    else
+                    {
+                        newHeight -= 1;
+                    }
+
+                    result[i] = newHeight;
+                }
+            }
+            return result;
+        }
+
+        private int calculateNodeHeights(TreeNode root, Dictionary<int, int> nodeHeights, List<List<int>> levelNodes, int level)
+        {
+            if (root == null) return -1;
+
+            int leftHeight = calculateNodeHeights(root.left, nodeHeights, levelNodes, level + 1);
+            int rightHeight = calculateNodeHeights(root.right, nodeHeights, levelNodes, level + 1);
+
+            int currentHeight = 1;
+
+            currentHeight += Math.Max(leftHeight, rightHeight);
+
+            nodeHeights.Add(root.val, currentHeight);
+
+            while (levelNodes.Count < level)
+            {
+                levelNodes.Add(new List<int>());
+            }
+
+            levelNodes[level - 1].Add(root.val);
+
+            return currentHeight;
+        }
+
+        private int calculateNodeHeights_V2(TreeNode root, Dictionary<int, int> nodeHeights, Dictionary<int, int> maxPart)
+        {
+            if (root == null) return -1;
+
+            int leftHeight = calculateNodeHeights_V2(root.left, nodeHeights, maxPart);
+            int rightHeight = calculateNodeHeights_V2(root.right, nodeHeights, maxPart);
+
+            int currentHeight = 1;
+
+            if (leftHeight == rightHeight)
+            {
+                currentHeight += leftHeight;
+            }
+            else if (leftHeight > rightHeight)
+            {
+                maxPart.Add(root.left.val, rightHeight + currentHeight);
+                currentHeight += leftHeight;
+            }
+            else
+            {
+                maxPart.Add(root.right.val, leftHeight + currentHeight);
+                currentHeight += rightHeight;
+            }
+            //+ Math.Max(leftHeight, rightHeight);
+
+            nodeHeights.Add(root.val, currentHeight);
+
+            return currentHeight;
+
+        }
+
+        public int[] TreeQueries_1(TreeNode root, int[] queries)
+        {
+            int[] result = new int[queries.Length];
+
+            Dictionary<int, int> nodeHeights = new Dictionary<int, int>();
+            Dictionary<int, int> siblingHeights = new Dictionary<int, int>();
+
+            int treeHeight = calculateNodeHeights_1(root, nodeHeights, siblingHeights);
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int removedHeight = siblingHeights[queries[i]];
+                int height = treeHeight - removedHeight - 1;
+                result[i] = height;
+            }
+
+            return result;
+        }
+
+        private int calculateNodeHeights_1(TreeNode root, Dictionary<int, int> nodeHeights, Dictionary<int, int> siblingHeights)
+        {
+            if (root == null) return -1;
+
+            int leftHeight = calculateNodeHeights_1(root.left, nodeHeights, siblingHeights);
+            int rightHeight = calculateNodeHeights_1(root.right, nodeHeights, siblingHeights);
+
+            int currHeight = 1 + Math.Max(leftHeight, rightHeight);
+
+
+
+            nodeHeights.Add(root.val, currHeight);
+
+            if (root.left != null)
+            {
+                siblingHeights.Add(root.left.val, rightHeight);
+            }
+
+            if (root.right != null)
+            {
+                siblingHeights.Add(root.right.val, leftHeight);
+            }
+
+            return currHeight;
         }
         #endregion
 
