@@ -523,7 +523,7 @@ namespace Leetcode2024.Tests
 
             var res = leetcode.TreeQueries(root, queries);
 
-            CollectionAssert.AreEqual(new int[]{ 2 },     res);
+            CollectionAssert.AreEqual(new int[] { 2 }, res);
         }
 
         //[5,8,9,2,1,3,7,4,6]
@@ -566,7 +566,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void CountSquaresTest1()
         {
-            int[][] matrix = { new int[] { 0, 1, 1, 1 }, new int[] { 1,1,1,1 }, new int[] { 0, 1, 1, 1 } };
+            int[][] matrix = { new int[] { 0, 1, 1, 1 }, new int[] { 1, 1, 1, 1 }, new int[] { 0, 1, 1, 1 } };
 
             var res = leetcode.CountSquares(matrix);
 
@@ -584,6 +584,35 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(7, res);
         }
 
+
+        [Test]
+        public void DiffWaysToComputeTest1()
+        {
+            var res = leetcode.DiffWaysToCompute("2-1-1");
+        }
+
+        //1,2,1,3,2,5
+        [Test]
+        public void SingleNumberTes1()
+        {
+            var res = leetcode.SingleNumber(new int[] { 1, 2, 1, 3, 2, 5 });
+            CollectionAssert.AreEqual(new int[] { 5, 3 }, res);
+        }
+
+        [Test]
+        public void NthUglyNumberTest1()
+        {
+            var res = leetcode.NthUglyNumber(10);
+            Assert.AreEqual(12, res);
+        }
+
+        [Test]
+        public void NthUglyNumberTest2()
+        {
+            var res = leetcode.NthUglyNumber(11);
+            Assert.AreEqual(15, res);
+        }
+
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
@@ -591,13 +620,13 @@ namespace Leetcode2024.Tests
             TreeNode treeNode = new TreeNode(arr[0].Value);
             Queue<TreeNode> queue = new Queue<TreeNode>();
 
-            if (arr.Length>1 && arr[1].HasValue)
+            if (arr.Length > 1 && arr[1].HasValue)
             {
                 treeNode.left = new TreeNode(arr[1].Value);
                 queue.Enqueue(treeNode.left);
             }
 
-            if (arr.Length>2 && arr[2].HasValue)
+            if (arr.Length > 2 && arr[2].HasValue)
             {
                 treeNode.right = new TreeNode(arr[2].Value);
 
@@ -641,7 +670,7 @@ namespace Leetcode2024.Tests
                 nullIncr += 2;
             }
             return node;
-        } 
+        }
         #endregion
     }
 }

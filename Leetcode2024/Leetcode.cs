@@ -721,6 +721,123 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 241. Different Ways to Add Parentheses
+        public IList<int> DiffWaysToCompute(string expression)
+        {
+            Dictionary<string, IList<int>> maps = new Dictionary<string, IList<int>>();
+
+            return DiffWaysToCompute(expression, maps);
+        }
+
+        private IList<int> DiffWaysToCompute(string expression, Dictionary<string, IList<int>> maps)
+        {
+            if (maps.ContainsKey(expression)) return maps[expression];
+
+            IList<int> result = new List<int>();
+
+            for (int i = 0; i < expression.Length; i++)
+            {
+                char c = expression[i];
+
+                if (!char.IsDigit(c))
+                {
+                    var l = DiffWaysToCompute(expression[..i], maps);
+                    var r = DiffWaysToCompute(expression[(i + 1)..], maps);
+
+                    foreach (var left in l)
+                    {
+                        foreach (var right in r)
+                        {
+                            if (c == '+')
+                            {
+                                result.Add(left + right);
+                            }
+                            else if (c == '-')
+                            {
+                                result.Add(left - right);
+                            }
+                            else
+                            {
+                                result.Add(left * right);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (result.Count == 0)
+            {
+                result.Add(int.Parse(expression));
+            }
+
+            maps.Add(expression, result);
+            return result;
+        }
+        #endregion
+
+        #region 260. Single Number III
+        public int[] SingleNumber(int[] nums)
+        {
+            // Step 1: XOR all elements to get xor_total (XOR of the two unique numbers)
+            int xor_total = 0;
+            foreach (int num in nums)
+            {
+                xor_total ^= num;
+            }
+
+            // Step 2: Find the rightmost set bit (diff_bit) in xor_total
+            int diff_bit = xor_total & -xor_total; // This isolates the rightmost set bit
+
+            // Step 3: Separate numbers based on diff_bit and XOR within each group
+            int x = 0, y = 0;
+            foreach (int num in nums)
+            {
+                if ((num & diff_bit) == 0)
+                    x ^= num; // Group with diff_bit not set
+                else
+                    y ^= num; // Group with diff_bit set
+            }
+
+            // x and y are the two unique numbers
+            return new int[] { x, y };
+        }
+        #endregion
+
+        #region 264. Ugly Number II
+        public int NthUglyNumber(int n)
+        {
+            int[] arr = new int[n];
+
+            arr[0] = 1;
+            int index2 = 0, index3 = 0, index5=0;
+            int next2 = 2, next3 = 3, next5 = 5;
+
+            for (int i = 1; i < n; i++)
+            {
+                arr[i] = Math.Min(next2, Math.Min(next3, next5));
+                if (arr[i] == next2)
+                {
+                    index2++;
+                    next2 = arr[index2] * 2;
+                }
+                if (arr[i] == next3)
+                {
+                    index3++;
+                    next3 = arr[index3] * 3;
+                }
+                if (arr[i] == next5)
+                {
+                    index5++;
+                    next5 = arr[index5] * 5;
+                }
+            }
+
+            return arr[n - 1];
+        }
+
+
+        #endregion
+
         #region 432. All O`one Data Structure
         /*
             Design a data structure to store the strings' count_2044 with the ability to return the strings with minimum and maximum counts.
