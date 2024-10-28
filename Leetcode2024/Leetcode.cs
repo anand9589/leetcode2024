@@ -817,18 +817,15 @@ namespace Leetcode2024
                 arr[i] = Math.Min(next2, Math.Min(next3, next5));
                 if (arr[i] == next2)
                 {
-                    index2++;
-                    next2 = arr[index2] * 2;
+                    next2 = arr[++index2] * 2;
                 }
                 if (arr[i] == next3)
                 {
-                    index3++;
-                    next3 = arr[index3] * 3;
+                    next3 = arr[++index3] * 3;
                 }
                 if (arr[i] == next5)
                 {
-                    index5++;
-                    next5 = arr[index5] * 5;
+                    next5 = arr[++index5] * 5;
                 }
             }
 
