@@ -836,14 +836,21 @@ namespace Leetcode2024
         #region 274. H-Index
         public int HIndex(int[] citations)
         {
-            int result = 0;
             Array.Sort(citations);
             int n = citations.Length;
-            for (int i = citations.Length; i >= 0; i++)
+            int counter = 0;
+            for (int i = citations.Length - 1; i >= 0; i--)
             {
-
+                if (citations[i] > counter)
+                {
+                    counter++;
+                }
+                else
+                {
+                    return counter;
+                }
             }
-            return result;
+            return counter;
         }
         #endregion
 

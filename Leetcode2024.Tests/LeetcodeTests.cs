@@ -631,6 +631,26 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(3, res);
         }
 
+        [Test]
+        public void HIndexTest2()
+        {
+            int[] arr = { 1,3,1 };
+            var res = leetcode.HIndex(arr);
+
+            Assert.AreEqual(1, res);
+        }
+
+
+
+        [Test]
+        public void HIndexTest3()
+        {
+            int[] arr = { 1, 2, 3, 4 };
+            var res = leetcode.HIndex(arr);
+
+            Assert.AreEqual(2, res);
+        }
+
         //grid = [[2,4,3,5],[5,4,9,3],[3,4,2,11],[10,9,13,15]]
         [Test]
         public void MaxMovesTest1()
