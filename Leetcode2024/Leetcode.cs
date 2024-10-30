@@ -1,11 +1,9 @@
-﻿using Leetcode2024.Common.Helper;
-using Leetcode2024.Common.Models;
-using System.Globalization;
+﻿using Leetcode2024.Common.Models;
 using System.Text;
 
 namespace Leetcode2024
 {
-    public class Leetcode
+    public class LeetCode
     {
         #region 164. Maximum Gap
         public int MaximumGap(int[] nums)
@@ -809,7 +807,7 @@ namespace Leetcode2024
             int[] arr = new int[n];
 
             arr[0] = 1;
-            int index2 = 0, index3 = 0, index5=0;
+            int index2 = 0, index3 = 0, index5 = 0;
             int next2 = 2, next3 = 3, next5 = 5;
 
             for (int i = 1; i < n; i++)
@@ -833,6 +831,43 @@ namespace Leetcode2024
         }
 
 
+        #endregion
+
+        #region 274. H-Index
+        public int HIndex(int[] citations)
+        {
+            int result = 0;
+            Array.Sort(citations);
+            int n = citations.Length;
+            for (int i = citations.Length; i >= 0; i++)
+            {
+
+            }
+            return result;
+        }
+        #endregion
+
+        #region 300. Longest Increasing Subsequence
+        public int LengthOfLIS(int[] nums)
+        {
+            List<int> lst = new List<int>() { nums[0] };
+            for (int i = 1; i < nums.Length; i++)
+            {
+                int k = lst.BinarySearch(nums[i]);
+
+                if (k < 0) k = ~k;
+
+                if (k == lst.Count)
+                {
+                    lst.Add(nums[i]);
+                }
+                else
+                {
+                    lst[k] = nums[i];
+                }
+            }
+            return lst.Count;
+        }
         #endregion
 
         #region 432. All O`one Data Structure
@@ -2049,6 +2084,61 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 1671. Minimum Number of Removals to Make Mountain Array
+        public int MinimumMountainRemovals(int[] nums)
+        {
+            int[] longestIncreasingSequence = getLongestIncreasingSequence(nums);
+
+            Array.Reverse(nums);
+
+            int[] longestDecreasingSequence = getLongestIncreasingSequence(nums);
+            Array.Reverse(nums);
+
+            Array.Reverse(longestDecreasingSequence);
+            int result = 0;
+            for (int i = 1; i < nums.Length - 1; i++)
+            {
+                if (longestIncreasingSequence[i] > 1 && longestDecreasingSequence[i] > 1)
+                {
+                    result = Math.Max(result, longestIncreasingSequence[i] + longestDecreasingSequence[i] - 1);
+                }
+            }
+
+
+            return nums.Length - result;
+        }
+
+        private int[] getLongestIncreasingSequence(int[] nums)
+        {
+            int[] result = new int[nums.Length];
+            List<int> lst = new List<int>() { nums[0] };
+            result[0] = 1;
+            int maxCount = 1;
+            for (int i = 1; i < nums.Length; i++)
+            {
+                int k = lst.BinarySearch(nums[i]);
+                if (k < 0)
+                {
+                    k = ~k;
+                }
+
+                if (k == lst.Count)
+                {
+                    lst.Add(nums[i]);
+                    result[i] = result[i - 1] + 1;
+                }
+                else
+                {
+
+                    lst[k] = nums[i];
+                    result[i] = result[i - 1];
+                }
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 2044. Count Number of Maximum Bitwise-OR Subsets
         int maxOr_2044 = 0, count_2044 = 0;
         public int CountMaxOrSubsets(int[] nums)
@@ -2228,6 +2318,38 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2501. Longest Square Streak in an Array
+        public int LongestSquareStreak(int[] nums)
+        {
+            Array.Sort(nums);
+            int result = -1;
+
+            int i = -1;
+
+            while (++i < nums.Length)
+            {
+                int cnt = -1;
+
+                int sqr = nums[i] * nums[i];
+
+                int found = Array.BinarySearch(nums, i + 1, nums.Length - 1 - i, sqr);
+                if (found > 0) cnt = 1;
+                while (found > 0)
+                {
+                    cnt++;
+                    sqr = nums[found] * nums[found];
+                    found = Array.BinarySearch(nums, found + 1, nums.Length - 1 - found, sqr);
+                }
+
+                result = Math.Max(result, cnt);
+
+
+
+            }
+            return result;
+        }
+        #endregion
+
         #region 2583. Kth Largest Sum in a Binary Tree
         public long KthLargestLevelSum(TreeNode root, int k)
         {
@@ -2312,6 +2434,64 @@ namespace Leetcode2024
             }
 
             return root;
+        }
+        #endregion
+
+        #region 2684. Maximum Number of Moves in a Grid
+        public int MaxMoves(int[][] grid)
+        {
+            int result = 0;
+            int[][] dp = new int[grid.Length][];
+            for (int i = 0; i < grid.Length; i++)
+            {
+                dp[i] = new int[grid[i].Length];
+            }
+
+
+            for (int j = 1; j < grid[0].Length; j++)
+            {
+                bool found = false;
+                for (int i = 0; i < grid.Length; i++)
+                {
+                    int max = 0;
+                    if (grid[i][j] < grid[i][j - 1] && dp[i][j - 1] > 0)
+                    {
+                        max = dp[i][j - 1];
+                    }
+
+                    if (i - 1 >= 0 && grid[i][j] < grid[i - 1][j - 1])
+                    {
+                        found = true;
+                        max = Math.Max(dp[i - 1][j - 1], max);
+                    }
+
+                    if (i + 1 < grid.Length && grid[i][j] < grid[i + 1][j + 1])
+                    {
+                        found = true;
+                        max = Math.Max(dp[i + 1][j + 1], max);
+                    }
+                }
+                if (!found) return j - 1;
+            }
+
+            //for (int i = 0; i < grid.Length; i++)
+            //{
+            //    if (grid[i][0] < grid[i][1])
+            //    {
+            //        result = Math.Max(result, dp[i][1] + 1);
+            //    }
+
+            //    if (i - 1 >= 0 && grid[i][0] < grid[i - 1][1])
+            //    {
+            //        result = Math.Max(result, dp[i - 1][1] + 1);
+            //    }
+
+            //    if (i + 1 < grid.Length && grid[i][0] < grid[i + 1][1])
+            //    {
+            //        result = Math.Max(result, dp[i + 1][1] + 1);
+            //    }
+            //}
+            return 0;
         }
         #endregion
 

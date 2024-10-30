@@ -2,17 +2,17 @@
 using Leetcode2024.Common.Models;
 using NUnit.Framework;
 using System.Linq;
-using static Leetcode2024.Leetcode;
+using static Leetcode2024.LeetCode;
 
 namespace Leetcode2024.Tests
 {
     internal class LeetcodeTests
     {
-        Leetcode leetcode;
+        LeetCode leetcode;
         [SetUp]
         public void Setup()
         {
-            leetcode = new Leetcode();
+            leetcode = new LeetCode();
         }
 
         [Test]
@@ -613,6 +613,100 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(15, res);
         }
 
+        [Test]
+        public void LongestSquareStreakTest1()
+        {
+            int[] arr = { 4, 3, 6, 16, 8, 2 };
+            var res = leetcode.LongestSquareStreak(arr);
+
+            Assert.AreEqual(3, res);
+        }
+
+        [Test]
+        public void HIndexTest1()
+        {
+            int[] arr = { 3, 0, 6, 1, 5 };
+            var res = leetcode.HIndex(arr);
+
+            Assert.AreEqual(3, res);
+        }
+
+        //grid = [[2,4,3,5],[5,4,9,3],[3,4,2,11],[10,9,13,15]]
+        [Test]
+        public void MaxMovesTest1()
+        {
+            int[][] grid = { new int[] { 2, 4, 3, 5 }, new int[] { 5, 4, 9, 3 }, new int[] { 3, 4, 2, 11 }, new int[] { 10, 9, 13, 15 } };
+            var res = leetcode.MaxMoves(grid);
+
+            Assert.AreEqual(3, res);
+        }
+
+        [Test]
+        public void MaxMovesTest2()
+        {
+            //[[160,212,75,136,62,270,218,41,90,72,75],[223,24,6,157,59,99,107,14,244,266,249]]
+            int[][] grid = { new int[] { 160, 212, 75, 136, 62, 270, 218, 41, 90, 72, 75 },
+                            new int[] { 223, 24, 6, 157, 59, 99, 107, 14, 244, 266, 249 }};
+            var res = leetcode.MaxMoves(grid);
+
+            Assert.AreEqual(3, res);
+        }
+
+
+        [Test]
+        public void LengthOfLISTest1()
+        {
+            //[[160,212,75,136,62,270,218,41,90,72,75],[223,24,6,157,59,99,107,14,244,266,249]]
+            int[] arr = { 10, 9, 2, 5, 3, 7, 101, 18 };
+            var res = leetcode.LengthOfLIS(arr);
+
+            Assert.AreEqual(4, res);
+        }
+
+
+        [Test]
+        public void LengthOfLISTest2()
+        {
+            //[[160,212,75,136,62,270,218,41,90,72,75],[223,24,6,157,59,99,107,14,244,266,249]]
+            int[] arr = { 0, 1, 0, 3, 2, 3 };
+            var res = leetcode.LengthOfLIS(arr);
+
+            Assert.AreEqual(4, res);
+        }
+
+
+
+        [Test]
+        public void MinimumMountainRemovalsTest1()
+        {
+            //[[160,212,75,136,62,270,218,41,90,72,75],[223,24,6,157,59,99,107,14,244,266,249]]
+            int[] arr = { 1, 3, 1 };
+            var res = leetcode.MinimumMountainRemovals(arr);
+
+            Assert.AreEqual(0, res);
+        }
+
+        [Test]
+        public void MinimumMountainRemovalsTest2()
+        {
+            //[[160,212,75,136,62,270,218,41,90,72,75],[223,24,6,157,59,99,107,14,244,266,249]]
+            int[] arr = { 2, 1, 1, 5, 6, 2, 3, 1 };
+            var res = leetcode.MinimumMountainRemovals(arr);
+
+            Assert.AreEqual(3, res);
+        }
+
+
+
+        [Test]
+        public void MinimumMountainRemovalsTest3()
+        {
+            //[[160,212,75,136,62,270,218,41,90,72,75],[223,24,6,157,59,99,107,14,244,266,249]]
+            int[] arr = { 4, 3, 2, 1, 1, 2, 3, 1 };
+            var res = leetcode.MinimumMountainRemovals(arr);
+
+            Assert.AreEqual(4, res);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
