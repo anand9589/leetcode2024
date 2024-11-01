@@ -39,10 +39,10 @@
         {
             if (n <= 1) return n;
             if (n == 2) return 1;
-            int[] dp = new int[n+1];
+            int[] dp = new int[n + 1];
             dp[1] = 1;
             dp[2] = 1;
-            for (int i = 2; i < n+1; i++)
+            for (int i = 2; i < n + 1; i++)
             {
                 dp[i] = dp[i - 1] + dp[i - 2];
             }
@@ -51,6 +51,26 @@
         }
 
 
+        #endregion
+
+        #region 746. Min Cost Climbing Stairs
+        public int MinCostClimbingStairs(int[] cost)
+        {
+            int[] dp = new int[cost.Length];
+            dp[0] = cost[0];
+            dp[1] = cost[1];
+            for (int i = 2; i < cost.Length; i++)
+            {
+                dp[i] = cost[i] + Math.Min(dp[i - 1], dp[i - 2]);
+            }
+            return Math.Min(dp[cost.Length - 1], dp[cost.Length - 2]);
+        }
+
+        //private int MinCostClimbingStairs(int[] cost, int index, int currentCost)
+        //{
+        //    if (index >= cost.Length) return currentCost;
+        //    return Math.Min(MinCostClimbingStairs(cost, index + 1, currentCost + cost[index + 1]), MinCostClimbingStairs(cost, index + 2, currentCost + cost[index + 2]));
+        //}
         #endregion
     }
 }
