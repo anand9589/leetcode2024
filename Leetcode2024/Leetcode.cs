@@ -834,7 +834,7 @@ namespace Leetcode2024
         #endregion
 
         #region 274. H-Index
-        public int HIndex(int[] citations)
+        public int HIndex_V1(int[] citations)
         {
             Array.Sort(citations);
             int n = citations.Length;
@@ -850,6 +850,36 @@ namespace Leetcode2024
                     return counter;
                 }
             }
+            return counter;
+        }
+        #endregion
+
+        #region 275. H-Index II
+        public int HIndex(int[] citations)
+        {
+            int counter = 0;
+            int low = 0;
+            int high = citations.Length - 1;
+
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+                int countToEnd = high - mid;
+                int countToStart = mid - low;
+
+
+                if (citations[mid] > countToEnd)
+                {
+                    counter = mid + 1;
+
+                    low = counter;
+                }
+                else
+                {
+
+                }
+            }
+
             return counter;
         }
         #endregion
@@ -874,6 +904,70 @@ namespace Leetcode2024
                 }
             }
             return lst.Count;
+        }
+        #endregion
+
+        #region 416. Partition Equal Subset Sum
+        int[][] dp_416;
+        public bool CanPartition(int[] nums)
+        {
+            int totalSum = nums.Sum();
+
+            if (totalSum % 2 != 0)
+            {
+                return false;
+            }
+
+            int target = totalSum / 2;
+            bool[] dp = new bool[target + 1];
+            dp[0] = true;  // Base case: zero sum is always achievable
+
+            foreach (int num in nums)
+            {
+                // Update dp array from target down to num
+                for (int i = target; i >= num; i--)
+                {
+                    dp[i] = dp[i] || dp[i - num];
+                }
+            }
+
+            return dp[target];
+        }
+        public bool CanPartition_V1416(int[] nums)
+        {
+            int sum = nums.Sum();
+
+            if (sum % 2 == 0)
+            {
+                int reqSum = sum / 2;
+
+                dp_416 = new int[nums.Length + 1][];
+
+                for (int i = 0; i <= nums.Length; i++)
+                {
+                    dp_416[i] = Enumerable.Repeat(-1, reqSum + 1).ToArray();
+                }
+
+                return CanPartition_helper_416(nums, 0, sum / 2);
+            }
+            return false;
+        }
+
+        private bool CanPartition_helper_416(int[] nums, int index, int sum)
+        {
+            if (sum < 0 || index == nums.Length) return false;
+            if (sum == 0) return true;
+            if (dp_416[index][sum] != -1) return dp_416[index][sum] == 1;
+            if (CanPartition_helper_416(nums, index + 1, sum) || CanPartition_helper_416(nums, index + 1, sum - nums[index]))
+            {
+                dp_416[index][sum] = 1;
+                return true;
+            }
+            else
+            {
+                dp_416[index][sum] = 0;
+                return false;
+            }
         }
         #endregion
 
@@ -2146,6 +2240,34 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1957. Delete Characters to Make Fancy String
+        public string MakeFancyString(string s)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            int count = 1;
+            int i = 0;
+            char prev = s[0];
+            stringBuilder.Append(prev);
+
+            while (++i < s.Length)
+            {
+                if (prev == s[i])
+                {
+                    if (count == 2) continue;
+                }
+                else
+                {
+                    prev = s[i];
+                    count = 0;
+                }
+                count++;
+                stringBuilder.Append(prev);
+            }
+
+            return stringBuilder.ToString();
+        }
+        #endregion
+
         #region 2044. Count Number of Maximum Bitwise-OR Subsets
         int maxOr_2044 = 0, count_2044 = 0;
         public int CountMaxOrSubsets(int[] nums)
@@ -2325,6 +2447,94 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2463. Minimum Total Distance Traveled
+        public long MinimumTotalDistance_V1(IList<int> robot, int[][] factory)
+        {
+            long result = long.MaxValue;
+            robot = robot.OrderBy(x => x).ToList();
+            Array.Sort(factory, (x, y) => x[0].CompareTo(y[0]));
+            int n = robot.Count;
+            int m = factory.Length;
+
+            int[,] dp = new int[n + 1, m + 1];
+
+            for (int i = 0; i <= n; i++)
+            {
+                for (int j = 0; j <= m; j++)
+                {
+                    dp[i, j] = int.MaxValue / 2;
+                }
+            }
+
+            dp[0, 0] = 0;
+
+            for (int j = 1; j <= m; j++)
+            {
+                int pos = factory[j - 1][0];
+                int limit = factory[j - 1][1];
+
+                for (int i = 0; i <= n; i++)
+                    dp[i, j] = dp[i, j - 1];
+
+                for (int k = 1; k <= limit; k++)
+                {
+                    for (int i = k; i <= n; i++)
+                    {
+                        int distance = Math.Abs(pos - robot[i - k]);
+                        dp[i, j] = Math.Min(dp[i, j], dp[i - k, j - 1] + distance * k);
+                    }
+                }
+            }
+            return dp[n, m];
+        }
+
+        public long MinimumTotalDistance(IList<int> robot, int[][] factory)
+        {
+
+            var sortedRobot = robot.OrderBy(x => x).ToArray();
+            Array.Sort(factory, (a, b) => a[0].CompareTo(b[0]));
+
+            int m = sortedRobot.Length;
+            int n = factory.Length;
+
+            long[,] dp = new long[m + 1, n + 1];
+            for (int i = 0; i <= m; i++)
+            {
+                for (int j = 0; j <= n; j++)
+                {
+                    dp[i, j] = long.MaxValue;
+                }
+            }
+            dp[m, n] = 0;
+
+            for (int j = n - 1; j >= 0; j--)
+            {
+                long prefixSum = 0;
+                var deque = new LinkedList<(int, long)>();
+                deque.AddLast((m, 0));
+
+                for (int i = m - 1; i >= 0; i--)
+                {
+                    prefixSum += Math.Abs(sortedRobot[i] - factory[j][0]);
+
+                    if (deque.Count > 0 && deque.First.Value.Item1 > i + factory[j][1])
+                    {
+                        deque.RemoveFirst();
+                    }
+
+                    long currentValue = dp[i, j + 1] - prefixSum;
+                    while (deque.Count > 0 && deque.Last.Value.Item2 >= currentValue)
+                    {
+                        deque.RemoveLast();
+                    }
+                    deque.AddLast((i, currentValue));
+                    dp[i, j] = deque.First.Value.Item2 + prefixSum;
+                }
+            }
+            return dp[0, 0];
+        }
+        #endregion
+
         #region 2501. Longest Square Streak in an Array
         public int LongestSquareStreak(int[] nums)
         {
@@ -2485,17 +2695,17 @@ namespace Leetcode2024
             //{
             //    if (grid[i][0] < grid[i][1])
             //    {
-            //        result = Math.Max(result, dp[i][1] + 1);
+            //        result = Math.Max(result, dp_416[i][1] + 1);
             //    }
 
             //    if (i - 1 >= 0 && grid[i][0] < grid[i - 1][1])
             //    {
-            //        result = Math.Max(result, dp[i - 1][1] + 1);
+            //        result = Math.Max(result, dp_416[i - 1][1] + 1);
             //    }
 
             //    if (i + 1 < grid.Length && grid[i][0] < grid[i + 1][1])
             //    {
-            //        result = Math.Max(result, dp[i + 1][1] + 1);
+            //        result = Math.Max(result, dp_416[i + 1][1] + 1);
             //    }
             //}
             return 0;

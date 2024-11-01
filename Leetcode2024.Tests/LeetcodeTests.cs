@@ -626,6 +626,7 @@ namespace Leetcode2024.Tests
         public void HIndexTest1()
         {
             int[] arr = { 3, 0, 6, 1, 5 };
+            Array.Sort(arr);
             var res = leetcode.HIndex(arr);
 
             Assert.AreEqual(3, res);
@@ -635,6 +636,7 @@ namespace Leetcode2024.Tests
         public void HIndexTest2()
         {
             int[] arr = { 1,3,1 };
+            Array.Sort(arr);
             var res = leetcode.HIndex(arr);
 
             Assert.AreEqual(1, res);
@@ -726,6 +728,15 @@ namespace Leetcode2024.Tests
             var res = leetcode.MinimumMountainRemovals(arr);
 
             Assert.AreEqual(4, res);
+        }
+
+
+        [Test]
+        public void MakeFancyStringTest1()
+        {
+            var res = leetcode.MakeFancyString("leeetcode");
+
+            Assert.AreEqual("leetcode", res);
         }
         #region Private Methods
 
