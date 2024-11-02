@@ -2036,29 +2036,29 @@ namespace Leetcode2024
         #region 1371. Find the Longest Substring Containing Vowels in Even Counts
 
         /*
-            Given the string s, return the size of the longest substring containing each vowel an even number of times. That is, 'a', 'e', 'i', 'o', and 'u' must appear an even number of times. 
+            Given the string words, return the size of the longest substring containing each vowel an even number of times. That is, 'a', 'e', 'i', 'o', and 'u' must appear an even number of times. 
 
             Example 1:
 
-            Input: s = "eleetminicoworoep"
+            Input: words = "eleetminicoworoep"
             Output: 13
             Explanation: The longest substring is "leetminicowor" which contains two each of the vowels: e, i and o and zero of the vowels: a and u.
             Example 2:
 
-            Input: s = "leetcodeisgreat"
+            Input: words = "leetcodeisgreat"
             Output: 5
-            Explanation: The longest substring is "leetc" which contains two e's.
+            Explanation: The longest substring is "leetc" which contains two e'words.
             Example 3:
 
-            Input: s = "bcbcbc"
+            Input: words = "bcbcbc"
             Output: 6
             Explanation: In this case, the given string "bcbcbc" is the longest because all vowels: a, e, i, o and u appear zero times.
 
 
             Constraints:
 
-            1 <= s.length <= 5 x 10^5
-            s contains only lowercase English letters.
+            1 <= words.length <= 5 x 10^5
+            words contains only lowercase English letters.
 
          */
         public int FindTheLongestSubstring(string s)
@@ -2532,6 +2532,32 @@ namespace Leetcode2024
                 }
             }
             return dp[0, 0];
+        }
+        #endregion
+
+        #region 2490. Circular Sentence
+        public bool IsCircularSentence(string sentence)
+        {
+            string[] words = sentence.Split(' ');
+
+            char endWith = words[words.Length - 1][words[words.Length - 1].Length - 1];
+
+            int i = -1;
+
+            while (++i < words.Length)
+            {
+                if (words[i][0] != endWith) return false;
+
+                endWith = words[i][words[i].Length - 1];
+            }
+            return true;
+        }
+
+        public bool IsCircularSentence_1(string sentence)
+        {
+            string[] words = sentence.Split(' ');
+            for (int i = 1; i < words.Length; i++) if (words[i - 1][words[i - 1].Length - 1] != words[i][0]) return false;
+            return (words[0][0] == words[words.Length - 1][words[words.Length - 1].Length - 1]);
         }
         #endregion
 
