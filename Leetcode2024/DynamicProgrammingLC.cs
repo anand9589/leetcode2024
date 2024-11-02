@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace Leetcode2024
+﻿namespace Leetcode2024
 {
     public class DynamicProgrammingLC
     {
@@ -13,7 +11,7 @@ namespace Leetcode2024
             {
                 dp[i] = 1;
             }
-           
+
             for (int i = 1; i < m; i++)
             {
                 for (int j = 1; j < n; j++)
@@ -37,7 +35,7 @@ namespace Leetcode2024
             {
                 for (int j = 0; j < m; j++)
                 {
-                    if(i==0 || j== 0)
+                    if (i == 0 || j == 0)
                     {
                         dp[i][j] = 1;
                         continue;
@@ -50,6 +48,28 @@ namespace Leetcode2024
             return dp[n - 1][m - 1];
         }
         #endregion
+
+        #region 64. Minimum Path Sum
+        public int MinPathSum(int[][] grid)
+        {
+            int m = grid.Length;
+            int n = grid[0].Length;
+
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (i == 0 && j == 0) continue;
+                    if (i == 0) { grid[i][j] += grid[i][j - 1]; continue; }
+                    if (j == 0) { grid[i][j] += grid[i - 1][j]; continue; }
+                    grid[i][j] += Math.Min(grid[i - 1][j], grid[i][j - 1]);
+                }
+            }
+
+            return grid[m - 1][n - 1];
+        }
+        #endregion
+
         #region 70. Climbing Stairs
         public int ClimbStairs_Recursion(int n)
         {
@@ -129,7 +149,7 @@ namespace Leetcode2024
             {
                 if (item > maxNum)
                 {
-                   maxNum =  item;
+                    maxNum = item;
                 }
             }
             return maxNum;
