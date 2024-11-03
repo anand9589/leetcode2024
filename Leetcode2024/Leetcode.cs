@@ -1568,6 +1568,17 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 796. Rotate String
+        public bool RotateString(string s, string goal)
+        {
+            if (s == goal) return true;
+            if (s.Length != goal.Length) return false;
+
+
+            return (s + s).Contains(goal);
+        }
+        #endregion
+
         #region 884. Uncommon Words from Two Sentences
 
         /*
