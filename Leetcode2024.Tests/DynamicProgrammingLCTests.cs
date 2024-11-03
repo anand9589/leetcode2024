@@ -57,6 +57,19 @@
             int res = dp.MinimumTotal(lst);
             Assert.AreEqual(11, res);
         }
+
+
+        //[[2,1,3],[6,5,4],[7,8,9]]
+        [Test]
+        public void MinFallingPathSumTest1()
+        {
+            int[][] matrix = new int[][] { new int[] { 2, 1, 3 }, new int[] { 6, 5, 4 }, new int[] { 7, 8, 9 } };
+            int res = dp.MinFallingPathSum(matrix);
+            Assert.AreEqual(13, res);
+        }
+
+
+
         //[[2,1,3],[6,5,4],[7,8,9]]
         [Test]
         public void PanlindreomeTest1()

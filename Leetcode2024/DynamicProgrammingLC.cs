@@ -424,6 +424,31 @@
         //    return Math.Min(MinCostClimbingStairs(cost, index + 1, currentCost + cost[index + 1]), MinCostClimbingStairs(cost, index + 2, currentCost + cost[index + 2]));
         //}
         #endregion
+
+        #region 931. Minimum Falling Path Sum
+        public int MinFallingPathSum(int[][] matrix)
+        {
+            if (matrix.Length == 1) return matrix[0][0];
+
+            if (matrix.Length == 2)
+            {
+                return Math.Min(matrix[0][0], matrix[0][1]) + Math.Min(matrix[1][0], matrix[1][1]);
+            }
+
+            for (int i = 1; i < matrix.Length; i++)
+            {
+                matrix[i][0] += Math.Min(matrix[i - 1][0], matrix[i - 1][1]);
+                int j = 1;
+                for (; j < matrix[i].Length - 1; j++)
+                {
+                    matrix[i][j] += Math.Min(matrix[i - 1][j], Math.Min(matrix[i - 1][j - 1], matrix[i - 1][j + 1]));
+                }
+                matrix[i][j] += Math.Min(matrix[i - 1][j], matrix[i - 1][j - 1]);
+            }
+            return Min(matrix[matrix.Length - 1]);
+        }
+        #endregion
+
         #region Private Common Methods
         private int Max(int[] array)
         {
