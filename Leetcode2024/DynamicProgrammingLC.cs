@@ -2,6 +2,77 @@
 {
     public class DynamicProgrammingLC
     {
+        #region 5. Longest Palindromic Substring
+        public string LongestPalindrome(string s)
+        {
+            int start = 0, end=0;
+            bool[][] dp = new bool[s.Length][];
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                dp[i] = new bool[s.Length];
+                dp[i][i] = true;
+            }
+
+            for (int i = 0; i < s.Length-1; i++)
+            {
+                if (s[i] == s[i + 1])
+                {
+                    dp[i][i + 1] = true;
+                    start = i;
+                    end = i + 1;
+                }
+            }
+
+            for (int len = 2; len <= s.Length; len++)
+            {
+                for (int i = 0; i < s.Length-len; i++)
+                {
+                    if (s[i] == s[i+len] && dp[i + 1][i+len-1])
+                    {
+                        dp[i][i+len] = true;
+                        start = i;
+                        end = i + len;
+                    }
+                }
+            }
+  
+
+            return s.Substring(start, end - start + 1);
+        }
+        public string LongestPalindrome_1(string s)
+        {
+            string result = string.Empty;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                string oddLen = LongestPalindrome_helper_1(s, i, i);
+                string evnLen = LongestPalindrome_helper_1(s, i, i + 1);
+
+                if (oddLen.Length > result.Length)
+                {
+                    result = oddLen;
+                }
+                if (evnLen.Length > result.Length)
+                {
+                    result = evnLen;
+                }
+            }
+            return result;
+        }
+
+        private string LongestPalindrome_helper_1(string s, int left, int right)
+        {
+            while (left >= 0 && right < s.Length && s[left] == s[right])
+            {
+                left--;
+                right++;
+            }
+
+            return s.Substring(left + 1, right - left - 1);
+        }
+        #endregion
+
         #region 62. Unique Paths
         public int UniquePaths(int m, int n)
         {

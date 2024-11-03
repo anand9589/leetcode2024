@@ -43,5 +43,21 @@
             int res = dp.DeleteAndEarn(new int[] { 1, 6, 3, 3, 8, 4, 8, 10, 1, 3 });
             Assert.AreEqual(43, res);
         }
+
+        //[[2,1,3],[6,5,4],[7,8,9]]
+        [Test]
+        public void PanlindreomeTest1()
+        {
+            string res = dp.LongestPalindrome("racecar");
+            Assert.AreEqual(res, res);
+        }
+
+        //[[2,1,3],[6,5,4],[7,8,9]]
+        [Test]
+        public void PanlindreomeTest2()
+        {
+            string res = dp.LongestPalindrome("aracecarb");
+            Assert.AreEqual("racecar", res);
+        }
     }
 }
