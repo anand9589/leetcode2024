@@ -226,6 +226,38 @@
         }
         #endregion
 
+        #region 120. Triangle
+        public int MinimumTotal(IList<IList<int>> triangle)
+        {
+            int[] dp = new int[triangle.Count + 1];
+
+            for (int i = triangle.Count - 1; i >= 0; i--)
+            {
+                for (int j = 0; j < triangle[i].Count; j++)
+                {
+                    dp[j] = Math.Min(dp[j], dp[j + 1]) + triangle[i][j];
+                }
+            }
+            return dp[0];
+        }
+
+        public int MinimumTotal_1(IList<IList<int>> triangle)
+        {
+            for (int i = 1; i < triangle.Count; i++)
+            {
+                triangle[i][0] += triangle[i - 1][0];
+                int j = 1;
+                for (; j < triangle[i].Count - 1; j++)
+                {
+                    triangle[i][j] += Math.Min(triangle[i - 1][j - 1], triangle[i - 1][j]);
+                }
+                triangle[i][j] += triangle[i - 1][j - 1];
+            }
+            return Min(triangle[triangle.Count - 1]);
+        }
+
+        #endregion
+
         #region 509. Fibonacci Number
         public int FibRecursion(int n)
         {
@@ -270,19 +302,6 @@
             }
 
             return dp[maxNum];
-        }
-
-        private int Max(int[] nums)
-        {
-            int maxNum = 0;
-            foreach (var item in nums)
-            {
-                if (item > maxNum)
-                {
-                    maxNum = item;
-                }
-            }
-            return maxNum;
         }
 
         public int DeleteAndEarn_V2(int[] nums)
@@ -404,6 +423,44 @@
         //    if (index >= cost.Length) return currentCost;
         //    return Math.Min(MinCostClimbingStairs(cost, index + 1, currentCost + cost[index + 1]), MinCostClimbingStairs(cost, index + 2, currentCost + cost[index + 2]));
         //}
+        #endregion
+        #region Private Common Methods
+        private int Max(int[] array)
+        {
+            int maxNum = 0;
+            foreach (var item in array)
+            {
+                if (item > maxNum)
+                {
+                    maxNum = item;
+                }
+            }
+            return maxNum;
+        }
+        private int Min(IList<int> list)
+        {
+            int maxNum = list[0];
+            foreach (var item in list)
+            {
+                if (item < maxNum)
+                {
+                    maxNum = item;
+                }
+            }
+            return maxNum;
+        }
+        private int Min(int[] array)
+        {
+            int maxNum = array[0];
+            foreach (var item in array)
+            {
+                if (item < maxNum)
+                {
+                    maxNum = item;
+                }
+            }
+            return maxNum;
+        }
         #endregion
     }
 }

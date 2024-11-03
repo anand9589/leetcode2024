@@ -44,6 +44,19 @@
             Assert.AreEqual(43, res);
         }
 
+        [Test]
+        public void MinimumTotalTest1()
+        {
+            IList<IList<int>> lst = new List<IList<int>>(){
+                new List<int>() { 2 },
+                new List<int>() { 3, 4},
+                new List<int>() { 6, 5, 7},
+                new List<int>() { 4, 1, 8, 3 }
+            };
+            List<int> list = new List<int>();
+            int res = dp.MinimumTotal(lst);
+            Assert.AreEqual(11, res);
+        }
         //[[2,1,3],[6,5,4],[7,8,9]]
         [Test]
         public void PanlindreomeTest1()
