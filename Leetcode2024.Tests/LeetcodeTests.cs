@@ -738,6 +738,13 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual("leetcode", res);
         }
+        [Test]
+        public void CompressedStringTest1()
+        {
+            var res = leetcode.CompressedString("leeetcode");
+
+            Assert.AreEqual("leetcode", res);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)

@@ -2765,5 +2765,28 @@ namespace Leetcode2024
             return result;
         }
         #endregion
+
+        #region 3163. String Compression III
+        public string CompressedString(string word)
+        {
+            int i = 0;
+            StringBuilder stringBuilder = new StringBuilder();
+            while (i<word.Length)
+            {
+                char currentChar = word[i];
+                int count = 1;
+
+                while (++i<word.Length && count<=9 && currentChar == word[i])
+                {
+                    count++;
+                }
+
+                stringBuilder.Append(count);
+                stringBuilder.Append(currentChar);
+            }
+
+            return stringBuilder.ToString();
+        } 
+        #endregion
     }
 }
