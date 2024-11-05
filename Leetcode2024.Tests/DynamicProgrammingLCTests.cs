@@ -85,5 +85,13 @@
             string res = dp.LongestPalindrome("aracecarb");
             Assert.AreEqual("racecar", res);
         }
+
+
+        [Test]
+        public void WordBreakTest1()
+        {
+            bool res = dp.WordBreak("leetcodeleetleet", new List<string> { "leet", "code" });
+            Assert.IsTrue(res);
+        }
     }
 }

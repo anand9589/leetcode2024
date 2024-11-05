@@ -5,7 +5,7 @@
         #region 5. Longest Palindromic Substring
         public string LongestPalindrome(string s)
         {
-            int start = 0, end=0;
+            int start = 0, end = 0;
             bool[][] dp = new bool[s.Length][];
 
             for (int i = 0; i < s.Length; i++)
@@ -14,7 +14,7 @@
                 dp[i][i] = true;
             }
 
-            for (int i = 0; i < s.Length-1; i++)
+            for (int i = 0; i < s.Length - 1; i++)
             {
                 if (s[i] == s[i + 1])
                 {
@@ -26,17 +26,17 @@
 
             for (int len = 2; len <= s.Length; len++)
             {
-                for (int i = 0; i < s.Length-len; i++)
+                for (int i = 0; i < s.Length - len; i++)
                 {
-                    if (s[i] == s[i+len] && dp[i + 1][i+len-1])
+                    if (s[i] == s[i + len] && dp[i + 1][i + len - 1])
                     {
-                        dp[i][i+len] = true;
+                        dp[i][i + len] = true;
                         start = i;
                         end = i + len;
                     }
                 }
             }
-  
+
 
             return s.Substring(start, end - start + 1);
         }
@@ -256,6 +256,101 @@
             return Min(triangle[triangle.Count - 1]);
         }
 
+        #endregion
+
+        #region 139. Word Break
+        //private int[] memo;
+        public bool WordBreak(string s, IList<string> wordDict)
+        {
+            HashSet<string> set = new HashSet<string>(wordDict);
+            int[] memo = new int[s.Length];
+            Array.Fill(memo, -1);
+
+            return WordBreakHelper(s, set, memo, s.Length - 1);
+        }
+
+        private bool WordBreakHelper(string s, HashSet<string> set, int[] memo, int index)
+        {
+            if (index < 0) return true;
+
+            if (memo[index] != -1) return memo[index] == 1;
+
+            foreach (string word in set)
+            {
+                if (index - word.Length + 1 < 0) continue;
+
+                if (s.Substring(index - word.Length + 1, word.Length) == word && WordBreakHelper(s, set, memo, index - word.Length))
+                {
+                    memo[index] = 1;
+                    return true;
+                }
+            }
+            memo[index] = 0;
+            return false;
+        }
+
+        public bool WordBreak_1(string s, IList<string> wordDict)
+        {
+            HashSet<string> set = new HashSet<string>(wordDict);
+            bool[] dp = new bool[s.Length + 1];
+
+            dp[0] = true;
+
+            for (int i = 1; i <= s.Length; i++)
+            {
+                for (int j = 0; j < i; j++)
+                {
+                    if (dp[j] && set.Contains(s.Substring(j, i - j)))
+                    {
+                        dp[i] = true;
+                        break;
+                    }
+                }
+            }
+
+            return dp[s.Length];
+        }
+
+        public bool WordBreak_WithHashset(string s, IList<string> wordDict)
+        {
+            HashSet<string> strings = new HashSet<string>(wordDict);
+            return WordBreak_helper_withHashSet(s, 0, strings);
+        }
+
+        private bool WordBreak_helper_withHashSet(string s, int start, HashSet<string> set)
+        {
+            if (start == s.Length) return true;
+
+            for (int end = start + 1; end <= s.Length; end++)
+            {
+                string prefix = s.Substring(start, end - start);
+
+                if (set.Contains(prefix) && WordBreak_helper_withHashSet(s, end, set)) { return true; }
+            }
+            return false;
+        }
+
+        public bool WordBreak_RecursionList(string s, IList<string> wordDict)
+        {
+            return WordBreak_helper_RecursionList(s, 0, wordDict);
+        }
+
+        public bool WordBreak_helper_RecursionList(string s, int start, IList<string> wordDict)
+        {
+            if (start == s.Length) return true;
+
+            for (int end = start + 1; end <= s.Length; end++)
+            {
+                string prefix = s.Substring(start, end - start);
+
+                if (wordDict.Contains(prefix) && WordBreak_helper_RecursionList(s, end, wordDict))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         #endregion
 
         #region 509. Fibonacci Number
