@@ -2824,5 +2824,74 @@ namespace Leetcode2024
             return stringBuilder.ToString();
         }
         #endregion
+
+        #region MockTests
+        public int FindPeakElement(int[] nums)
+        {
+            if (nums.Length == 1) return 0;
+
+            int low = 0;
+            int high = nums.Length - 1;
+            if (nums[low] > nums[1]) return low;
+            if (nums[high] > nums[high - 1]) return high;
+
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+
+                if (nums[mid] > nums[mid + 1] && nums[mid] > nums[mid - 1]) return mid;
+                if (mid == low) return high;
+                if (mid == high) return low;
+                if (nums[mid - 1] > nums[mid + 1])
+                {
+                    high = mid - 1;
+                }
+                else
+                {
+                    low = mid + 1;
+                }
+            }
+
+            return low;
+
+        }
+
+        public bool RepeatedSubstringPattern(string s)
+        {
+            int[] visited = new int[26];
+            int i = -1;
+            StringBuilder stringBuilder = new StringBuilder();
+            while (++i < s.Length)
+            {
+                char c = s[i];
+
+                if (visited[c - 'a'] == 0)
+                {
+                    visited[c - 'a'] = 1;
+                    stringBuilder.Append(c);
+                }
+                else
+                {
+                    if(checkRepeatedPattern(s, stringBuilder.ToString()))
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        visited[c - 'a']++;
+                        stringBuilder.Append(c);
+                    }
+                }
+            }
+            return false;
+        }
+
+        private bool checkRepeatedPattern(string s, string v)
+        {
+            s = s.Replace(v, "");
+
+            return s.Length == 0;
+        }
+        #endregion
     }
 }

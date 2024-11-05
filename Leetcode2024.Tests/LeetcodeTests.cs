@@ -753,6 +753,48 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(8, res);
         }
+
+
+        [Test]
+        public void FindPeakElementTest1()
+        {
+            int[] arr = new int[] { 1, 6, 5, 4, 3, 2, 1 };
+            var res = leetcode.FindPeakElement(arr);
+
+            Assert.AreEqual(1, res);
+        }
+        [Test]
+        public void FindPeakElementTest2()
+        {
+            int[] arr = new int[] { 1,2,3,1 };
+            var res = leetcode.FindPeakElement(arr);
+
+            Assert.AreEqual(2, res);
+        }
+        [Test]
+        public void FindPeakElementTest3()
+        {
+            int[] arr = new int[] { 1, 2, 1, 3, 5, 6, 4 };
+            var res = leetcode.FindPeakElement(arr);
+
+            Assert.AreEqual(5, res);
+        }
+        [Test]
+        public void FindPeakElementTest4()
+        {
+            int[] arr = new int[] { 3, 4, 3, 2, 1 };
+            var res = leetcode.FindPeakElement(arr);
+
+            Assert.AreEqual(1, res);
+        }
+        [Test]
+        public void FindPeakElementTest5()
+        {
+            int[] arr = new int[] { 3, 4, 3, 2, 1 };
+            var res = leetcode.FindPeakElement(arr);
+
+            Assert.AreEqual(1, res);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
