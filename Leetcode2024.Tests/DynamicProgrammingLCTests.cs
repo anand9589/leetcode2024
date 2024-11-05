@@ -93,5 +93,21 @@
             bool res = dp.WordBreak("leetcodeleetleet", new List<string> { "leet", "code" });
             Assert.IsTrue(res);
         }
+
+        //a r   a v   c e   c e   a v   r
+        [Test]
+        public void LongestPalindromeSubseqTest1()
+        {
+            var res = dp.LongestPalindromeSubseq("aravceceavr");
+            Assert.AreEqual(7, res);
+        }
+
+        //a r   a v   c e   c e   a v   r
+        [Test]
+        public void LongestPalindromeSubseqTest2()
+        {
+            var res = dp.LongestPalindromeSubseq("bbbab");
+            Assert.AreEqual(4, res);
+        }
     }
 }

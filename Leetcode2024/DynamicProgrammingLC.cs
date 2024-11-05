@@ -378,6 +378,47 @@
 
         #endregion
 
+        #region 516. Longest Palindromic Subsequence
+        public int LongestPalindromeSubseq(string s)
+        {
+            int[][] dp = new int[s.Length][];
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                dp[i] = new int[s.Length];
+                dp[i][i] = 1;
+            }
+
+            for (int i = 0; i < s.Length - 1; i++)
+            {
+                if (s[i] == s[i + 1])
+                {
+                    dp[i][i + 1] = 2;
+                }
+                else
+                {
+                    dp[i][i + 1] = 1;
+                }
+            }
+
+            for (int j = 2; j < s.Length; j++)
+            {
+                for (int i = 0; i < s.Length - j; i++)
+                {
+                    if (s[i] == s[i + j])
+                    {
+                        dp[i][i + j] = 2 + dp[i + 1][i + j - 1];
+                    }
+                    else
+                    {
+                        dp[i][i + j] = Math.Max(dp[i][i + j - 1], dp[i + 1][i + j]);
+                    }
+                }
+            }
+            return dp[0][s.Length - 1];
+        }
+        #endregion
+
         #region 740. Delete and Earn
 
         public int DeleteAndEarn(int[] nums)
