@@ -2749,6 +2749,42 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2914. Minimum Number of Changes to Make Binary String Beautiful
+        public int MinChanges(string s)
+        {
+
+            int i = -1;
+            bool zeroCount = false;
+            bool oneCount = false;
+            bool check = false;
+            int result = 0;
+            while (++i < s.Length)
+            {
+                if (s[i] == '0')
+                {
+                    zeroCount = true;
+                }
+                else
+                {
+                    oneCount = true;
+                }
+                if (check)
+                {
+                    if (zeroCount && oneCount)
+                    {
+                        result++;
+                    }
+                    zeroCount = false;
+                    oneCount = false;
+                }
+
+                check = !check;
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 2938. Separate Black and White Balls
         public long MinimumSteps(string s)
         {
@@ -2771,12 +2807,12 @@ namespace Leetcode2024
         {
             int i = 0;
             StringBuilder stringBuilder = new StringBuilder();
-            while (i<word.Length)
+            while (i < word.Length)
             {
                 char currentChar = word[i];
                 int count = 1;
 
-                while (++i<word.Length && count<=9 && currentChar == word[i])
+                while (++i < word.Length && count <= 9 && currentChar == word[i])
                 {
                     count++;
                 }
@@ -2786,7 +2822,7 @@ namespace Leetcode2024
             }
 
             return stringBuilder.ToString();
-        } 
+        }
         #endregion
     }
 }

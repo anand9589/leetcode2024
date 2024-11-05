@@ -745,6 +745,14 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual("leetcode", res);
         }
+
+        [Test]
+        public void MinChangesTest1()
+        {
+            var res = leetcode.MinChanges("1001100110011001");
+
+            Assert.AreEqual(8, res);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
