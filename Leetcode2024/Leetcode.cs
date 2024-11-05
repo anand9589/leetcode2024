@@ -2159,6 +2159,35 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1492. The kth Factor of n
+        public int KthFactor(int n, int k)
+        {
+            if (k==1) return 1;
+
+            int low = 1;
+            int high = n;
+            int i = 0;
+
+            List<int> list = new List<int>();
+            list.Add(high);
+            list.Insert(i, low);
+            i++;
+
+            while (++low < high)
+            {
+                high = n / low;
+                if (n % low == 0)
+                {
+                    list.Insert(i, high);
+                    if (low == high) break;
+                    list.Insert(i, low);
+                    i++;
+                }
+            }
+            return list.Count < k ? -1 : list[k - 1];
+        }
+        #endregion
+
         #region 1545. Find Kth Bit in Nth Binary String
         public char FindKthBit(int n, int k)
         {
@@ -2872,7 +2901,7 @@ namespace Leetcode2024
                 }
                 else
                 {
-                    if(checkRepeatedPattern(s, stringBuilder.ToString()))
+                    if (checkRepeatedPattern(s, stringBuilder.ToString()))
                     {
                         return true;
                     }
@@ -2893,5 +2922,6 @@ namespace Leetcode2024
             return s.Length == 0;
         }
         #endregion
+
     }
 }

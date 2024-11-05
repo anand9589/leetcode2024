@@ -795,6 +795,30 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(1, res);
         }
+
+        [Test]
+        public void KthFactorTest1()
+        {
+            var res = leetcode.KthFactor(12,3);
+
+            Assert.AreEqual(3, res);
+        }
+
+        [Test]
+        public void KthFactorTest2()
+        {
+            var res = leetcode.KthFactor(7, 2);
+
+            Assert.AreEqual(7, res);
+        }
+
+        [Test]
+        public void KthFactorTest3()
+        {
+            var res = leetcode.KthFactor(4, 4);
+
+            Assert.AreEqual(-1, res);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
