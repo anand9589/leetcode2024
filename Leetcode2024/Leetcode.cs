@@ -2162,7 +2162,26 @@ namespace Leetcode2024
         #region 1492. The kth Factor of n
         public int KthFactor(int n, int k)
         {
-            if (k==1) return 1;
+            List<int> factors = new List<int>() { 1,n };
+
+            for (int i = 2; i <= Math.Sqrt(n); i++)
+            {
+                if (n % i == 0)
+                {
+                    factors.Add(i);
+
+                    if (i != n / i)
+                    {
+                        factors.Add(n / i);
+                    }
+                }
+            }
+            factors.Sort();
+            return factors.Count < k ? -1 : factors[k - 1];
+        }
+        public int KthFactor_1(int n, int k)
+        {
+            if (k == 1) return 1;
 
             int low = 1;
             int high = n;
