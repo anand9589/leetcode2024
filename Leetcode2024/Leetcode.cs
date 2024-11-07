@@ -1,4 +1,5 @@
 ﻿using Leetcode2024.Common.Models;
+using System.ComponentModel;
 using System.Text;
 
 namespace Leetcode2024
@@ -2162,7 +2163,7 @@ namespace Leetcode2024
         #region 1492. The kth Factor of n
         public int KthFactor(int n, int k)
         {
-            List<int> factors = new List<int>() { 1,n };
+            List<int> factors = new List<int>() { 1, n };
 
             for (int i = 2; i <= Math.Sqrt(n); i++)
             {
@@ -2352,6 +2353,50 @@ namespace Leetcode2024
 
             getSubSets(nums, i + 1, currOr | nums[i]);
             getSubSets(nums, i + 1, currOr);
+        }
+        #endregion
+
+        #region 2275. Largest Combination With Bitwise AND Greater Than Zero
+
+        public int LargestCombination(int[] candidates)
+        {
+            int[] bitCounts = new int[24]; //based on input contraints;
+            int result = 0;
+            foreach (int candidate in candidates)
+            {
+                for (int i = 0; i <24; i++)
+                {
+                    int count = candidate & (1<<i);
+                    if (count > 0)
+                    {
+                        bitCounts[i]++;
+                        result = Math.Max(result, bitCounts[i]);
+                    }
+                }
+            }
+
+            return result;
+        }
+        public int LargestCombination_1(int[] candidates)
+        {
+            int[] bitCounts = new int[24]; //based on input contraints;
+            foreach (int candidate in candidates)
+            {
+                string number = Convert.ToString(candidate, 2);
+
+                int i = number.Length;
+                int k = 23;
+                while (--i >= 0)
+                {
+                    if (number[i] == '1')
+                    {
+                        bitCounts[k]++;
+                    }
+                    k--;
+                }
+            }
+
+            return bitCounts.Max();
         }
         #endregion
 
@@ -2847,6 +2892,61 @@ namespace Leetcode2024
             }
 
             return result;
+        }
+        #endregion
+
+        #region 3011. Find if Array Can Be Sorted
+        public bool CanSortArray(int[] nums)
+        {
+            Dictionary<int, List<int>> bitMap = new Dictionary<int, List<int>>();
+            bool alreadySorted = true;
+            int prevMin = 0;
+            foreach (int num in nums)
+            {
+                if (alreadySorted && prevMin > num)
+                {
+                    alreadySorted = false;
+                }
+                prevMin = num;
+                int bitCount = countSetBits(num);
+                if (!bitMap.ContainsKey(bitCount))
+                {
+                    bitMap.Add(bitCount, new List<int>());
+                }
+                bitMap[bitCount].Add(num);
+            }
+
+            if (!alreadySorted)
+            {
+                prevMin = 0;
+                foreach (var key in bitMap.Keys)
+                {
+                    bitMap[key].Sort();
+
+                    foreach (var val in bitMap[key])
+                    {
+                        if (val < prevMin) return false;
+
+                        prevMin = val;
+
+                    }
+                }
+
+
+            }
+            return true;
+        }
+
+        private int countSetBits(int num)
+        {
+            int count = 0;
+
+            while (num > 0)
+            {
+                count += num & 1;
+                num >>= 1;
+            }
+            return count;
         }
         #endregion
 

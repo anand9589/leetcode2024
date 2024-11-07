@@ -819,6 +819,65 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(-1, res);
         }
+
+        [Test]
+        public void CanSortArrayTest1()
+        {
+            var res = leetcode.CanSortArray(new int[] { 8, 4, 2, 30, 15 });
+
+            Assert.IsTrue(res);
+        }
+
+        [Test]
+        public void CanSortArrayTest2()
+        {
+            var res = leetcode.CanSortArray(new int[] { 75, 34, 30 });
+
+            Assert.IsFalse(res);
+        }
+
+        [Test]
+        public void CanSortArrayTest3()
+        {
+            var res = leetcode.CanSortArray(new int[] { 1,2,3,4,5 });
+
+            Assert.IsTrue(res);
+        }
+
+        [Test]
+        public void CanSortArrayTest4()
+        {
+            var res = leetcode.CanSortArray(new int[] { 136, 256, 10 });
+
+            Assert.IsFalse(res);
+        }
+
+        //
+
+
+        [Test]
+        public void LargestCombinationTest1()
+        {
+            var res = leetcode.LargestCombination(new int[] { 16, 17, 71, 62, 12, 24, 14 });
+            Assert.AreEqual(4, res);
+        }
+
+
+
+        [Test]
+        public void LargestCombinationTest2()
+        {
+            var res = leetcode.LargestCombination(new int[] { 8,8 });
+            Assert.AreEqual(2, res);
+        }
+
+
+        [Test]
+        public void LargestCombinationTest3()
+        {
+            var res = leetcode.LargestCombination(new int[] { 33, 93, 31, 99, 74, 37, 3, 4, 2, 94, 77, 10, 75, 54, 24, 95, 65, 100, 41, 82, 35, 65, 38, 49, 85, 72, 67, 21, 20, 31 });
+            Assert.AreEqual(18, res);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
