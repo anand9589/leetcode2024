@@ -2385,6 +2385,26 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1829. Maximum XOR for Each Query
+        public int[] GetMaximumXor(int[] nums, int maximumBit)
+        {
+            int[] result = new int[nums.Length];
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                nums[i] = nums[i] ^ nums[i - 1];
+            }
+
+            int maxXor = (1<< maximumBit)-1;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                result[i] = nums[nums.Length - i - 1] ^ maxXor; 
+            }
+
+            return result;
+        } 
+        #endregion
+
         #region 1957. Delete Characters to Make Fancy String
         public string MakeFancyString(string s)
         {

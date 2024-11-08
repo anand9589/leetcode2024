@@ -899,6 +899,12 @@ namespace Leetcode2024.Tests
             var res = leetcode.RemoveDuplicateLetters("bbcaac");
             Assert.AreEqual("bac", res);
         }
+
+        [Test]
+        public void GetMaximumXorTest1()
+        {
+            var res = leetcode.GetMaximumXor(new int[] { 0, 1, 1, 3 }, 2);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
