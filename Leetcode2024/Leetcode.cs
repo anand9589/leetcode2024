@@ -2395,7 +2395,7 @@ namespace Leetcode2024
                 nums[i] = nums[i] ^ nums[i - 1];
             }
 
-            int maxXor = (1<< maximumBit)-1;
+            int maxXor = (1 << maximumBit) - 1;
             for (int i = 0; i < nums.Length; i++)
             {
                 result[i] = nums[nums.Length - i - 1] ^ maxXor; 
@@ -2469,9 +2469,9 @@ namespace Leetcode2024
             int result = 0;
             foreach (int candidate in candidates)
             {
-                for (int i = 0; i <24; i++)
+                for (int i = 0; i < 24; i++)
                 {
-                    int count = candidate & (1<<i);
+                    int count = candidate & (1 << i);
                     if (count > 0)
                     {
                         bitCounts[i]++;
@@ -3075,6 +3075,31 @@ namespace Leetcode2024
             }
 
             return stringBuilder.ToString();
+        }
+        #endregion
+
+        #region 3340. Check Balanced String
+        public bool IsBalanced(string num)
+        {
+            int oddCount = 0, evenCount = 0;
+            bool oddFlag = false;
+
+            int i = -1;
+
+            while (++i < num.Length)
+            {
+                if (oddFlag)
+                {
+                    oddCount += num[i] - '0';
+                }
+                else
+                {
+                    evenCount += num[i] - '0';
+                }
+                oddFlag = !oddFlag;
+            }
+
+            return oddCount == evenCount;
         }
         #endregion
 

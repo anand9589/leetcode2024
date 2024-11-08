@@ -635,7 +635,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void HIndexTest2()
         {
-            int[] arr = { 1,3,1 };
+            int[] arr = { 1, 3, 1 };
             Array.Sort(arr);
             var res = leetcode.HIndex(arr);
 
@@ -766,7 +766,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FindPeakElementTest2()
         {
-            int[] arr = new int[] { 1,2,3,1 };
+            int[] arr = new int[] { 1, 2, 3, 1 };
             var res = leetcode.FindPeakElement(arr);
 
             Assert.AreEqual(2, res);
@@ -799,7 +799,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void KthFactorTest1()
         {
-            var res = leetcode.KthFactor(12,3);
+            var res = leetcode.KthFactor(12, 3);
 
             Assert.AreEqual(3, res);
         }
@@ -839,7 +839,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void CanSortArrayTest3()
         {
-            var res = leetcode.CanSortArray(new int[] { 1,2,3,4,5 });
+            var res = leetcode.CanSortArray(new int[] { 1, 2, 3, 4, 5 });
 
             Assert.IsTrue(res);
         }
@@ -867,7 +867,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void LargestCombinationTest2()
         {
-            var res = leetcode.LargestCombination(new int[] { 8,8 });
+            var res = leetcode.LargestCombination(new int[] { 8, 8 });
             Assert.AreEqual(2, res);
         }
 
@@ -905,6 +905,7 @@ namespace Leetcode2024.Tests
         {
             var res = leetcode.GetMaximumXor(new int[] { 0, 1, 1, 3 }, 2);
         }
+
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
