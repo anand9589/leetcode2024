@@ -878,6 +878,27 @@ namespace Leetcode2024.Tests
             var res = leetcode.LargestCombination(new int[] { 33, 93, 31, 99, 74, 37, 3, 4, 2, 94, 77, 10, 75, 54, 24, 95, 65, 100, 41, 82, 35, 65, 38, 49, 85, 72, 67, 21, 20, 31 });
             Assert.AreEqual(18, res);
         }
+
+        [Test]
+        public void RemoveDuplicateLettersTest1()
+        {
+            var res = leetcode.RemoveDuplicateLetters("bcabc");
+            Assert.AreEqual("abc", res);
+        }
+
+        [Test]
+        public void RemoveDuplicateLettersTest2()
+        {
+            var res = leetcode.RemoveDuplicateLetters("cbacdcbc");
+            Assert.AreEqual("acdb", res);
+        }
+
+        [Test]
+        public void RemoveDuplicateLettersTest3()
+        {
+            var res = leetcode.RemoveDuplicateLetters("bbcaac");
+            Assert.AreEqual("bac", res);
+        }
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)

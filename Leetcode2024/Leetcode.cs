@@ -908,6 +908,91 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 316. Remove Duplicate Letters
+        public string RemoveDuplicateLetters(string s)
+        {
+            Stack<char> stk = new Stack<char>();
+            int[] freq = new int[26];
+            bool[] visited = new bool[26];
+            foreach (char c in s)
+            {
+                freq[c - 'a']++;
+            }
+
+            foreach (char c in s)
+            {
+                if (!visited[c - 'a'])
+                {
+                    while (stk.Count > 0 && stk.Peek() > c && freq[stk.Peek() - 'a'] > 0)
+                    {
+                        visited[stk.Peek() - 'a'] = false;
+                        stk.Pop();
+                    }
+                    stk.Push(c);
+                    visited[c - 'a'] = true;
+                }
+                freq[c - 'a']--;
+            }
+            return new String(stk.Reverse().ToArray());
+        }
+        public string RemoveDuplicateLetters1(string s)
+        {
+            Dictionary<char, List<int>> mapIndex = new Dictionary<char, List<int>>();
+
+            int i = -1;
+
+            while (++i < s.Length)
+            {
+                char c = s[i];
+                if (mapIndex.ContainsKey(c))
+                {
+                    mapIndex[c].Add(i);
+                }
+                else
+                {
+                    mapIndex.Add(c, new List<int>() { i });
+                }
+            }
+
+            int reqLen = mapIndex.Count;
+
+            HashSet<char> visited = new HashSet<char>();
+            List<string> results = new List<string>();
+
+            RemoveDuplicateLetters_Helper_1(new StringBuilder(), visited, results, reqLen, s, 0);
+            results.Sort();
+            return results[0];
+        }
+
+        public void RemoveDuplicateLetters_Helper_1(StringBuilder stringBuilder, HashSet<char> set, List<string> result, int requiredLength, string s, int index)
+        {
+            if (index == s.Length) return;
+
+
+            for (int i = index; i < s.Length; i++)
+            {
+
+                char c = s[i];
+                if (set.Contains(c)) continue;
+                stringBuilder.Append(c);
+                set.Add(c);
+                if (stringBuilder.Length == requiredLength)
+                {
+                    result.Add(stringBuilder.ToString());
+                    //return;
+                }
+                else
+                {
+                    RemoveDuplicateLetters_Helper_1(stringBuilder, set, result, requiredLength, s, i + 1);
+                }
+                set.Remove(c);
+                stringBuilder.Remove(stringBuilder.Length - 1, 1);
+            }
+
+
+        }
+
+        #endregion
         #region 416. Partition Equal Subset Sum
         int[][] dp_416;
         public bool CanPartition(int[] nums)
