@@ -41,7 +41,13 @@ namespace Leetcode2024.Tests
         public void MinEndTest2()
         {
             var res = leetcode.MinEnd(3, 4);
-            Assert.AreEqual(15, res);
+            Assert.AreEqual(6, res);
+        }
+        [Test]
+        public void MinEndTest3()
+        {
+            var res = leetcode.MinEnd(6715154, 7193485);
+            Assert.AreEqual(55012476815, res);
         }
         #endregion
 

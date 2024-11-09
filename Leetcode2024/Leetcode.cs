@@ -2586,9 +2586,9 @@ namespace Leetcode2024
             foreach (int num in nums)
             {
                 if (num == 0) continue;
-                if (!arr[num-1])
+                if (!arr[num - 1])
                 {
-                    arr[num-1] = true;
+                    arr[num - 1] = true;
                     count++;
                 }
             }
@@ -3148,6 +3148,41 @@ namespace Leetcode2024
 
         #region 3133. Minimum Array End
         public long MinEnd(int n, int x)
+        {
+
+            bool[] bitMask = new bool[64];
+            int index = 64;
+            while (x > 0)
+            {
+                index--;
+                if (x % 2 == 1)
+                {
+                    bitMask[index] = true;
+                }
+
+                x /= 2;
+            }
+
+            int k = n - 1;
+            index = 63;
+            long result = 0;
+            while (index >= 0)
+            {
+                if (!bitMask[index])
+                {
+                    bitMask[index] = k % 2 == 1;
+                    k /= 2;
+                }
+                if (bitMask[index])
+                {
+                    result = (long)(result) | (long)((long)1 << (63 - index));
+                }
+                index--;
+            }
+
+            return result;
+        }
+        public long MinEnd_1(int n, int x)
         {
             long result = 0;
             bool[] bitMask = new bool[64];
