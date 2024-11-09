@@ -6,6 +6,50 @@ namespace Leetcode2024
 {
     public class LeetCode
     {
+        #region 139. Word Break
+        public bool WordBreak(string s, IList<string> wordDict)
+        {
+            int[] dp = new int[s.Length];
+            Array.Fill(dp, -1);
+            return WordBreak_Helper(s, wordDict, dp, 0);
+        }
+
+        private bool WordBreak_Helper(string s, IList<string> wordDict, int[] dp, int startIndex)
+        {
+            if (startIndex == s.Length) return true;
+
+            if (dp[startIndex] != -1) return dp[startIndex] == 1;
+
+            for (int i = startIndex; i < s.Length; i++)
+            {
+                if(wordDict.Contains(s.Substring(startIndex, i-startIndex+1)) && WordBreak_Helper(s,wordDict, dp, i + 1))
+                {
+                    dp[startIndex] = 1;
+                    return true;
+                }
+            }
+            dp[startIndex] = 0;
+            return false;
+        }
+
+        public bool WordBreak_1(string s, IList<string> wordDict)
+        {
+            return WordBreak_Helper_1(s, wordDict, 0);
+        }
+        
+        private bool WordBreak_Helper_1(string s, IList<string> wordDict, int startIndex)
+        {
+            if (startIndex == s.Length) return true;
+
+            for (int i = startIndex; i < s.Length; i++)
+            {
+                if (wordDict.Contains(s.Substring(startIndex, i - startIndex + 1)) && WordBreak_Helper_1(s, wordDict, i + 1)) return true;
+            }
+
+            return false;
+        }
+        #endregion
+
         #region 164. Maximum Gap
         public int MaximumGap(int[] nums)
         {
