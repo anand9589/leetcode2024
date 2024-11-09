@@ -1693,14 +1693,14 @@ namespace Leetcode2024
 
         private int getCount(List<int> occurences, int length)
         {
-            if(occurences.Count == 1)
+            if (occurences.Count == 1)
             {
-                return (occurences[0]+1) * (length - occurences[0]);
+                return (occurences[0] + 1) * (length - occurences[0]);
             }
-            int result = (occurences[0] + 1 ) * (occurences[1] - occurences[0]);
+            int result = (occurences[0] + 1) * (occurences[1] - occurences[0]);
 
             int i = 1;
-            for (; i < occurences.Count-1; i++)
+            for (; i < occurences.Count - 1; i++)
             {
                 result += (occurences[i] - occurences[i - 1]) * (occurences[i + 1] - occurences[i]);
             }
@@ -2470,11 +2470,11 @@ namespace Leetcode2024
             int maxXor = (1 << maximumBit) - 1;
             for (int i = 0; i < nums.Length; i++)
             {
-                result[i] = nums[nums.Length - i - 1] ^ maxXor; 
+                result[i] = nums[nums.Length - i - 1] ^ maxXor;
             }
 
             return result;
-        } 
+        }
         #endregion
 
         #region 1957. Delete Characters to Make Fancy String
@@ -3124,6 +3124,41 @@ namespace Leetcode2024
                 num >>= 1;
             }
             return count;
+        }
+        #endregion
+
+        #region 3133. Minimum Array End
+        public long MinEnd(int n, int x)
+        {
+            long result = 0;
+            bool[] bitMask = new bool[64];
+            string binaryNumber = Convert.ToString(x, 2);
+
+            int len = binaryNumber.Length;
+            int i = 64;
+            while (--len >= 0)
+            {
+                bitMask[--i] = binaryNumber[len] == '1';
+            }
+
+            string bitMaskNumber = Convert.ToString(n - 1, 2);
+
+            len = bitMaskNumber.Length - 1;
+            i = 64;
+            StringBuilder stringBuilder = new StringBuilder();
+            while (len >= 0 && --i >= 0)
+            {
+                if (!bitMask[i])
+                {
+                    bitMask[i] = bitMaskNumber[len--] == '1';
+                }
+
+                stringBuilder.Insert(0, bitMask[i] ? '1' : '0');
+            }
+
+
+
+            return Convert.ToInt64(stringBuilder.ToString(),2);
         }
         #endregion
 

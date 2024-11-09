@@ -5,12 +5,32 @@ namespace Leetcode2024.Tests
 {
     internal class LeetcodeTests
     {
+        //[Test]
+        //public void Test()
+        //{
+
+        //}
         #region Setup
         LeetCode leetcode;
         [SetUp]
         public void Setup()
         {
             leetcode = new LeetCode();
+        }
+        #endregion
+
+        #region 3133. Minimum Array End
+        [Test]
+        public void MinEndTest1()
+        {
+            var res = leetcode.MinEnd(4, 5);
+            Assert.AreEqual(15, res);
+        }
+        [Test]
+        public void MinEndTest2()
+        {
+            var res = leetcode.MinEnd(3, 4);
+            Assert.AreEqual(15, res);
         }
         #endregion
 
@@ -835,7 +855,7 @@ namespace Leetcode2024.Tests
             Assert.IsFalse(res);
         }
         #endregion
-        
+
         #region LargestCombinationTest
 
 
@@ -881,7 +901,7 @@ namespace Leetcode2024.Tests
         {
             var res = leetcode.RemoveDuplicateLetters("bbcaac");
             Assert.AreEqual("bac", res);
-        } 
+        }
         #endregion
 
         [Test]
