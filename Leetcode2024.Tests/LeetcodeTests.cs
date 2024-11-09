@@ -1,20 +1,20 @@
 ﻿
 using Leetcode2024.Common.Models;
-using NUnit.Framework;
-using System.Linq;
-using static Leetcode2024.LeetCode;
 
 namespace Leetcode2024.Tests
 {
     internal class LeetcodeTests
     {
+        #region Setup
         LeetCode leetcode;
         [SetUp]
         public void Setup()
         {
             leetcode = new LeetCode();
         }
+        #endregion
 
+        #region FindTheLongestSubstringTest
         [Test]
         public void FindTheLongestSubstringTest1()
         {
@@ -35,13 +35,19 @@ namespace Leetcode2024.Tests
             int res = leetcode.FindTheLongestSubstring("bcbcbc");
             Assert.AreEqual(6, res);
         }
+
+        #endregion
+
+        #region FindMinDifferenceTest
         [Test]
         public void FindMinDifferenceTest1()
         {
             int res = leetcode.getDiffTimeFirstLast("00:02", "23:58");
             Assert.AreEqual(4, res);
         }
+        #endregion
 
+        #region 241
         [Test]
         public void MyTestMethod()
         {
@@ -75,7 +81,9 @@ namespace Leetcode2024.Tests
             //Assert.That(intRes, Is.EqualTo(9));
 
         }
+        #endregion
 
+        #region MaximumGapTest
 
         [Test]
         public void MaximumGapTest1()
@@ -84,26 +92,9 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(999999 - 2, res);
         }
+        #endregion
 
-        [Test]
-        public void LongestDiverseStringTest1()
-        {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
-
-            var res1 = leetcode.LongestDiverseString(1, 1, 7);
-            //Assert.AreEqual(999999 - 2, res);
-        }
-
-        [Test]
-        public void CompareVersionTest()
-        {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
-
-            var res1 = leetcode.CompareVersion("1", "1.1");
-            //Assert.AreEqual(999999 - 2, res);
-        }
-
-
+        #region FractionToDecimalTest
         [Test]
         public void FractionToDecimalTest1()
         {
@@ -166,7 +157,9 @@ namespace Leetcode2024.Tests
             var res1 = leetcode.FractionToDecimal(-1, -2147483648);
             Assert.AreEqual("0.0000000004656612873077392578125", res1);
         }
+        #endregion
 
+        #region MaximumSwapTest
         [Test]
         public void MaximumSwapTes1()
         {
@@ -184,6 +177,9 @@ namespace Leetcode2024.Tests
             var res1 = leetcode.MaximumSwap(98368);
             Assert.AreEqual(98863, res1);
         }
+        #endregion
+
+        #region LargestNumberTest
 
         [Test]
         public void LargestNumberTest1()
@@ -223,24 +219,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual("343234323", res1);
         }
 
-        [Test]
-        public void CountMaxOrSubsetsTest1()
-        {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
-            int[] nums = new int[] { 3, 1 };
-            var res1 = leetcode.CountMaxOrSubsets(nums);
-            Assert.AreEqual(2, res1);
-        }
+        #endregion
 
-        [Test]
-        public void FindKthBitTest1()
-        {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
-            //int[] nums = new int[] { 3, 1 };
-            var res1 = leetcode.FindKthBit(4, 11);
-            Assert.AreEqual('1', res1);
-        }
-
+        #region ParseBoolExprTest
         [Test]
         public void ParseBoolExprTest1()
         {
@@ -276,6 +257,10 @@ namespace Leetcode2024.Tests
             var res1 = leetcode.ParseBoolExpr("|(f,f,f,!(&(t,t)),t,t)");
             Assert.IsTrue(res1);
         }
+
+        #endregion
+
+        #region MajorityElementTest1
 
         [Test]
         public void MajorityElementTest1()
@@ -339,6 +324,9 @@ namespace Leetcode2024.Tests
 
         }
 
+        #endregion
+
+        #region KthSmallestTest
         [Test]
         public void KthSmallestTest1()
         {
@@ -367,20 +355,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(3, res1);
         }
 
+        #endregion
 
-        [Test]
-        public void FlipEquivTest1()
-        {
-            int?[] r1 = { 1, 2, 3, 4, 5, 6, null, null, null, 7, 8 };
-            int?[] r2 = { 1, 3, 2, null, 6, 4, 5, null, null, null, null, 8, 7 };
-
-            TreeNode root1 = buildTree(r1);
-            TreeNode root2 = buildTree(r2);
-
-            var res = leetcode.FlipEquiv(root1, root2);
-
-            Assert.IsTrue(res);
-        }
+        #region SearchMatrixTest
 
         [Test]
         public void SearchMatrixTest1()
@@ -473,6 +450,10 @@ namespace Leetcode2024.Tests
             Assert.IsTrue(r);
         }
 
+        #endregion
+
+        #region RemoveSubfoldersTest1
+
         [Test]
         public void RemoveSubfoldersTest1()
         {
@@ -514,6 +495,10 @@ namespace Leetcode2024.Tests
             CollectionAssert.AreEqual(expected, res);
 
         }
+
+        #endregion
+
+        #region TreeQueriesTest
 
         [Test]
         public void TreeQueriesTest1()
@@ -563,6 +548,10 @@ namespace Leetcode2024.Tests
             CollectionAssert.AreEqual(new int[] { 1, 0, 3, 3, 3 }, res);
         }
 
+        #endregion
+
+        #region CountSquaresTest
+
         [Test]
         public void CountSquaresTest1()
         {
@@ -584,20 +573,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(7, res);
         }
 
+        #endregion
 
-        [Test]
-        public void DiffWaysToComputeTest1()
-        {
-            var res = leetcode.DiffWaysToCompute("2-1-1");
-        }
-
-        //1,2,1,3,2,5
-        [Test]
-        public void SingleNumberTes1()
-        {
-            var res = leetcode.SingleNumber(new int[] { 1, 2, 1, 3, 2, 5 });
-            CollectionAssert.AreEqual(new int[] { 5, 3 }, res);
-        }
+        #region NthUglyNumberTest
 
         [Test]
         public void NthUglyNumberTest1()
@@ -613,14 +591,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(15, res);
         }
 
-        [Test]
-        public void LongestSquareStreakTest1()
-        {
-            int[] arr = { 4, 3, 6, 16, 8, 2 };
-            var res = leetcode.LongestSquareStreak(arr);
+        #endregion
 
-            Assert.AreEqual(3, res);
-        }
+        #region HIndex-I
 
         [Test]
         public void HIndexTest1()
@@ -653,6 +626,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(2, res);
         }
 
+        #endregion
+
+        #region MaxMovesTest
         //grid = [[2,4,3,5],[5,4,9,3],[3,4,2,11],[10,9,13,15]]
         [Test]
         public void MaxMovesTest1()
@@ -673,8 +649,30 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(3, res);
         }
+        #endregion
 
+        #region UniqueLetterString
+        [Test]
+        public void UniqueLetterStringTest1()
+        {
+            var res = leetcode.UniqueLetterString("LEETCODE");
+            Assert.AreEqual(92, res);
+        }
+        [Test]
+        public void UniqueLetterStringTest2()
+        {
+            var res = leetcode.UniqueLetterString("ABC");
+            Assert.AreEqual(10, res);
+        }
+        [Test]
+        public void UniqueLetterStringTest3()
+        {
+            var res = leetcode.UniqueLetterString("ABA");
+            Assert.AreEqual(8, res);
+        }
+        #endregion
 
+        #region LengthOfLISTest
         [Test]
         public void LengthOfLISTest1()
         {
@@ -696,7 +694,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(4, res);
         }
 
+        #endregion
 
+        #region MinimumMountainRemovalsTest
 
         [Test]
         public void MinimumMountainRemovalsTest1()
@@ -730,31 +730,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(4, res);
         }
 
+        #endregion
 
-        [Test]
-        public void MakeFancyStringTest1()
-        {
-            var res = leetcode.MakeFancyString("leeetcode");
-
-            Assert.AreEqual("leetcode", res);
-        }
-        [Test]
-        public void CompressedStringTest1()
-        {
-            var res = leetcode.CompressedString("leeetcode");
-
-            Assert.AreEqual("leetcode", res);
-        }
-
-        [Test]
-        public void MinChangesTest1()
-        {
-            var res = leetcode.MinChanges("1001100110011001");
-
-            Assert.AreEqual(8, res);
-        }
-
-
+        #region FindPeakElementTest
         [Test]
         public void FindPeakElementTest1()
         {
@@ -796,6 +774,9 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(1, res);
         }
 
+        #endregion
+
+        #region KthFactorTest
         [Test]
         public void KthFactorTest1()
         {
@@ -819,7 +800,9 @@ namespace Leetcode2024.Tests
 
             Assert.AreEqual(-1, res);
         }
+        #endregion
 
+        #region CanSortArrayTest
         [Test]
         public void CanSortArrayTest1()
         {
@@ -851,8 +834,9 @@ namespace Leetcode2024.Tests
 
             Assert.IsFalse(res);
         }
-
-        //
+        #endregion
+        
+        #region LargestCombinationTest
 
 
         [Test]
@@ -862,8 +846,6 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(4, res);
         }
 
-
-
         [Test]
         public void LargestCombinationTest2()
         {
@@ -871,14 +853,15 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(2, res);
         }
 
-
         [Test]
         public void LargestCombinationTest3()
         {
             var res = leetcode.LargestCombination(new int[] { 33, 93, 31, 99, 74, 37, 3, 4, 2, 94, 77, 10, 75, 54, 24, 95, 65, 100, 41, 82, 35, 65, 38, 49, 85, 72, 67, 21, 20, 31 });
             Assert.AreEqual(18, res);
         }
+        #endregion
 
+        #region RemoveDuplicateLettersTest
         [Test]
         public void RemoveDuplicateLettersTest1()
         {
@@ -898,7 +881,8 @@ namespace Leetcode2024.Tests
         {
             var res = leetcode.RemoveDuplicateLetters("bbcaac");
             Assert.AreEqual("bac", res);
-        }
+        } 
+        #endregion
 
         [Test]
         public void GetMaximumXorTest1()
@@ -906,26 +890,103 @@ namespace Leetcode2024.Tests
             var res = leetcode.GetMaximumXor(new int[] { 0, 1, 1, 3 }, 2);
         }
 
-        #region UniqueLetterString
+
         [Test]
-        public void UniqueLetterStringTest1()
+        public void LongestDiverseStringTest1()
         {
-            var res = leetcode.UniqueLetterString("LEETCODE");
-            Assert.AreEqual(92, res);
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.LongestDiverseString(1, 1, 7);
+            //Assert.AreEqual(999999 - 2, res);
+        }
+
+        [Test]
+        public void CompareVersionTest()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+
+            var res1 = leetcode.CompareVersion("1", "1.1");
+            //Assert.AreEqual(999999 - 2, res);
+        }
+
+        [Test]
+        public void CountMaxOrSubsetsTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.CountMaxOrSubsets(nums);
+            Assert.AreEqual(2, res1);
+        }
+
+        [Test]
+        public void FindKthBitTest1()
+        {
+            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //int[] nums = new int[] { 3, 1 };
+            var res1 = leetcode.FindKthBit(4, 11);
+            Assert.AreEqual('1', res1);
+        }
+
+        [Test]
+        public void FlipEquivTest1()
+        {
+            int?[] r1 = { 1, 2, 3, 4, 5, 6, null, null, null, 7, 8 };
+            int?[] r2 = { 1, 3, 2, null, 6, 4, 5, null, null, null, null, 8, 7 };
+
+            TreeNode root1 = buildTree(r1);
+            TreeNode root2 = buildTree(r2);
+
+            var res = leetcode.FlipEquiv(root1, root2);
+
+            Assert.IsTrue(res);
+        }
+
+        [Test]
+        public void DiffWaysToComputeTest1()
+        {
+            var res = leetcode.DiffWaysToCompute("2-1-1");
+        }
+
+        //1,2,1,3,2,5
+        [Test]
+        public void SingleNumberTes1()
+        {
+            var res = leetcode.SingleNumber(new int[] { 1, 2, 1, 3, 2, 5 });
+            CollectionAssert.AreEqual(new int[] { 5, 3 }, res);
+        }
+
+        [Test]
+        public void LongestSquareStreakTest1()
+        {
+            int[] arr = { 4, 3, 6, 16, 8, 2 };
+            var res = leetcode.LongestSquareStreak(arr);
+
+            Assert.AreEqual(3, res);
+        }
+
+
+        [Test]
+        public void MakeFancyStringTest1()
+        {
+            var res = leetcode.MakeFancyString("leeetcode");
+
+            Assert.AreEqual("leetcode", res);
         }
         [Test]
-        public void UniqueLetterStringTest2()
+        public void CompressedStringTest1()
         {
-            var res = leetcode.UniqueLetterString("ABC");
-            Assert.AreEqual(10, res);
+            var res = leetcode.CompressedString("leeetcode");
+
+            Assert.AreEqual("leetcode", res);
         }
+
         [Test]
-        public void UniqueLetterStringTest3()
+        public void MinChangesTest1()
         {
-            var res = leetcode.UniqueLetterString("ABA");
+            var res = leetcode.MinChanges("1001100110011001");
+
             Assert.AreEqual(8, res);
         }
-        #endregion
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)
