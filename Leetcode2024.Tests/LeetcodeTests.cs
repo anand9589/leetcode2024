@@ -906,6 +906,26 @@ namespace Leetcode2024.Tests
             var res = leetcode.GetMaximumXor(new int[] { 0, 1, 1, 3 }, 2);
         }
 
+        #region UniqueLetterString
+        [Test]
+        public void UniqueLetterStringTest1()
+        {
+            var res = leetcode.UniqueLetterString("LEETCODE");
+            Assert.AreEqual(92, res);
+        }
+        [Test]
+        public void UniqueLetterStringTest2()
+        {
+            var res = leetcode.UniqueLetterString("ABC");
+            Assert.AreEqual(10, res);
+        }
+        [Test]
+        public void UniqueLetterStringTest3()
+        {
+            var res = leetcode.UniqueLetterString("ABA");
+            Assert.AreEqual(8, res);
+        }
+        #endregion
         #region Private Methods
 
         private TreeNode buildTree(int?[] arr)

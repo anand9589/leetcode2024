@@ -1665,6 +1665,78 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 828. Count Unique Characters of All Substrings of a Given String
+        public int UniqueLetterString(string s)
+        {
+            int result = 0;
+            List<int>[] charIndexes = new List<int>[26];
+            for (int i = 0; i < 26; i++)
+            {
+                charIndexes[i] = new List<int>();
+            }
+            int index = 0;
+            foreach (char c in s)
+            {
+                charIndexes[c - 'A'].Add(index++);
+            }
+
+            foreach (var occurences in charIndexes)
+            {
+                if (occurences.Count > 0)
+                {
+                    result += getCount(occurences, s.Length);
+                }
+            }
+
+            return result;
+        }
+
+        private int getCount(List<int> occurences, int length)
+        {
+            if(occurences.Count == 1)
+            {
+                return (occurences[0]+1) * (length - occurences[0]);
+            }
+            int result = (occurences[0] + 1 ) * (occurences[1] - occurences[0]);
+
+            int i = 1;
+            for (; i < occurences.Count-1; i++)
+            {
+                result += (occurences[i] - occurences[i - 1]) * (occurences[i + 1] - occurences[i]);
+            }
+
+            result += (length - occurences[i]) * (occurences[i] - occurences[i - 1]);
+
+            return result;
+        }
+
+        //private int getCount(List<int> occurences, int index, int length)
+        //{
+        //    if (occurences.Count == 1)
+        //    {
+        //        return (occurences[index] + 1) * (length - occurences[index]);
+        //    }
+
+        //    int left = occurences[index];
+        //    int right = length - occurences[]
+        //    if (index == 0)
+        //    {
+        //        left++;
+        //    }
+        //    else
+        //    {
+        //        left -= occurences[index - 1];
+        //    }
+
+
+
+        //    int prevIndex = index == 0 ? index : index - 1;
+        //    int nextIndex = index == occurences.Count - 1 ? index : index + 1;
+
+        //    return (occurences[index] - occurences[prevIndex] + 1) * (occurences[nextIndex] - occurences[index]);
+        //}
+        #endregion
+
         #region 884. Uncommon Words from Two Sentences
 
         /*
