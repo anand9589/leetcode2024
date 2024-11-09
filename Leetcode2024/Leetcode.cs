@@ -993,6 +993,7 @@ namespace Leetcode2024
         }
 
         #endregion
+
         #region 416. Partition Equal Subset Sum
         int[][] dp_416;
         public bool CanPartition(int[] nums)
@@ -2577,6 +2578,24 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2357. Make Array Zero by Subtracting Equal Amounts
+        public int MinimumOperations(int[] nums)
+        {
+            bool[] arr = new bool[100];
+            int count = 0;
+            foreach (int num in nums)
+            {
+                if (num == 0) continue;
+                if (!arr[num-1])
+                {
+                    arr[num-1] = true;
+                    count++;
+                }
+            }
+            return count;
+        }
+        #endregion
+
         #region 2458. Height of Binary Tree After Subtree Removal Queries
 
         public int[] TreeQueries(TreeNode root, int[] queries)
@@ -3158,7 +3177,7 @@ namespace Leetcode2024
 
 
 
-            return Convert.ToInt64(stringBuilder.ToString(),2);
+            return Convert.ToInt64(stringBuilder.ToString(), 2);
         }
         #endregion
 

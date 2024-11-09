@@ -19,6 +19,17 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 2357. Make Array Zero by Subtracting Equal Amounts
+
+        [Test]
+        public void MinimumOperationsTest1()
+        {
+            int[] arr = { 1, 5, 0, 3, 5 };
+            var res = leetcode.MinimumOperations(arr);
+            Assert.AreEqual(3, res);
+        }
+        #endregion
+
         #region 3133. Minimum Array End
         [Test]
         public void MinEndTest1()
