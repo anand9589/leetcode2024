@@ -35,7 +35,7 @@ namespace Leetcode2024
         {
             return WordBreak_Helper_1(s, wordDict, 0);
         }
-        
+
         private bool WordBreak_Helper_1(string s, IList<string> wordDict, int startIndex)
         {
             if (startIndex == s.Length) return true;
