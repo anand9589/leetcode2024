@@ -19,6 +19,32 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 3097. Shortest Subarray With OR at Least K II
+        [Test]
+        public void MinimumSubarrayLengthTest1()
+        {
+            int[] arr = { 1, 2, 32, 21 };
+            int k = 55;
+
+            int expected = 3;
+            int actual = leetcode.MinimumSubarrayLength(arr, k);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void MinimumSubarrayLengthTest2()
+        {
+            int[] arr = { 36, 2, 12, 1 };
+            int k = 46;
+
+            int expected = 3;
+            int actual = leetcode.MinimumSubarrayLength(arr, k);
+
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
         #region 2357. Make Array Zero by Subtracting Equal Amounts
 
         [Test]

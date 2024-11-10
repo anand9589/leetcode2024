@@ -1,5 +1,4 @@
 ﻿using Leetcode2024.Common.Models;
-using System.ComponentModel;
 using System.Text;
 
 namespace Leetcode2024
@@ -22,7 +21,7 @@ namespace Leetcode2024
 
             for (int i = startIndex; i < s.Length; i++)
             {
-                if(wordDict.Contains(s.Substring(startIndex, i-startIndex+1)) && WordBreak_Helper(s,wordDict, dp, i + 1))
+                if (wordDict.Contains(s.Substring(startIndex, i - startIndex + 1)) && WordBreak_Helper(s, wordDict, dp, i + 1))
                 {
                     dp[startIndex] = 1;
                     return true;
@@ -3187,6 +3186,77 @@ namespace Leetcode2024
                 num >>= 1;
             }
             return count;
+        }
+        #endregion
+
+        #region 3097. Shortest Subarray With OR at Least K II
+        public int MinimumSubarrayLength(int[] nums, int k)
+        {
+            int result = int.MaxValue;
+
+            int sum = nums[0];
+            if (sum >= k) return 1;
+            int[] bitCounts = new int[32];
+            addBitCounts(bitCounts, nums[0]);
+            int startIndex = 0;
+            int endIndex = 1;
+
+            while (endIndex < nums.Length)
+            {
+                if (nums[endIndex] >= k) { return 1; }
+
+                addBitCounts(bitCounts, nums[endIndex]);
+                sum = getNumber(bitCounts);
+
+                while (sum >= k)
+                {
+                    result = Math.Min(result, endIndex - startIndex + 1);
+
+                    deleteBitCounts(bitCounts, nums[startIndex++]);
+                    sum = getNumber(bitCounts);
+                }
+                endIndex++;
+            }
+
+            return result == int.MaxValue ? -1 : result;
+        }
+
+        private void addBitCounts(int[] bitCounts, int number)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                if ((number & (1 << i)) > 0)
+                {
+                    bitCounts[i]++;
+                }
+            }
+        }
+
+        private void deleteBitCounts(int[] bitCounts, int number)
+        {
+            for (int i = 0; i < 32; i++)
+            {
+                if (((int)number & (1 << i)) > 0)
+                {
+                    bitCounts[i]--;
+                }
+            }
+        }
+
+        private int getNumber(int[] bitCounts)
+        {
+            int n = 0;
+            int pow = 1;
+
+            for (int i = 0; i < 32; i++)
+            {
+                if (bitCounts[i] > 0)
+                {
+                    n += pow;
+                }
+                pow *= 2;
+            }
+            return n;
         }
         #endregion
 
