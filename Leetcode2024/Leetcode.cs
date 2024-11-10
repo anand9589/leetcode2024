@@ -925,7 +925,7 @@ namespace Leetcode2024
         public string NumberToWords(int num)
         {
             if (num == 0) return "Zero";
-            
+
             StringBuilder stringBuilder = new StringBuilder();
             int[] partitions = { 0, 1000, 1000000, 1000000000 };
             Dictionary<int, string> map = new Dictionary<int, string>()
@@ -963,7 +963,7 @@ namespace Leetcode2024
                 { 1000000,"Million" },
                 { 1000000000,"Billion" }
             };
-            if(map.ContainsKey(num))
+            if (map.ContainsKey(num))
             {
                 if (num >= 100)
                 {
@@ -1009,7 +1009,7 @@ namespace Leetcode2024
             b = k / 10;
 
             result = $"{result} {map[b * 10]}".Trim();
-            
+
             k %= 10;
 
             if (k > 0)
@@ -2718,6 +2718,22 @@ namespace Leetcode2024
 
             getSubSets(nums, i + 1, currOr | nums[i]);
             getSubSets(nums, i + 1, currOr);
+        }
+        #endregion
+
+        #region 2221. Find Triangular Sum of an Array
+        public int TriangularSum(int[] nums)
+        {
+            for (int j = 0; j < nums.Length; j++)
+            {
+
+                for (int i = 1; i < nums.Length - j; i++)
+                {
+                    nums[i] = (nums[i] + nums[i - 1]) % 10;
+                }
+
+            }
+            return nums[0];
         }
         #endregion
 
