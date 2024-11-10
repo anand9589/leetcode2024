@@ -62,7 +62,7 @@ namespace Leetcode2024
 
         private IList<string> WordBreak_Helper(string s, IList<string> wordDict, Dictionary<int, List<string>> map, int start)
         {
-            if (map.ContainsKey(start))                return map[start];
+            if (map.ContainsKey(start)) return map[start];
 
             var resultList = new List<string>();
 
@@ -78,7 +78,7 @@ namespace Leetcode2024
                     }
                     else
                     {
-                        var subList = WordBreak_Helper(s,wordDict,map,end);
+                        var subList = WordBreak_Helper(s, wordDict, map, end);
 
                         foreach (var subResult in subList)
                             resultList.Add($"{substring} {subResult}");
@@ -918,6 +918,107 @@ namespace Leetcode2024
         }
 
 
+        #endregion
+
+        #region 273. Integer to English Words
+
+        public string NumberToWords(int num)
+        {
+            if (num == 0) return "Zero";
+            
+            StringBuilder stringBuilder = new StringBuilder();
+            int[] partitions = { 0, 1000, 1000000, 1000000000 };
+            Dictionary<int, string> map = new Dictionary<int, string>()
+            {
+                { 0,"" } ,
+                { 1,"One" } ,
+                { 2,"Two" } ,
+                { 3,"Three" } ,
+                { 4,"Four" } ,
+                { 5,"Five" },
+                { 6,"Six" } ,
+                { 7,"Seven" } ,
+                { 8,"Eight" } ,
+                { 9,"Nine" },
+                { 10,"Ten" } ,
+                { 11,"Eleven" } ,
+                { 12,"Twelve" } ,
+                { 13,"Thirteen" },
+                { 14,"Fourteen" } ,
+                { 15,"Fifteen" } ,
+                { 16,"Sixteen" } ,
+                { 17,"Seventeen" },
+                { 18,"Eighteen" } ,
+                { 19,"Nineteen" } ,
+                { 20,"Twenty" } ,
+                { 30,"Thirty" },
+                { 40,"Forty" },
+                { 50,"Fifty" },
+                { 60,"Sixty" },
+                { 70,"Seventy" },
+                { 80,"Eighty" },
+                { 90,"Ninety" },
+                { 100,"Hundred" },
+                { 1000,"Thousand" },
+                { 1000000,"Million" },
+                { 1000000000,"Billion" }
+            };
+            if(map.ContainsKey(num))
+            {
+                if (num >= 100)
+                {
+                    return "One " + map[num];
+                }
+                return map[num];
+            }
+            int i = 0;
+
+            while (num > 0)
+            {
+                int k = num % 1000;
+
+
+                string s = getStringForThreeDigit(k, map);
+                if (!string.IsNullOrEmpty(s))
+                {
+                    s = $" {s} {map[partitions[i]]}";
+                }
+
+                stringBuilder.Insert(0, s);
+
+                num /= 1000;
+                i++;
+            }
+
+            return stringBuilder.ToString().Trim();
+        }
+
+        private string getStringForThreeDigit(int k, Dictionary<int, string> map)
+        {
+            string result = string.Empty;
+            int b = k / 100;
+            if (b > 0)
+            {
+                result = $"{map[b]} {map[100]}";
+                k %= 100;
+            }
+            if (map.ContainsKey(k))
+            {
+                return result = $"{result} {map[k]}".Trim();
+            }
+            b = k / 10;
+
+            result = $"{result} {map[b * 10]}".Trim();
+            
+            k %= 10;
+
+            if (k > 0)
+            {
+                result = $"{result} {map[k]}";
+            }
+
+            return result.Trim();
+        }
         #endregion
 
         #region 274. H-Index

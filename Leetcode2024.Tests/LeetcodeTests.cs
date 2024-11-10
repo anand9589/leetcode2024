@@ -10,12 +10,59 @@ namespace Leetcode2024.Tests
         //{
 
         //}
+
         #region Setup
         LeetCode leetcode;
         [SetUp]
         public void Setup()
         {
             leetcode = new LeetCode();
+        }
+        #endregion
+
+        #region 273. Integer to English Words
+        [Test]
+        public void NumberToWordsTest1()
+        {
+            //int num = 2,147,483,647; TWO BILLION ONE HUNDRED FORTY SEVEN MILLI0NS FOUR HUNDRED EIGHTY THREE SIX HUNDRED FOURTY SEVEN
+
+            var k = leetcode.NumberToWords(int.MaxValue);
+        }
+        [Test]
+        public void NumberToWordsTest2()
+        {
+            var k = leetcode.NumberToWords(123);
+            Assert.AreEqual("One Hundred Twenty Three", k);
+        }
+        [Test]
+        public void NumberToWordsTest3()
+        {
+            var k = leetcode.NumberToWords(12345);
+            Assert.AreEqual("Twelve Thousand Three Hundred Forty Five", k);
+        }
+        [Test]
+        public void NumberToWordsTest4()
+        {
+            var k = leetcode.NumberToWords(1234567);
+            Assert.AreEqual("One Million Two Hundred Thirty Four Thousand Five Hundred Sixty Seven", k);
+        }
+        [Test]
+        public void NumberToWordsTest5()
+        {
+            var k = leetcode.NumberToWords(1001);
+            Assert.AreEqual("One Thousand One", k);
+        }
+        [Test]
+        public void NumberToWordsTest6()
+        {
+            var k = leetcode.NumberToWords(1099);
+            Assert.AreEqual("One Thousand Ninety Nine", k);
+        }
+        [Test]
+        public void NumberToWordsTest7()
+        {
+            var k = leetcode.NumberToWords(1000010);
+            Assert.AreEqual("One Million Ten", k);
         }
         #endregion
 
