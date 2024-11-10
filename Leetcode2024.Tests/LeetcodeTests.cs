@@ -27,6 +27,12 @@ namespace Leetcode2024.Tests
             var res = solution.WordBreak("catsanddog", new List<string> { "cat", "cats", "and", "sand", "dog" });
 
         }
+        [Test]
+        public void WordBreakTest2()
+        {
+            var res = leetcode.WordBreak("catsanddog", new List<string> { "cat", "cats", "and", "sand", "dog" });
+
+        }
         #endregion
 
         #region 3097. Shortest Subarray With OR at Least K II

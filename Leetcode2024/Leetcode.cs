@@ -1,4 +1,5 @@
 ﻿using Leetcode2024.Common.Models;
+using System;
 using System.Text;
 
 namespace Leetcode2024
@@ -6,14 +7,14 @@ namespace Leetcode2024
     public class LeetCode
     {
         #region 139. Word Break
-        public bool WordBreak(string s, IList<string> wordDict)
+        public bool WordBreak_12(string s, IList<string> wordDict)
         {
             int[] dp = new int[s.Length];
             Array.Fill(dp, -1);
-            return WordBreak_Helper(s, wordDict, dp, 0);
+            return WordBreak_Helper_12(s, wordDict, dp, 0);
         }
 
-        private bool WordBreak_Helper(string s, IList<string> wordDict, int[] dp, int startIndex)
+        private bool WordBreak_Helper_12(string s, IList<string> wordDict, int[] dp, int startIndex)
         {
             if (startIndex == s.Length) return true;
 
@@ -21,7 +22,7 @@ namespace Leetcode2024
 
             for (int i = startIndex; i < s.Length; i++)
             {
-                if (wordDict.Contains(s.Substring(startIndex, i - startIndex + 1)) && WordBreak_Helper(s, wordDict, dp, i + 1))
+                if (wordDict.Contains(s.Substring(startIndex, i - startIndex + 1)) && WordBreak_Helper_12(s, wordDict, dp, i + 1))
                 {
                     dp[startIndex] = 1;
                     return true;
@@ -46,6 +47,48 @@ namespace Leetcode2024
             }
 
             return false;
+        }
+        #endregion
+
+        #region 140. Word Break II
+        public IList<string> WordBreak(string s, IList<string> wordDict)
+        {
+            var map = new Dictionary<int, List<string>>();
+
+
+
+            return WordBreak_Helper(s, wordDict, map, 0);
+        }
+
+        private IList<string> WordBreak_Helper(string s, IList<string> wordDict, Dictionary<int, List<string>> map, int start)
+        {
+            if (map.ContainsKey(start))                return map[start];
+
+            var resultList = new List<string>();
+
+            for (int end = start + 1; end <= s.Length; end++)
+            {
+                var substring = s.Substring(start, end - start);
+
+                if (wordDict.Contains(substring))
+                {
+                    if (end == s.Length)
+                    {
+                        resultList.Add(substring);
+                    }
+                    else
+                    {
+                        var subList = WordBreak_Helper(s,wordDict,map,end);
+
+                        foreach (var subResult in subList)
+                            resultList.Add($"{substring} {subResult}");
+                    }
+                }
+            }
+
+            map[start] = resultList;
+            return resultList;
+
         }
         #endregion
 
@@ -1754,30 +1797,30 @@ namespace Leetcode2024
             return result;
         }
 
-        //private int getCount(List<int> occurences, int index, int length)
+        //private int getCount(List<int> occurences, int end, int length)
         //{
         //    if (occurences.Count == 1)
         //    {
-        //        return (occurences[index] + 1) * (length - occurences[index]);
+        //        return (occurences[end] + 1) * (length - occurences[end]);
         //    }
 
-        //    int left = occurences[index];
+        //    int left = occurences[end];
         //    int right = length - occurences[]
-        //    if (index == 0)
+        //    if (end == 0)
         //    {
         //        left++;
         //    }
         //    else
         //    {
-        //        left -= occurences[index - 1];
+        //        left -= occurences[end - 1];
         //    }
 
 
 
-        //    int prevIndex = index == 0 ? index : index - 1;
-        //    int nextIndex = index == occurences.Count - 1 ? index : index + 1;
+        //    int prevIndex = end == 0 ? end : end - 1;
+        //    int nextIndex = end == occurences.Count - 1 ? end : end + 1;
 
-        //    return (occurences[index] - occurences[prevIndex] + 1) * (occurences[nextIndex] - occurences[index]);
+        //    return (occurences[end] - occurences[prevIndex] + 1) * (occurences[nextIndex] - occurences[end]);
         //}
         #endregion
 
