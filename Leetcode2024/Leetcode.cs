@@ -2737,6 +2737,17 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2222. Number of Ways to Select Buildings
+        public long NumberOfWays(string s)
+        {
+            long result = 0;
+
+
+
+            return result;
+        }
+        #endregion
+
         #region 2275. Largest Combination With Bitwise AND Greater Than Zero
 
         public int LargestCombination(int[] candidates)
@@ -3141,6 +3152,83 @@ namespace Leetcode2024
 
             return pq.Count < k ? -1 : pq.Dequeue();
         }
+        #endregion
+
+        #region 2601. Prime Subtraction Operation
+        public bool PrimeSubOperation(int[] nums)
+        {
+            if (nums.Length == 1) return true;
+            bool sortRequired = false;
+            int max = nums[0];
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i] <= nums[i - 1])
+                {
+                    sortRequired = true;
+                }
+                else
+                {
+                    max = Math.Max(max, nums[i]);
+                }
+
+            }
+            if (sortRequired)
+            {
+                List<int> primeNumbers = getPrimeNumbers(max);
+                int primeNumberToSubstract = getPrimeNumberToSubstract(primeNumbers, nums[0] - 1);
+
+                nums[0] = nums[0] - primeNumberToSubstract;
+
+                for (int i = 1; i < nums.Length - 1; i++)
+                {
+                    if (nums[i] <= nums[i - 1]) return false;
+                    primeNumberToSubstract = getPrimeNumberToSubstract(primeNumbers, nums[i] - nums[i - 1] - 1);
+                    nums[i] = nums[i] - primeNumberToSubstract;
+                }
+            }
+
+            return nums[nums.Length - 1] > nums[nums.Length - 2];
+        }
+
+        private int getPrimeNumberToSubstract(List<int> primeNumbers, int v)
+        {
+            int k = primeNumbers.BinarySearch(v);
+
+            if (k < 0)
+            {
+                k = ~k - 1;
+
+                if (k < 0) return 0;
+
+            }
+
+            return primeNumbers[k];
+        }
+
+        private List<int> getPrimeNumbers(int max)
+        {
+            List<int> primeNumbers = new List<int>() { 2, 3, 5 };
+            for (int i = 7; i <= max; i += 2)
+            {
+                bool isPrime = true;
+                for (int j = 3; j <= Math.Sqrt(i); j += 2)
+                {
+                    if (i % j == 0)
+                    {
+                        isPrime = false;
+                        break;
+                    }
+                }
+                if (isPrime)
+                {
+                    primeNumbers.Add(i);
+                }
+            }
+
+            return primeNumbers;
+        }
+
+
         #endregion
 
         #region 2641. Cousins in Binary Tree II

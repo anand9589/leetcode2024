@@ -20,6 +20,72 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 2601. Prime Subtraction Operation
+        [Test]
+        public void PrimeSubOperationTest1()
+        {
+            int[] arr = { 4, 9, 6, 10 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsTrue(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest2()
+        {
+            int[] arr = { 6, 8, 11, 12 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsTrue(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest3()
+        {
+            int[] arr = { 5, 8, 3 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsFalse(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest4()
+        {
+            int[] arr = { 17, 20, 5, 15, 6 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsFalse(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest5()
+        {
+            int[] arr = { 6, 17, 2, 9, 20 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsFalse(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest6()
+        {
+            int[] arr = { 19, 10 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsTrue(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest7()
+        {
+            int[] arr = { 15, 20, 17, 7, 16 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsTrue(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest8()
+        {
+            int[] arr = { 3, 1, 6 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsFalse(res);
+        }
+        [Test]
+        public void PrimeSubOperationTest9()
+        {
+            int[] arr = { 8, 19, 3, 4, 9 };
+            var res = leetcode.PrimeSubOperation(arr);
+            Assert.IsTrue(res);
+        }
+        #endregion
+
         #region 273. Integer to English Words
         [Test]
         public void NumberToWordsTest1()
