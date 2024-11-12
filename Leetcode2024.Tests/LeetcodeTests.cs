@@ -1,5 +1,6 @@
 ﻿
 using Leetcode2024.Common.Models;
+using System.Drawing;
 
 namespace Leetcode2024.Tests
 {
@@ -20,13 +21,36 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+
+        #region 209. Minimum Size Subarray Sum
+
+        [Test]
+        public void MinimumSizeSubarraySumTest1()
+        {
+            int[] arr = { 12, 28, 83, 4, 25, 26, 25, 2, 25, 25, 25, 12 };
+            var res = leetcode.MinSubArrayLen(213, arr);
+
+            Assert.AreEqual(8, res);
+        }
+
+        [Test]
+        public void MinimumSizeSubarraySumTest2()
+        {
+            int[] arr = { 2, 3, 1, 2, 4, 3 };
+            var res = leetcode.MinSubArrayLen(7, arr);
+
+            Assert.AreEqual(2, res);
+        }
+
+        #endregion
+
         #region coin changes
 
         [Test]
         public void CoinChangeTest1()
         {
-            var res = leetcode.CoinChange(new int[]{ 1,2,5}, 11);
-            Assert.AreEqual(3,res);
+            var res = leetcode.CoinChange(new int[] { 1, 2, 5 }, 11);
+            Assert.AreEqual(3, res);
         }
 
         [Test]

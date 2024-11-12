@@ -415,6 +415,36 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 209. Minimum Size Subarray Sum
+        public int MinSubArrayLen(int target, int[] nums)
+        {
+            int res = int.MaxValue;
+            int count = nums[0];
+            int left = 0;
+            int right = 1;
+            while (right<nums.Length && left<right)
+            {
+                if (count >= target)
+                {
+                    res = Math.Min(res, right-left);
+                    count -= nums[left++];
+                }
+                else
+                {
+                    count += nums[right++];
+                }
+            }
+
+            while (count >= target && left<right)
+            {
+                res = Math.Min(res,right-left);
+                count -= nums[left++];
+            }
+
+            return res == int.MaxValue ? 0 : res;
+        } 
+        #endregion
+
         #region 213. House Robber II
         public int Rob(int[] nums)
         {
