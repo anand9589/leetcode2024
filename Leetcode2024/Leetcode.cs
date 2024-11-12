@@ -1181,6 +1181,45 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 322. Coin Change
+        public int CoinChange(int[] coins, int amount)
+        {
+            int[] dp = new int[amount + 1];
+            for (int i = 1; i <= amount; i++)
+            {
+                int minCoins = amount + 1;
+                foreach (var coin in coins)
+                {
+                    int lowerBound = i - coin;
+
+                    if (lowerBound >= 0)
+                    {
+                        minCoins = Math.Min(minCoins, 1 + dp[lowerBound]);
+                    }
+                }
+                dp[i] = minCoins;
+            }
+
+            return dp[amount] > amount ? -1 : dp[amount];
+        }
+
+        //public int CoinChange(int[] coins, int amount)
+        //{
+        //    int[] dp = new int[amount + 1];
+        //    Array.Fill(dp, int.MaxValue);
+        //    foreach (var item in coins)
+        //    {
+        //        int count = 1;
+        //        for (int i = item; i <= amount; i += item)
+        //        {
+        //            dp[item] = count++;
+        //        }
+        //    }
+
+        //    return dp[amount];
+        //}
+        #endregion
+
         #region 416. Partition Equal Subset Sum
         int[][] dp_416;
         public bool CanPartition(int[] nums)
@@ -2721,6 +2760,51 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2070. Most Beautiful Item for Each Query
+        public int[] MaximumBeauty(int[][] items, int[] queries)
+        {
+            Array.Sort(items, (x, y) =>
+            {
+                if (x[0] != y[0]) return x[0] - y[0];
+
+                return y[1] - x[1];
+            });
+            int[] result = new int[queries.Length];
+
+            Dictionary<int, int> map = new Dictionary<int, int>();
+            int max = 0;
+            foreach (var item in items)
+            {
+                max = Math.Max(max, item[1]);
+
+                map[item[0]] = max;
+            }
+            int[] keys = map.Keys.ToArray();
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int cost = queries[i];
+                if (map.ContainsKey(cost))
+                {
+                    result[i] = map[cost];
+                }
+                else
+                {
+                    int v = Array.BinarySearch(keys, cost);
+                    v = ~v - 1;
+                    if (v >= 0)
+                    {
+                        result[i] = map[keys[v]];
+                    }
+
+                }
+
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 2221. Find Triangular Sum of an Array
         public int TriangularSum(int[] nums)
         {
@@ -3724,7 +3808,7 @@ namespace Leetcode2024
             Array.Fill(bools, true);
 
 
-            for (int i = 2; i*i <= limit; i++)
+            for (int i = 2; i * i <= limit; i++)
             {
                 if (bools[i])
                 {
@@ -3736,7 +3820,7 @@ namespace Leetcode2024
             }
 
 
-            return bools.Count(x=>x) - 2;
+            return bools.Count(x => x) - 2;
         }
 
         public List<int> GetFactors(int limit)

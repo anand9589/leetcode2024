@@ -20,6 +20,69 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region coin changes
+
+        [Test]
+        public void CoinChangeTest1()
+        {
+            var res = leetcode.CoinChange(new int[]{ 1,2,5}, 11);
+            Assert.AreEqual(3,res);
+        }
+
+        [Test]
+        public void CoinChangeTest2()
+        {
+            var res = leetcode.CoinChange(new int[] { 2 }, 3);
+            Assert.AreEqual(-1, res);
+        }
+
+        [Test]
+        public void CoinChangeTest3()
+        {
+            var res = leetcode.CoinChange(new int[] { 1 }, 0);
+            Assert.AreEqual(0, res);
+        }
+        #endregion
+
+        #region 2070. Most Beautiful Item for Each Query
+
+        [Test]
+        public void MaximumBeautyTest1()
+        {
+            int[][] items = new int[][]
+            {
+                new int[] {1, 2 },
+                new int[] { 3, 2},
+                new int[] {2, 4},
+                new int[] {5, 6},
+                new int[] {3, 5 }
+            };
+
+            int[] queries = { 1, 2, 3, 4, 5, 6 };
+            var res = leetcode.MaximumBeauty(items, queries);
+            int[] expected = { 2, 4, 5, 5, 6, 6 };
+
+            CollectionAssert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void MaximumBeautyTest2()
+        {
+            int[][] items = new int[][]
+            {
+                new int[] {193,732},
+                new int[] { 781,962},
+                new int[] { 864, 954}, new int[] { 749, 627}, new int[] {136, 746}, new int[] {478, 548}, new int[] {640, 908}, new int[] {210, 799}, new int[] {567, 715}, new int[] {914, 388}, new int[] {487, 853}, new int[] {533, 554}, new int[] {247, 919}, new int[] {958, 150}, new int[] {193, 523}, new int[] {176, 656}, new int[] {395, 469}, new int[] {763, 821}, new int[] {542, 946}, new int[] {701, 676}
+            };
+
+            int[] queries = { 885, 1445, 1580, 1309, 205, 1788, 1214, 1404, 572, 1170, 989, 265, 153, 151, 1479, 1180, 875, 276, 1584 };
+            var res = leetcode.MaximumBeauty(items, queries);
+            int[] expected = { 962, 962, 962, 962, 746, 962, 962, 962, 946, 962, 962, 919, 746, 746, 962, 962, 962, 919, 962 };
+
+            CollectionAssert.AreEqual(expected, res);
+        }
+        #endregion
+
         #region Prime Number Test
 
         [Test]
@@ -776,7 +839,7 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(15, res);
         }
 
-        //[[1,0,1],[1,1,0],[1,1,0]]
+        //[[1,0,1}, new int[] {1,1,0],[1,1,0]]
         [Test]
         public void CountSquaresTest2()
         {
