@@ -23,6 +23,42 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 125. Valid Palindrome
+        public bool IsPalindrome(string s)
+        {
+
+            List<char> chars = new List<char>();
+            foreach (var item in s)
+            {
+                if (char.IsLetter(item))
+                {
+                    if (char.IsUpper(item))
+                    {
+                        chars.Add((char)(item + 32));
+                    }
+                    else
+                    {
+                        chars.Add(item);
+                    }
+                }
+                else if (char.IsDigit(item))
+                {
+                    chars.Add(item);
+                }
+            }
+            int left = 0;
+            int right = chars.Count - 1;
+
+            while (left <= right)
+            {
+                if (chars[left] != chars[right]) return false;
+                left++;
+                right--;
+            }
+            return true;
+        }
+        #endregion
+
         #region 139. Word Break
         public bool WordBreak_12(string s, IList<string> wordDict)
         {
