@@ -6,6 +6,23 @@ namespace Leetcode2024
 {
     public class LeetCode
     {
+        #region 55. Jump Game
+        public bool CanJump(int[] nums)
+        {
+            if (nums.Length == 1) return true;
+            if (nums[0] == 0) return false;
+
+            int CanJumpIndex = nums[0];
+
+            for (int i = 1; i <= CanJumpIndex; i++)
+            {
+                CanJumpIndex = Math.Max(CanJumpIndex, i + nums[i]);
+                if (CanJumpIndex >= nums.Length - 1) return true;
+            }
+            return false;
+        }
+        #endregion
+
         #region 139. Word Break
         public bool WordBreak_12(string s, IList<string> wordDict)
         {
