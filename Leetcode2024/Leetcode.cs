@@ -1003,6 +1003,22 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 268. Missing Number
+        public int MissingNumber(int[] nums)
+        {
+            int totalSum = 0;
+            int currentSum = nums[0];
+            int i = 1;
+            for (; i < nums.Length; i++)
+            {
+                totalSum += i;
+                currentSum += nums[i];
+            }
+
+            return totalSum + i - currentSum;
+        }
+        #endregion
+
         #region 273. Integer to English Words
 
         public string NumberToWords(int num)
