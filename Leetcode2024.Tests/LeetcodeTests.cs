@@ -20,6 +20,28 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region Prime Number Test
+
+        [Test]
+        public void PrimeNumberTest1()
+        {
+            var res = leetcode.GetPrimeNumbers(10000);
+            Assert.AreEqual(1229, res);
+        }
+
+
+        [Test]
+        public void FactorTest1()
+        {
+            var res = leetcode.GetFactors(10000);
+        }
+        [Test]
+        public void FactorTest2()
+        {
+            var res = leetcode.GetFactors(625);
+        }
+        #endregion
+
         #region 2601. Prime Subtraction Operation
         [Test]
         public void PrimeSubOperationTest1()

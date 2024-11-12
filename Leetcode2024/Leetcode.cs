@@ -3695,5 +3695,68 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region PrimeNumbers And Factors
+        public int GetPrimeNumbers(int limit)
+        {
+
+            bool[] bools = new bool[limit + 1];
+            Array.Fill(bools, true);
+
+
+            for (int i = 2; i * i <= limit; i++)
+            {
+                if (bools[i])
+                {
+                    for (int j = i * i; j <= limit; j = j + i)
+                    {
+                        bools[j] = false;
+                    }
+                }
+            }
+
+
+            return bools.Count(x => x) - 2;
+        }
+        public int GetPrimeNumbers_1(int limit)
+        {
+
+            bool[] bools = new bool[limit + 1];
+            Array.Fill(bools, true);
+
+
+            for (int i = 2; i*i <= limit; i++)
+            {
+                if (bools[i])
+                {
+                    for (int j = i * 2; j <= limit; j = j + i)
+                    {
+                        bools[j] = false;
+                    }
+                }
+            }
+
+
+            return bools.Count(x=>x) - 2;
+        }
+
+        public List<int> GetFactors(int limit)
+        {
+            List<int> list = new List<int>();
+            int i = 2;
+            for (; i * i < limit; i++)
+            {
+                if (limit % i == 0)
+                {
+                    list.Add(i);
+                    list.Add(limit / i);
+                }
+            }
+
+            if (limit % i == 0) list.Add(i);
+
+            return list;
+        }
+        #endregion
+
     }
 }
