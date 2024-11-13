@@ -451,6 +451,41 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 189. Rotate Array
+        public void Rotate(int[] nums, int k)
+        {
+            k = k % nums.Length;
+            if (k > 0)
+            {
+                // reverse the array
+                int left = -1;
+                int right = nums.Length;
+
+                while (++left < --right)
+                {
+                    swap(nums, left, right);
+                }
+
+                left = -1;
+                right = k;
+
+                while (++left < --right)
+                {
+                    swap(nums, left, right);
+                }
+
+                left = k - 1;
+                right = nums.Length;
+
+                while (++left < --right)
+                {
+                    swap(nums, left, right);
+                }
+
+            }
+        }
+        #endregion
+
         #region 209. Minimum Size Subarray Sum
         public int MinSubArrayLen(int target, int[] nums)
         {
