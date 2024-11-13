@@ -3326,6 +3326,46 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2563. Count the Number of Fair Pairs
+        public long CountFairPairs(int[] nums, int lower, int upper)
+        {
+            long count = 0;
+            Array.Sort(nums);
+            for (int i = 0; i < nums.Length; i++)
+            {
+
+                int lowerBoundIndex = getLowerBound(nums, lower - nums[i], i);
+                int upperBoundIndex = getLowerBound(nums, upper - nums[i] + 1, i) - 1;
+                int currCount = upperBoundIndex - lowerBoundIndex + 1;
+
+                count += currCount;
+            }
+
+            return count;
+        }
+
+        private int getLowerBound(int[] nums, int target, int left)
+        {
+            int low = left;
+            int high = nums.Length;
+
+            while (low + 1 < high)
+            {
+                int mid = (low + high) / 2;
+
+                if (nums[mid] < target)
+                {
+                    low = mid;
+                }
+                else
+                {
+                    high = mid;
+                }
+            }
+            return high;
+        }
+        #endregion
+
         #region 2583. Kth Largest Sum in a Binary Tree
         public long KthLargestLevelSum(TreeNode root, int k)
         {
@@ -3545,6 +3585,45 @@ namespace Leetcode2024
             //    }
             //}
             return 0;
+        }
+        #endregion
+
+        #region 2824. Count Pairs Whose Sum is Less than Target
+        public int CountPairs(IList<int> nums, int target)
+        {
+            int count = 0;
+
+            nums = nums.OrderBy(x => x).ToList();
+            int low = 0;
+            int high = nums.Count - 1;
+
+            while (low < high)
+            {
+                if (nums[low] + nums[high] < target)
+                {
+                    count += high - low;
+                    low++;
+                }
+                else
+                {
+                    high++;
+                }
+            }
+            return count;
+        }
+        public int CountPairs1(IList<int> nums, int target)
+        {
+            int count = 0;
+
+            for (int i = 0; i < nums.Count - 1; i++)
+            {
+                for (int j = i + 1; j < nums.Count; j++)
+                {
+                    if (nums[i] + nums[j] < target) count++;
+                }
+            }
+
+            return count;
         }
         #endregion
 

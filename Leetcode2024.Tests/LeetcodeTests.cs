@@ -21,6 +21,46 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 2563. Count the Number of Fair Pairs
+
+        [Test]
+        public void CountFairPairsTest1()
+        {
+            int[] arr = { 0, 1, 7, 4, 4, 5 };
+            int lower = 3;
+            int upper = 6;
+            int expected = 6;
+            var res = leetcode.CountFairPairs(arr, lower, upper);
+
+            Assert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void CountFairPairsTest2()
+        {
+            int[] arr = { 0, 0, 0, 0, 0, 0 };
+            int lower = 0;
+            int upper = 0;
+            int expected = 15;
+            var res = leetcode.CountFairPairs(arr, lower, upper);
+
+            Assert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void CountFairPairsTest3()
+        {
+            int[] arr = { 0, 0, 0, 0, 0, 0 };
+            int lower = -1000000000;
+            int upper = 1000000000;
+            int expected = 15;
+            var res = leetcode.CountFairPairs(arr, lower, upper);
+
+            Assert.AreEqual(expected, res);
+        }
+
+        #endregion
+
         #region 75. Sort Colors
 
         [Test]
