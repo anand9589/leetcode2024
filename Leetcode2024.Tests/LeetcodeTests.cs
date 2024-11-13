@@ -21,6 +21,31 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 75. Sort Colors
+
+        [Test]
+        public void SortColorsTest1()
+        {
+            int[] arr = { 2, 0, 2, 1, 1, 0 };
+            int[] exp = { 2, 0, 2, 1, 1, 0 };
+            Array.Sort(exp);
+            leetcode.SortColors(arr);
+
+            CollectionAssert.AreEqual(exp, arr);
+        }
+
+        [Test]
+        public void SortColorsTest2()
+        {
+            int[] arr = { 2, 0, 1 };
+            int[] exp = { 2, 0, 1 };
+            Array.Sort(exp);
+            leetcode.SortColors(arr);
+
+            CollectionAssert.AreEqual(exp, arr);
+        }
+
+        #endregion
 
         #region 209. Minimum Size Subarray Sum
 

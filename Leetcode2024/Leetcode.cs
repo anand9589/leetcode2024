@@ -1,5 +1,6 @@
 ﻿using Leetcode2024.Common.Models;
 using System;
+using System.Globalization;
 using System.Text;
 
 namespace Leetcode2024
@@ -20,6 +21,41 @@ namespace Leetcode2024
                 if (CanJumpIndex >= nums.Length - 1) return true;
             }
             return false;
+        }
+        #endregion
+
+        #region 75. Sort Colors
+        public void SortColors(int[] nums)
+        {
+            int low = 0,
+            high = nums.Length - 1,
+            mid = 0;
+
+            while (mid <= high)
+            {
+                switch (nums[mid])
+                {
+                    case 2:
+                        swap(nums, mid, high);
+                        high--;
+                        break;
+                    case 0:
+                        swap(nums, mid, low);
+                        low++;
+                        mid++;
+                        break;
+                    default:
+                        mid++;
+                        break;
+                }
+            }
+
+        }
+        private void swap(int[] nums, int i, int j)
+        {
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
         }
         #endregion
 
@@ -422,11 +458,11 @@ namespace Leetcode2024
             int count = nums[0];
             int left = 0;
             int right = 1;
-            while (right<nums.Length && left<right)
+            while (right < nums.Length && left < right)
             {
                 if (count >= target)
                 {
-                    res = Math.Min(res, right-left);
+                    res = Math.Min(res, right - left);
                     count -= nums[left++];
                 }
                 else
@@ -435,14 +471,14 @@ namespace Leetcode2024
                 }
             }
 
-            while (count >= target && left<right)
+            while (count >= target && left < right)
             {
-                res = Math.Min(res,right-left);
+                res = Math.Min(res, right - left);
                 count -= nums[left++];
             }
 
             return res == int.MaxValue ? 0 : res;
-        } 
+        }
         #endregion
 
         #region 213. House Robber II
