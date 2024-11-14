@@ -2930,6 +2930,59 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2064. Minimized Maximum of Products Distributed to Any Store
+        public int MinimizedMaximum(int n, int[] quantities)
+        {
+            int low = 1;
+            int high = quantities.Max();
+            while (low < high)
+            {
+                int mid = (low + high) / 2;
+
+
+                if (canDistribute(quantities, mid, n))
+                {
+                    high = mid;
+                }
+                else
+                {
+
+                    low = mid + 1;
+                }
+            }
+
+            return high;
+        }
+
+        private bool canDistribute(int[] quantities, int mid, int n)
+        {
+            int j = 0;
+
+            while (j < quantities.Length && n > 0)
+            {
+                if (quantities[j] <= mid)
+                {
+                    n--;
+                    j++;
+                }
+                else
+                {
+                    n -= quantities[j] / mid;
+
+                    if (quantities[j] % mid > 0)
+                    {
+                        if (n < 0) return false;
+                        n--;
+                    }
+                    if (n < 0) return false;
+                    j++;
+                }
+            }
+
+            return j == quantities.Length;
+        }
+        #endregion
+
         #region 2070. Most Beautiful Item for Each Query
         public int[] MaximumBeauty(int[][] items, int[] queries)
         {

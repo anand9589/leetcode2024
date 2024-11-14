@@ -1,6 +1,5 @@
 ﻿
 using Leetcode2024.Common.Models;
-using System.Drawing;
 
 namespace Leetcode2024.Tests
 {
@@ -21,6 +20,58 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 2064. Minimized Maximum of Products Distributed to Any Store
+        [Test]
+        public void MinimizedMaximumTest1()
+        {
+            int[] quantities = { 11, 6 };
+            int n = 6;
+            int expected = 3;
+
+            Assert.AreEqual(expected, leetcode.MinimizedMaximum(n, quantities));
+
+        }
+        [Test]
+        public void MinimizedMaximumTest2()
+        {
+            int[] quantities = { 15, 10, 10 };
+            int n = 7;
+            int expected = 5;
+
+            Assert.AreEqual(expected, leetcode.MinimizedMaximum(n, quantities));
+
+        }
+        [Test]
+        public void MinimizedMaximumTest3()
+        {
+            int[] quantities = { 100000 };
+            int n = 1;
+            int expected = 100000;
+
+            Assert.AreEqual(expected, leetcode.MinimizedMaximum(n, quantities));
+
+        }
+        [Test]
+        public void MinimizedMaximumTest4()
+        {
+            int[] quantities = { 2, 8, 9, 19 };
+            int n = 7;
+            int expected = 8;
+
+            Assert.AreEqual(expected, leetcode.MinimizedMaximum(n, quantities));
+
+        }
+        [Test]
+        public void MinimizedMaximumTest5()
+        {
+            int[] quantities = { 24, 18, 12, 6, 3, 24, 5, 19, 10, 20, 2, 18, 27, 3, 13, 22, 11, 16, 19, 13 };
+            int n = 26;
+            int expected = 19;
+
+            Assert.AreEqual(expected, leetcode.MinimizedMaximum(n, quantities));
+
+        }
+        #endregion
         #region 2563. Count the Number of Fair Pairs
 
         [Test]
