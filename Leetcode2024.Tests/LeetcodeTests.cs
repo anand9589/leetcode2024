@@ -21,6 +21,55 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 3. Longest Substring Without Repeating Characters
+
+        [Test]
+        public void LengthOfLongestSubstringTest1()
+        {
+            string str = "abcabcbb";
+            int expected = 3;
+            int actual = leetcode.LengthOfLongestSubstring(str);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void LengthOfLongestSubstringTest2()
+        {
+            string str = "bbbbb";
+            int expected = 1;
+            int actual = leetcode.LengthOfLongestSubstring(str);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void LengthOfLongestSubstringTest3()
+        {
+            string str = "pwwkew";
+            int expected = 3;
+            int actual = leetcode.LengthOfLongestSubstring(str);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void LengthOfLongestSubstringTest4()
+        {
+            string str = "abc abcbb";
+            int expected = 4;
+            int actual = leetcode.LengthOfLongestSubstring(str);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void LengthOfLongestSubstringTest5()
+        {
+            string str = "abba";
+            int expected = 2;
+            int actual = leetcode.LengthOfLongestSubstring(str);
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
         #region 1574. Shortest Subarray to be Removed to Make Array Sorted
 
         [Test]

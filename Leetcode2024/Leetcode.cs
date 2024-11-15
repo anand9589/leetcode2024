@@ -1,12 +1,83 @@
 ﻿using Leetcode2024.Common.Models;
 using System;
 using System.Globalization;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Leetcode2024
 {
     public class LeetCode
     {
+        #region 3. Longest Substring Without Repeating Characters
+        public int LengthOfLongestSubstring(string s)
+        {
+            if (s.Length <= 1) return s.Length;
+            int longestSubstringLength = 1;
+            HashSet<char> map = new HashSet<char> { s[0] };
+            int i = 0, start = 0;
+            while (s.Length > ++i)
+            {
+                char c = s[i];
+
+                if (map.Contains(c))
+                {
+                    longestSubstringLength = Math.Max(longestSubstringLength, i - start);
+
+                    while (s[start] != c)
+                    {
+                        map.Remove(s[start]);
+                        start++;
+                    }
+                    start++;
+                }
+                else
+                {
+                    map.Add(c);
+                }
+            }
+            longestSubstringLength = Math.Max(longestSubstringLength, i - start);
+            return longestSubstringLength;
+        }
+
+        public int LengthOfLongestSubstring1(string s)
+        {
+            if (s.Length <= 1) return s.Length;
+            int longestSubstringLength = 1;
+            HashSet<char> map = new HashSet<char>();
+            Queue<(char c, int index)> q = new Queue<(char c, int index)>();
+
+            q.Enqueue((s[0], 0));
+            map.Add(s[0]);
+            int i = 0;
+            int start = 0;
+            while (s.Length > ++i)
+            {
+                char c = s[i];
+
+                if (map.Contains(c))
+                {
+                    longestSubstringLength = Math.Max(longestSubstringLength, i - start);
+                    while (q.Peek().c != c)
+                    {
+                        var k = q.Dequeue();
+                        map.Remove(k.c);
+                    }
+                    q.Dequeue();
+
+                    q.Enqueue((c, i));
+                    start = q.Peek().index;
+                }
+                else
+                {
+                    map.Add(c);
+                    q.Enqueue((c, i));
+
+                }
+            }
+            longestSubstringLength = Math.Max(longestSubstringLength, i - start);
+            return longestSubstringLength;
+        }
+        #endregion
         #region 55. Jump Game
         public bool CanJump(int[] nums)
         {
