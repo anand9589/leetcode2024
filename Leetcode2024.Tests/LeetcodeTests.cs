@@ -21,6 +21,59 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 3349. Adjacent Increasing Subarrays Detection I
+
+        [Test]
+        public void HasIncreasingSubarraysTest1()
+        {
+            List<int> lst = new List<int>() { 2, 5, 7, 8, 9, 2, 3, 4, 3, 1 };
+            var res = leetcode.HasIncreasingSubarrays(lst, 3);
+            Assert.IsTrue(res);
+        }
+
+        [Test]
+        public void HasIncreasingSubarraysTest2()
+        {
+            List<int> lst = new List<int>() { 1, 2, 3, 4, 4, 4, 4, 5, 6, 7 };
+            var res = leetcode.HasIncreasingSubarrays(lst, 5);
+            Assert.IsFalse(res);
+        }
+
+        [Test]
+        public void HasIncreasingSubarraysTest3()
+        {
+            List<int> lst = new List<int>() { 2, 5, 7, 8, 9, 10, 11, 12, 3, 1 };
+            var res = leetcode.HasIncreasingSubarrays(lst, 3);
+            Assert.IsTrue(res);
+        }
+
+        [Test]
+        public void HasIncreasingSubarraysTest4()
+        {
+            List<int> lst = new List<int>() { 19, 5 };
+            var res = leetcode.HasIncreasingSubarrays(lst, 1);
+            Assert.IsTrue(res);
+        }
+
+        [Test]
+        public void HasIncreasingSubarraysTest5()
+        {
+            List<int> lst = new List<int>() { -15, 19 };
+            var res = leetcode.HasIncreasingSubarrays(lst, 1);
+            Assert.IsTrue(res);
+        }
+
+
+        [Test]
+        public void HasIncreasingSubarraysTest6()
+        {
+            List<int> lst = new List<int>() { 6, 13, -17, -20, 2 };
+            var res = leetcode.HasIncreasingSubarrays(lst, 2);
+            Assert.IsFalse(res);
+        }
+
+        #endregion
+
         #region 134. Gas Station
 
         //gas = [1,2,3,4,5], cost = [3,4,5,1,2]

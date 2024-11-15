@@ -4176,6 +4176,62 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 3349. Adjacent Increasing Subarrays Detection I
+        public bool HasIncreasingSubarrays(IList<int> nums, int k)
+        {
+            int max = -1;
+            int currMax = 1;
+            int lastMaxEndIndex = -1;
+            for (int i = 1; i < nums.Count; i++)
+            {
+                if (nums[i] > nums[i - 1])
+                {
+                    currMax++;
+                }
+                else
+                {
+                    if (currMax >= k)
+                    {
+                        if (max >= k)
+                        {
+                            if (i - currMax == lastMaxEndIndex) return true;
+                        }
+                        max = currMax;
+                        if (max >= k * 2) return true;
+                        lastMaxEndIndex = i;
+
+                    }
+                    currMax = 1;
+                }
+            }
+
+            return currMax >= k * 2 || (currMax >= k && max >= k && nums.Count-currMax == lastMaxEndIndex);
+        }
+        public bool HasIncreasingSubarrays1(IList<int> nums, int k)
+        {
+            int i = 0;
+            while (i + k + k - 1 < nums.Count)
+            {
+                if (checkIncreasingSubArray(nums, i, k)) return true;
+
+                i++;
+            }
+            return false;
+        }
+
+        private bool checkIncreasingSubArray(IList<int> nums, int i, int k)
+        {
+            int nextIndex = i + k;
+            while (k-- > 1)
+            {
+                if (nums[nextIndex] >= nums[nextIndex + 1] || nums[i] >= nums[i + 1]) return false;
+                nextIndex++;
+                i++;
+            }
+            return true;
+        }
+        #endregion
+
         #region MockTests
         public int FindPeakElement(int[] nums)
         {
