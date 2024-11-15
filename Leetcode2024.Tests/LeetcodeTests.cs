@@ -21,6 +21,23 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 134. Gas Station
+
+        //gas = [1,2,3,4,5], cost = [3,4,5,1,2]
+        //Output: 3 
+
+        [Test]
+        public void CanCompleteCircuitTest1()
+        {
+            int[] gas = { 1, 2, 3, 4, 5 };
+            int[] cost = { 3, 4, 5, 1, 2 };
+            int expected = 3;
+            int actual = leetcode.CanCompleteCircuit(gas, cost);
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
         #region 3. Longest Substring Without Repeating Characters
 
         [Test]

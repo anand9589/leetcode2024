@@ -78,6 +78,7 @@ namespace Leetcode2024
             return longestSubstringLength;
         }
         #endregion
+
         #region 55. Jump Game
         public bool CanJump(int[] nums)
         {
@@ -161,6 +162,67 @@ namespace Leetcode2024
                 if (chars[left] != chars[right]) return false;
                 left++;
                 right--;
+            }
+            return true;
+        }
+        #endregion
+
+        #region 134. Gas Station
+        public int CanCompleteCircuit(int[] gas, int[] cost)
+        {
+            int totalDiff = 0;
+            int remGas = 0;
+            int resultIndex = -1;
+            for (int i = 0; i < gas.Length; i++)
+            {
+                int diff = gas[i] - cost[i];
+                totalDiff += diff;
+                remGas += diff;
+                if (remGas < 0)
+                {
+                    remGas = 0;
+                    resultIndex = i;
+                }
+
+            }
+            return totalDiff < 0 ? -1 : resultIndex + 1;
+        }
+        public int CanCompleteCircuit_1(int[] gas, int[] cost)
+        {
+            int i = 0;
+            while (i < gas.Length)
+            {
+
+                if (completeCircuit(gas, cost, i)) return i;
+                i++;
+            }
+            return -1;
+        }
+        private bool completeCircuit(int[] gas, int[] cost, int i)
+        {
+            if (gas[i] < cost[i]) return false;
+
+            int k = i;
+            int gasRemaining = 0;
+            while (k < gas.Length)
+            {
+                gasRemaining += gas[k];
+
+                if (gasRemaining < cost[k]) return false;
+
+                gasRemaining -= cost[k];
+                k++;
+            }
+            k = 0;
+            while (k < i)
+            {
+                gasRemaining += gas[k];
+
+                if (gasRemaining < cost[k]) return false;
+
+                gasRemaining -= cost[k];
+                k++;
+
             }
             return true;
         }
