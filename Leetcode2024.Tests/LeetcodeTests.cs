@@ -21,7 +21,18 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 1574. Shortest Subarray to be Removed to Make Array Sorted
 
+        [Test]
+        public void FindLengthOfShortestSubarrayTest1()
+        {
+            int[] arr = { 1, 2, 3, 10, 4, 2, 3, 5 };
+            int expected = 3;
+            int actual = leetcode.FindLengthOfShortestSubarray(arr);
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
 
         #region 380. Insert Delete GetRandom O(1)
 
@@ -560,9 +571,9 @@ namespace Leetcode2024.Tests
         [Test]
         public void MyTest241Method1()
         {
-            //var res = leetcode.DiffWaysToCompute("2*3-4*5");
+            //var actual = leetcode.DiffWaysToCompute("2*3-4*5");
 
-            //Assert.AreEqual(59, res);
+            //Assert.AreEqual(59, actual);
             //MyCircularDeque myCircularDeque = new MyCircularDeque(4);
 
             //bool boolRes = myCircularDeque.InsertFront(9);
@@ -599,7 +610,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FractionToDecimalTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.FractionToDecimal(16, 4);
             Assert.AreEqual("4", res1);
@@ -608,7 +619,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FractionToDecimalTest2()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.FractionToDecimal(18, 4);
             Assert.AreEqual("4.5", res1);
@@ -617,7 +628,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FractionToDecimalTest3()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.FractionToDecimal(17, 6);
             Assert.AreEqual("2.8(3)", res1);
@@ -626,7 +637,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FractionToDecimalTest4()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.FractionToDecimal(-50, 8);
             Assert.AreEqual("-6.25", res1);
@@ -635,7 +646,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FractionToDecimalTest5()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.FractionToDecimal(50, -8);
             Assert.AreEqual("-6.25", res1);
@@ -644,7 +655,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FractionToDecimalTest6()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.FractionToDecimal(-50, -8);
             Assert.AreEqual("6.25", res1);
@@ -653,7 +664,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FractionToDecimalTest7()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.FractionToDecimal(-1, -2147483648);
             Assert.AreEqual("0.0000000004656612873077392578125", res1);
@@ -664,7 +675,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MaximumSwapTes1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.MaximumSwap(47483648);
             Assert.AreEqual(87483644, res1);
@@ -673,7 +684,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MaximumSwapTes2()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.MaximumSwap(98368);
             Assert.AreEqual(98863, res1);
@@ -685,7 +696,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void LargestNumberTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             int[] nums = new int[] { 3, 30, 34, 5, 9 };
             var res1 = leetcode.LargestNumber(nums);
             Assert.AreEqual("9534330", res1);
@@ -696,7 +707,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void LargestNumberTest2()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             int[] nums = new int[] { 10, 2 };
             var res1 = leetcode.LargestNumber(nums);
             Assert.AreEqual("210", res1);
@@ -705,7 +716,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void LargestNumberTest3()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             int[] nums = new int[] { 8308, 8308, 830 };
             var res1 = leetcode.LargestNumber(nums);
             Assert.AreEqual("83088308830", res1);
@@ -714,7 +725,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void LargestNumberTest4()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             int[] nums = new int[] { 34323, 3432 };
             var res1 = leetcode.LargestNumber(nums);
             Assert.AreEqual("343234323", res1);
@@ -726,7 +737,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void ParseBoolExprTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.ParseBoolExpr("&(|(f))");
             Assert.IsFalse(res1);
@@ -735,7 +746,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void ParseBoolExprTest2()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.ParseBoolExpr("|(f,f,f,t)");
             Assert.IsTrue(res1);
@@ -744,7 +755,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void ParseBoolExprTest3()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.ParseBoolExpr("!(&(f,t))");
             Assert.IsTrue(res1);
@@ -753,7 +764,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void ParseBoolExprTest4()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.ParseBoolExpr("|(f,f,f,!(&(t,t)),t,t)");
             Assert.IsTrue(res1);
@@ -766,7 +777,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MajorityElementTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 5, 1, 5, 5, 5, 2, 1, 2, 1, 1, 1, 2, 5, 2, 2, 2 });
 
@@ -775,7 +786,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MajorityElementTest2()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 3, 2, 3 });
 
@@ -785,7 +796,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MajorityElementTest3()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 1 });
             CollectionAssert.AreEqual(new List<int>() { 1 }, res1);
@@ -795,7 +806,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MajorityElementTest4()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 1, 2 });
 
@@ -806,7 +817,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MajorityElementTest5()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 1, 2, 3 });
 
@@ -817,7 +828,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MajorityElementTest6()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.MajorityElement(new int[] { 2, 1, 1, 3, 1, 4, 5, 6 });
 
@@ -831,7 +842,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void KthSmallestTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.KthSmallest(new TreeNode(3, new TreeNode(1, null, new TreeNode(2)), new TreeNode(4)), 1);
 
@@ -841,7 +852,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void KthSmallestTest2()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             //[5,3,6,2,4,null,null,1]
             TreeNode treeNode = new TreeNode(5,
@@ -1395,25 +1406,25 @@ namespace Leetcode2024.Tests
         [Test]
         public void LongestDiverseStringTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.LongestDiverseString(1, 1, 7);
-            //Assert.AreEqual(999999 - 2, res);
+            //Assert.AreEqual(999999 - 2, actual);
         }
 
         [Test]
         public void CompareVersionTest()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
 
             var res1 = leetcode.CompareVersion("1", "1.1");
-            //Assert.AreEqual(999999 - 2, res);
+            //Assert.AreEqual(999999 - 2, actual);
         }
 
         [Test]
         public void CountMaxOrSubsetsTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.CountMaxOrSubsets(nums);
             Assert.AreEqual(2, res1);
@@ -1422,7 +1433,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void FindKthBitTest1()
         {
-            //var res = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
+            //var actual = leetcode.LongestDiverseString(/*7,1,0*/0,8,11);
             //int[] nums = new int[] { 3, 1 };
             var res1 = leetcode.FindKthBit(4, 11);
             Assert.AreEqual('1', res1);

@@ -2799,6 +2799,37 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 1574. Shortest Subarray to be Removed to Make Array Sorted
+        public int FindLengthOfShortestSubarray(int[] arr)
+        {
+            int left = 0;
+            int right = arr.Length - 1;
+
+            while (right > 0 && arr[right] >= arr[right - 1]) { right--; }
+
+            int res = right;
+
+
+            while (right < arr.Length && arr[left] > arr[right])
+            {
+                right++;
+            }
+            res = Math.Min(res, right - left - 1);
+            left = 1;
+            while (left < right && (left == 0 || arr[left - 1] <= arr[left]))
+            {
+                while (right < arr.Length && arr[left] > arr[right])
+                {
+                    right++;
+                }
+                res = Math.Min(res, right - left - 1);
+                left++;
+            }
+
+            return res;
+        }
+        #endregion
+
         #region 1671. Minimum Number of Removals to Make Mountain Array
         public int MinimumMountainRemovals(int[] nums)
         {
