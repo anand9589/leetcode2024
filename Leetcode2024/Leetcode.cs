@@ -1,6 +1,7 @@
 ﻿using Leetcode2024.Common.Models;
 using System;
 using System.Globalization;
+using System.Reflection.Metadata;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -241,11 +242,11 @@ namespace Leetcode2024
                     counter[i] = counter[i - 1] + 1;
                 }
             }
-            int res = counter[ratings.Length-1];
+            int res = counter[ratings.Length - 1];
 
-            for (int i = ratings.Length-2; i >= 0; i--)
+            for (int i = ratings.Length - 2; i >= 0; i--)
             {
-                if (ratings[i] > ratings[i + 1] && counter[i] <= counter[i+1])
+                if (ratings[i] > ratings[i + 1] && counter[i] <= counter[i + 1])
                 {
 
                     counter[i] = counter[i + 1] + 1;
@@ -1550,6 +1551,20 @@ namespace Leetcode2024
 
         //    return dp[amount];
         //}
+        #endregion
+
+        #region 392. Is Subsequence
+        public bool IsSubsequence(string s, string t)
+        {
+            int tIndex = -1;
+            int sIndex = 0;
+            while (sIndex < s.Length && ++tIndex < t.Length)
+            {
+                if (s[sIndex] == t[tIndex]) sIndex++;
+            }
+
+            return sIndex == s.Length;
+        }
         #endregion
 
         #region 416. Partition Equal Subset Sum
@@ -4197,15 +4212,15 @@ namespace Leetcode2024
                 }
             }
 
-            for (int i = k-1; i < nums.Length; i++)
+            for (int i = k - 1; i < nums.Length; i++)
             {
                 if (greater[i] >= k)
                 {
-                    results[i-k+1] = nums[i];
+                    results[i - k + 1] = nums[i];
                 }
                 else
                 {
-                    results[i-k+1] = -1;
+                    results[i - k + 1] = -1;
                 }
             }
 
@@ -4310,7 +4325,7 @@ namespace Leetcode2024
                 else
                 {
                     res = Math.Max(res, currCount / 2);
-                    if (i-currCount-1 == lastMaxIndex)
+                    if (i - currCount - 1 == lastMaxIndex)
                     {
                         res = Math.Max(res, Math.Min(currCount, lastMaxCount));
                     }
@@ -4321,7 +4336,7 @@ namespace Leetcode2024
             }
 
             res = Math.Max(res, currCount / 2);
-            if (i - currCount-1 == lastMaxIndex)
+            if (i - currCount - 1 == lastMaxIndex)
             {
                 res = Math.Max(res, Math.Min(currCount, lastMaxCount));
             }

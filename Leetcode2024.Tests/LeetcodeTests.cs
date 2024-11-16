@@ -13,12 +13,22 @@ namespace Leetcode2024.Tests
 
         }
         */
+
         #region Setup
         LeetCode leetcode;
         [SetUp]
         public void Setup()
         {
             leetcode = new LeetCode();
+        }
+        #endregion
+
+        #region 392. Is Subsequence
+        [Test]
+        public void IsSubsequenceTest1()
+        {
+            string s = "abc";
+            string t = "abc";
         }
         #endregion
 
@@ -135,7 +145,6 @@ namespace Leetcode2024.Tests
         }
 
         #endregion
-
 
         #region 3350. Adjacent Increasing Subarrays Detection II
 
