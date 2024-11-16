@@ -4151,6 +4151,39 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 3254. Find the Power of K-Size Subarrays I
+        public int[] ResultsArray(int[] nums, int k)
+        {
+            int[] results = new int[nums.Length - k + 1];
+            int[] greater = new int[nums.Length];
+
+            greater[0] = 1;
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                if (nums[i] == nums[i - 1] + 1) { greater[i] = greater[i - 1] + 1; }
+                else
+                {
+                    greater[i] = 1;
+                }
+            }
+
+            for (int i = k-1; i < nums.Length; i++)
+            {
+                if (greater[i] >= k)
+                {
+                    results[i-k+1] = nums[i];
+                }
+                else
+                {
+                    results[i-k+1] = -1;
+                }
+            }
+
+            return results;
+        }
+        #endregion
+
         #region 3340. Check Balanced String
         public bool IsBalanced(string num)
         {

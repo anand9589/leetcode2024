@@ -6,18 +6,80 @@ namespace Leetcode2024.Tests
 {
     internal class LeetcodeTests
     {
-        //[Test]
-        //public void Test()
-        //{
+        /*
+        [Test]
+        public void Test()
+        {
 
-        //}
-
+        }
+        */
         #region Setup
         LeetCode leetcode;
         [SetUp]
         public void Setup()
         {
             leetcode = new LeetCode();
+        }
+        #endregion
+
+        #region 3254. Find the Power of K-Size Subarrays I
+        /*
+            [1,2,3,4,3,2,5]
+            3
+            [2,2,2,2,2]
+            4
+            [3,2,3,2,3,2]
+            2 
+         */
+
+        [Test]
+        public void ResultsArray3254Test1()
+        {
+            int[] nums = { 1, 2, 3, 4, 3, 2, 5 };
+            int k = 3;
+            int[] expected = { 3, 4, -1, -1, -1 };
+            var res = leetcode.ResultsArray(nums, k);
+            CollectionAssert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void ResultsArray3254Test2()
+        {
+            int[] nums = { 2, 2, 2, 2, 2 };
+            int k = 4;
+            int[] expected = { -1, -1 };
+            var res = leetcode.ResultsArray(nums, k);
+            CollectionAssert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void ResultsArray3254Test3()
+        {
+            int[] nums = { 3, 2, 3, 2, 3, 2 };
+            int k = 2;
+            int[] expected = { -1, 3, -1, 3, -1 };
+            var res = leetcode.ResultsArray(nums, k);
+            CollectionAssert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void ResultsArray3254Test4()
+        {
+            int[] nums = { 1 };
+            int k = 1;
+            int[] expected = { 1 };
+            var res = leetcode.ResultsArray(nums, k);
+            CollectionAssert.AreEqual(expected, res);
+        }
+
+        [Test]
+        public void ResultsArray3254Test5()
+        {
+            int[] nums = { 3,22,22,7,14,11,21,3,8,5,4,286,287,288,289,290,291,292,21,9,7,11,136,137,138,139,140,141,142,11,21,13,14,15,16,17,18,19,12,13,14,15,16,1,6 };
+            int k = 7;
+            int[] expected = { -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,292,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,142,-1,-1,-1,-1,-1,-1,-1,-1,19,-1,-1,-1,-1,-1,-1,-1 };
+            var res = leetcode.ResultsArray(nums, k);
+            CollectionAssert.AreEqual(expected, res);
         }
         #endregion
 
