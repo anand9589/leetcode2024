@@ -228,6 +228,35 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 135. Candy
+        public int Candy(int[] ratings)
+        {
+            int[] counter = new int[ratings.Length];
+            Array.Fill(counter, 1);
+
+            for (int i = 1; i < ratings.Length; i++)
+            {
+                if (ratings[i] > ratings[i - 1])
+                {
+                    counter[i] = counter[i - 1] + 1;
+                }
+            }
+            int res = counter[ratings.Length-1];
+
+            for (int i = ratings.Length-2; i >= 0; i--)
+            {
+                if (ratings[i] > ratings[i + 1] && counter[i] <= counter[i+1])
+                {
+
+                    counter[i] = counter[i + 1] + 1;
+                }
+                res += counter[i];
+            }
+
+            return res;
+        }
+        #endregion
+
         #region 139. Word Break
         public bool WordBreak_12(string s, IList<string> wordDict)
         {
