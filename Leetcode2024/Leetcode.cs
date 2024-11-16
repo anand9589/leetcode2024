@@ -132,6 +132,27 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 121. Best Time to Buy and Sell Stock
+        public int MaxProfit121(int[] prices)
+        {
+            int res = 0;
+            int max = prices[prices.Length - 1];
+            for (int i = prices.Length - 2; i >= 0; i--)
+            {
+                if (prices[i] < max)
+                {
+                    res = Math.Max(res, max - prices[i]);
+                }
+                else
+                {
+                    max = prices[i];
+                }
+            }
+
+            return res;
+        }
+        #endregion
+
         #region 125. Valid Palindrome
         public bool IsPalindrome(string s)
         {
