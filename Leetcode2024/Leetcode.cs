@@ -4238,7 +4238,7 @@ namespace Leetcode2024
                 }
             }
 
-            return currMax >= k * 2 || (currMax >= k && max >= k && nums.Count-currMax == lastMaxEndIndex);
+            return currMax >= k * 2 || (currMax >= k && max >= k && nums.Count - currMax == lastMaxEndIndex);
         }
         public bool HasIncreasingSubarrays1(IList<int> nums, int k)
         {
@@ -4262,6 +4262,42 @@ namespace Leetcode2024
                 i++;
             }
             return true;
+        }
+        #endregion
+
+        #region 3350. Adjacent Increasing Subarrays Detection II
+        public int MaxIncreasingSubarrays(IList<int> nums)
+        {
+            int res = 1;
+            int lastMaxIndex = 0;
+            int currCount = 1;
+            int lastMaxCount = 1; int i = 1;
+            for (; i < nums.Count; i++)
+            {
+                if (nums[i] > nums[i - 1])
+                {
+                    currCount++;
+                }
+                else
+                {
+                    res = Math.Max(res, currCount / 2);
+                    if (i-currCount-1 == lastMaxIndex)
+                    {
+                        res = Math.Max(res, Math.Min(currCount, lastMaxCount));
+                    }
+                    lastMaxCount = currCount;
+                    currCount = 1;
+                    lastMaxIndex = i - 1;
+                }
+            }
+
+            res = Math.Max(res, currCount / 2);
+            if (i - currCount-1 == lastMaxIndex)
+            {
+                res = Math.Max(res, Math.Min(currCount, lastMaxCount));
+            }
+
+            return res;
         }
         #endregion
 

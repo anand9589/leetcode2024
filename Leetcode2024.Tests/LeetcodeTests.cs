@@ -75,9 +75,9 @@ namespace Leetcode2024.Tests
         [Test]
         public void ResultsArray3254Test5()
         {
-            int[] nums = { 3,22,22,7,14,11,21,3,8,5,4,286,287,288,289,290,291,292,21,9,7,11,136,137,138,139,140,141,142,11,21,13,14,15,16,17,18,19,12,13,14,15,16,1,6 };
+            int[] nums = { 3, 22, 22, 7, 14, 11, 21, 3, 8, 5, 4, 286, 287, 288, 289, 290, 291, 292, 21, 9, 7, 11, 136, 137, 138, 139, 140, 141, 142, 11, 21, 13, 14, 15, 16, 17, 18, 19, 12, 13, 14, 15, 16, 1, 6 };
             int k = 7;
-            int[] expected = { -1,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,292,-1,-1,-1,-1,-1,-1,-1,-1,-1,-1,142,-1,-1,-1,-1,-1,-1,-1,-1,19,-1,-1,-1,-1,-1,-1,-1 };
+            int[] expected = { -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 292, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 142, -1, -1, -1, -1, -1, -1, -1, -1, 19, -1, -1, -1, -1, -1, -1, -1 };
             var res = leetcode.ResultsArray(nums, k);
             CollectionAssert.AreEqual(expected, res);
         }
@@ -132,6 +132,60 @@ namespace Leetcode2024.Tests
             List<int> lst = new List<int>() { 6, 13, -17, -20, 2 };
             var res = leetcode.HasIncreasingSubarrays(lst, 2);
             Assert.IsFalse(res);
+        }
+
+        #endregion
+
+
+        #region 3350. Adjacent Increasing Subarrays Detection II
+
+        [Test]
+        public void MaxIncreasingSubarraysTest1()
+        {
+            List<int> lst = new List<int>() { 2, 5, 7, 8, 9, 2, 3, 4, 3, 1 };
+            var res = leetcode.MaxIncreasingSubarrays(lst);
+            Assert.AreEqual(3, res);
+        }
+
+        [Test]
+        public void MaxIncreasingSubarraysTest2()
+        {
+            List<int> lst = new List<int>() { 1, 2, 3, 4, 4, 4, 4, 5, 6, 7 };
+            var res = leetcode.MaxIncreasingSubarrays(lst);
+            Assert.AreEqual(2, res);
+        }
+
+        [Test]
+        public void MaxIncreasingSubarraysTest3()
+        {
+            List<int> lst = new List<int>() { 2, 5, 7, 8, 9, 10, 11, 12, 3, 1 };
+            var res = leetcode.MaxIncreasingSubarrays(lst);
+            Assert.AreEqual(4, res);
+        }
+
+        [Test]
+        public void MaxIncreasingSubarraysTest4()
+        {
+            List<int> lst = new List<int>() { 19, 5 };
+            var res = leetcode.MaxIncreasingSubarrays(lst);
+            Assert.AreEqual(1, res);
+        }
+
+        [Test]
+        public void MaxIncreasingSubarraysTest5()
+        {
+            List<int> lst = new List<int>() { -15, 19 };
+            var res = leetcode.MaxIncreasingSubarrays(lst);
+            Assert.AreEqual(1, res);
+        }
+
+
+        [Test]
+        public void MaxIncreasingSubarraysTest6()
+        {
+            List<int> lst = new List<int>() { 6, 13, -17, -20, 2 };
+            var res = leetcode.MaxIncreasingSubarrays(lst);
+            Assert.AreEqual(1, res);
         }
 
         #endregion
