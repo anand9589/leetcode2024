@@ -23,6 +23,62 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 862. Shortest Subarray with Sum at Least K
+
+
+        [Test]
+        public void ShortestSubarrayTest1()
+        {
+            int[] nums = { 1 };
+            int k = 1;
+            int expected = 1;
+            var actual = leetcode.ShortestSubarray(nums, k);
+            Assert.AreEqual(expected, actual);
+        }
+
+
+        [Test]
+        public void ShortestSubarrayTest2()
+        {
+            int[] nums = { 1, 2 };
+            int k = 4;
+            int expected = -1;
+            var actual = leetcode.ShortestSubarray(nums, k);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ShortestSubarrayTest3()
+        {
+            int[] nums = { 2, -1, 2 };
+            int k = 3;
+            int expected = 3;
+            var actual = leetcode.ShortestSubarray(nums, k);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ShortestSubarrayTest4()
+        {
+            int[] nums = { 84, -37, 32, 40, 95 };
+            int k = 167;
+            int expected = 3;
+            var actual = leetcode.ShortestSubarray(nums, k);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [Test]
+        public void ShortestSubarrayTest5()
+        {
+            int[] nums = { -28, 81, -20, 28, -29 };
+            int k = 89;
+            int expected = 3;
+            var actual = leetcode.ShortestSubarray(nums, k);
+            Assert.AreEqual(expected, actual);
+        }
+
+        #endregion
+
         #region 392. Is Subsequence
         [Test]
         public void IsSubsequenceTest1()

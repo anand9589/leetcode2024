@@ -153,6 +153,23 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 122. Best Time to Buy and Sell Stock II
+        public int MaxProfit(int[] prices)
+        {
+            int res = 0;
+
+            for (int i = 1; i < prices.Length; i++)
+            {
+                if (prices[i] > prices[i - 1])
+                {
+                    res += prices[i] - prices[i - 1];
+                }
+            }
+
+            return res;
+        }
+        #endregion
+
         #region 125. Valid Palindrome
         public bool IsPalindrome(string s)
         {
@@ -2330,6 +2347,41 @@ namespace Leetcode2024
 
         //    return (occurences[end] - occurences[prevIndex] + 1) * (occurences[nextIndex] - occurences[end]);
         //}
+        #endregion
+
+        #region 862. Shortest Subarray with Sum at Least K
+        public int ShortestSubarray(int[] nums, int k)
+        {
+            int result = nums.Length + 1;
+
+            PriorityQueue<int, long> pq = new PriorityQueue<int, long>();
+            long cummSum = 0;
+            long[] cummSumAtIndex = new long[nums.Length];
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums[i] >= k) return 1;
+
+                cummSum += nums[i];
+
+                if (cummSum >= k)
+                {
+                    result = Math.Min(result, i + 1);
+                }
+
+                while (pq.Count > 0 && cummSum - cummSumAtIndex[pq.Peek()] >= k)
+                {
+                    result = Math.Min(result, (i - pq.Dequeue()));
+                }
+
+                cummSumAtIndex[i] = cummSum;
+                pq.Enqueue(i, cummSum);
+            }
+
+
+
+            return result > nums.Length ? -1 : result;
+        }
         #endregion
 
         #region 884. Uncommon Words from Two Sentences
