@@ -154,7 +154,7 @@ namespace Leetcode2024
         #endregion
 
         #region 122. Best Time to Buy and Sell Stock II
-        public int MaxProfit(int[] prices)
+        public int MaxProfit122(int[] prices)
         {
             int res = 0;
 
@@ -167,6 +167,23 @@ namespace Leetcode2024
             }
 
             return res;
+        }
+        #endregion
+
+        #region 123. Best Time to Buy and Sell Stock III
+        public int MaxProfit(int[] prices)
+        {
+            int buy1 = int.MaxValue, buy2 = int.MaxValue, profit1 = 0, profit2 = 0;
+
+            foreach (int price in prices)
+            {
+                buy1 = Math.Min(buy1, price);
+                profit1 = Math.Max(profit1, price-buy1);
+                buy2 = Math.Min(buy2, price-profit2);
+                profit2 = Math.Max(profit2, price - buy2);
+            }
+
+            return profit2;
         }
         #endregion
 
