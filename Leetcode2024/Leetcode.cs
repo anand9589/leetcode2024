@@ -3080,6 +3080,40 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1652. Defuse the Bomb
+        public int[] Decrypt(int[] code, int k)
+        {
+            if (k == 0) return new int[code.Length];
+
+            if (k < 0) Array.Reverse(code);
+
+            int counter = Math.Abs(k);
+            int[] result = new int[code.Length];
+
+
+            int i = 1;
+            for (; i <= counter; i++)
+            {
+                result[0] += code[i];
+            }
+
+            i = 0;
+            while (++i < code.Length)
+            {
+                int prevCount = result[i - 1];
+                prevCount -= code[i];
+                prevCount += code[(i + counter) % code.Length];
+                result[i] = prevCount;
+            }
+
+            if (k < 0)
+            {
+                Array.Reverse(result);
+            }
+            return result;
+        }
+        #endregion
+
         #region 1671. Minimum Number of Removals to Make Mountain Array
         public int MinimumMountainRemovals(int[] nums)
         {
