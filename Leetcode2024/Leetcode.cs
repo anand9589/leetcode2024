@@ -559,7 +559,7 @@ namespace Leetcode2024
                 int n1 = numbers[index1];
                 int n2 = numbers[index2];
 
-                if(n1+n2==target) return new int[] { ++index1, ++index2 };
+                if (n1 + n2 == target) return new int[] { ++index1, ++index2 };
 
                 if (n1 + n2 < target)
                 {
@@ -567,7 +567,7 @@ namespace Leetcode2024
                 }
                 else
                 {
-                    index2++;   
+                    index2++;
                 }
             }
 
@@ -4670,6 +4670,107 @@ namespace Leetcode2024
             if (limit % i == 0) list.Add(i);
 
             return list;
+        }
+        #endregion
+
+        #region LinkedList Problems
+
+        #region 2. Add Two Numbers
+        public ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+        {
+            ListNode dummy = new ListNode();
+
+            int sum = l1.val + l2.val;
+
+            bool carry = sum > 9;
+
+
+            dummy.next = new ListNode(sum % 10);
+
+            ListNode temp = dummy.next;
+
+            while (l1.next != null && l2.next != null)
+            {
+                l1 = l1.next;
+                l2 = l2.next;
+
+                sum = l1.val + l2.val;
+
+                if (carry)
+                {
+                    sum++;
+                }
+
+                carry = sum > 9;
+
+                temp.next = new ListNode(sum % 10);
+                temp = temp.next;
+            }
+
+            updateLinkNode(ref l1, ref carry, ref temp);
+            updateLinkNode(ref l2, ref carry, ref temp);
+
+            if (carry)
+            {
+                temp.next = new ListNode(1);
+            }
+
+            return dummy.next;
+        }
+
+        private static void updateLinkNode(ref ListNode l1, ref bool carry, ref ListNode temp)
+        {
+            while (l1.next != null)
+            {
+                l1 = l1.next;
+                int sum = l1.val;
+
+                if (carry)
+                {
+                    sum++;
+                }
+
+                carry = sum > 9;
+                temp.next = new ListNode(sum % 10);
+                temp = temp.next;
+            }
+
+        }
+        #endregion
+
+        #region 141. Linked List Cycle
+        public bool HasCycle(ListNode head)
+        {
+            ListNode slow = head;
+            ListNode fast = head;
+
+            while (fast != null && fast.next != null)
+            {
+                slow = slow.next;
+                fast = fast.next.next;
+
+                if (slow == fast) return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        public ListNode BuildListNode(int[] nodes)
+        {
+            ListNode dummy = new ListNode(-1);
+
+            dummy.next = new ListNode(nodes[0]);
+
+            ListNode temp = dummy.next;
+
+            while (temp != null)
+            {
+
+            }
+
+            return dummy.next;
         }
         #endregion
 
