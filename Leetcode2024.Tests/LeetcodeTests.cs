@@ -23,13 +23,60 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 19. Remove Nth Node From End of List
+        [Test]
+        public void RemoveNthFromEndTest1()
+        {
+            int[] nodes = { 1, 2, 3, 4, 5 };
+
+            ListNode listNode = leetcode.BuildListNode(nodes);
+
+            var res = leetcode.RemoveNthFromEnd(listNode, 2);
+
+            //Assert.IsTrue(leetcode.CompareListNode(res, listNode));
+        }
+        //[Test]
+        //public void RemoveNthFromEndTest1()
+        //{
+        //    int[] nodes = { 1, 2, 3, 4, 5 };
+
+        //    ListNode listNode = leetcode.BuildListNode(nodes);
+
+        //    var res = leetcode.RemoveNthFromEnd(listNode, 2);
+
+        //    //Assert.IsTrue(leetcode.CompareListNode(res, listNode));
+        //}
+        [Test]
+        public void RemoveNthFromEndTest2()
+        {
+            int[] nodes = { 1 };
+
+            ListNode listNode = leetcode.BuildListNode(nodes);
+
+            var res = leetcode.RemoveNthFromEnd(listNode, 1);
+
+            //Assert.IsTrue(leetcode.CompareListNode(res, listNode));
+        }
+        [Test]
+        public void RemoveNthFromEndTest3()
+        {
+            int[] nodes = { 1, 2 };
+
+            ListNode listNode = leetcode.BuildListNode(nodes);
+
+            var res = leetcode.RemoveNthFromEnd(listNode, 1);
+
+            //Assert.IsTrue(leetcode.CompareListNode(res, listNode));
+        }
+        #endregion
+
         //2  7  11  15  19   21  26   27  35  41  45  49   57  59   63   72  92
         #region 167. Two Sum II - Input Array Is Sorted
         public void TwoSumTest1()
         {
-            int[] numbers = { 2, 7,  11,  15,  19,   21,  26,   27,  35,  41,  45,  49,   57,  59,   63,   72,  92 };
+            int[] numbers = { 2, 7, 11, 15, 19, 21, 26, 27, 35, 41, 45, 49, 57, 59, 63, 72, 92 };
             int target = 85;
-            var rr = leetcode.TwoSum(numbers,target);
+            var rr = leetcode.TwoSum(numbers, target);
 
         }
         #endregion
@@ -47,7 +94,7 @@ namespace Leetcode2024.Tests
         [Test]
         public void MaximumSubarraySumTest2()
         {
-            int[] nums = { 4,4,4 };
+            int[] nums = { 4, 4, 4 };
             int k = 3;
             int expected = 0;
             var actual = leetcode.MaximumSubarraySum(nums, k);

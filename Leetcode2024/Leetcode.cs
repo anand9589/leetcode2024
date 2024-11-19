@@ -4738,6 +4738,94 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 21. Merge Two Sorted Lists
+        public ListNode MergeTwoLists(ListNode list1, ListNode list2)
+        {
+            if (list1 == null && list2 == null) return null;
+
+            if (list1 == null) return list2;
+            if (list2 == null) return list1;
+
+
+            if (list1.val < list2.val)
+            {
+                return new ListNode(list1.val, MergeTwoLists(list1.next, list2));
+            }
+            return new ListNode(list2.val, MergeTwoLists(list1, list2.next));
+        }
+        #endregion
+
+        #region 19. Remove Nth Node From End of List
+        public ListNode RemoveNthFromEnd(ListNode head, int n)
+        {
+            ListNode dummy = new ListNode(-1, head);
+
+            ListNode fast = dummy.next;
+
+            int i = 0;
+            while (++i <= n)
+            {
+                fast = fast.next;
+            }
+            if (fast == null) return head.next;
+            ListNode slow = dummy.next;
+            while (fast.next != null)
+            {
+                slow = slow.next;
+                fast = fast.next;
+            }
+
+            slow.next = slow.next.next;
+
+            return dummy.next;
+        }
+        #endregion
+
+        #region 92. Reverse Linked List II
+        public ListNode ReverseBetween(ListNode head, int left, int right)
+        {
+            if (left == right) return head;
+
+            ListNode dummy = new ListNode(-1, head);
+
+            ListNode temp = dummy;
+            int i = 0;
+
+            while (i < left - 1)
+            {
+
+            }
+
+            //for (int i = 0; i < length; i++)
+            //{
+
+            //}
+
+            return dummy.next;
+        }
+        #endregion
+
+        #region 138. Copy List with Random Pointer
+        //public Node CopyRandomList(Node head)
+        //{
+        //    return head;
+        //}
+
+        //public class Node
+        //{
+        //    public int val;
+        //    public Node next { get; set; }
+        //    public Node random { get; set; }
+
+        //    public Node(int _val)
+        //    {
+        //        this.val = val;
+        //        next = null;
+        //        random = null;
+        //    }
+        //}
+        #endregion 
+
         #region 141. Linked List Cycle
         public bool HasCycle(ListNode head)
         {
@@ -4761,16 +4849,27 @@ namespace Leetcode2024
         {
             ListNode dummy = new ListNode(-1);
 
-            dummy.next = new ListNode(nodes[0]);
-
-            ListNode temp = dummy.next;
-
-            while (temp != null)
+            if (nodes.Length > 0)
             {
+                dummy.next = new ListNode(nodes[0]);
 
+                ListNode temp = dummy.next;
+                int i = 0;
+                while (++i < nodes.Length)
+                {
+                    temp.next = new ListNode(nodes[i]);
+                    temp = temp.next;
+                }
             }
-
             return dummy.next;
+        }
+
+        public bool CompareListNode(ListNode l1, ListNode l2)
+        {
+            if (l1 == null && l2 == null) return true;
+            if (l1 == null || l2 == null) return false;
+
+            return l1.val == l2.val && CompareListNode(l1.next, l2.next);
         }
         #endregion
 
