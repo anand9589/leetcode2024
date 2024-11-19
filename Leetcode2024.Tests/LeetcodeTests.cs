@@ -23,6 +23,17 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        //2  7  11  15  19   21  26   27  35  41  45  49   57  59   63   72  92
+        #region 167. Two Sum II - Input Array Is Sorted
+        public void TwoSumTest1()
+        {
+            int[] numbers = { 2, 7,  11,  15,  19,   21,  26,   27,  35,  41,  45,  49,   57,  59,   63,   72,  92 };
+            int target = 85;
+            var rr = leetcode.TwoSum(numbers,target);
+
+        }
+        #endregion
+
         #region 2461. Maximum Sum of Distinct Subarrays With Length K
         [Test]
         public void MaximumSubarraySumTest1()

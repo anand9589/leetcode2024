@@ -550,10 +550,29 @@ namespace Leetcode2024
         #endregion
 
         #region 167. Two Sum II - Input Array Is Sorted
-        //public int[] TwoSum(int[] numbers, int target)
-        //{
+        public int[] TwoSum(int[] numbers, int target)
+        {
+            int index1 = 0, index2 = numbers.Length - 1;
 
-        //}
+            while (index1 < index2)
+            {
+                int n1 = numbers[index1];
+                int n2 = numbers[index2];
+
+                if(n1+n2==target) return new int[] { ++index1, ++index2 };
+
+                if (n1 + n2 < target)
+                {
+                    index1++;
+                }
+                else
+                {
+                    index2++;   
+                }
+            }
+
+            return new int[] { index1, index2 };
+        }
         #endregion
 
         #region 172. Factorial Trailing Zeroes
@@ -3617,13 +3636,13 @@ namespace Leetcode2024
             int j = 1;
             long currSum = nums[i];
 
-            while (j < k + i && j< nums.Length)
+            while (j < k + i && j < nums.Length)
             {
                 if (map.ContainsKey(nums[j]))
                 {
                     int prevIndex = map[nums[j]];
 
-                    while (i<=prevIndex)
+                    while (i <= prevIndex)
                     {
                         currSum -= nums[i];
                         map.Remove(nums[i]);
@@ -3638,7 +3657,7 @@ namespace Leetcode2024
                 }
 
                 map[nums[j]] = j;
-                if (i + k == j+1)
+                if (i + k == j + 1)
                 {
                     sum = Math.Max(sum, currSum);
 
