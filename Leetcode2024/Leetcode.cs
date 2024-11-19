@@ -4781,6 +4781,38 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 82. Remove Duplicates from Sorted List II
+        public ListNode DeleteDuplicates(ListNode head)
+        {
+            if (head == null || head.next == null) return head;
+
+            ListNode dummy = new ListNode(-1, head);
+            ListNode temp = dummy.next;
+            ListNode prev = dummy;
+            while (temp != null)
+            {
+                if (temp.next != null && temp.val == temp.next.val)
+                {
+                    ListNode next = temp.next;
+                    while (next != null && temp.val == next.val)
+                    {
+                        next = next.next;
+                    }
+
+                    prev.next = next;
+                    //temp = prev.next;
+                }
+                else
+                {
+                    prev = temp;
+                }
+                temp = prev.next;
+            }
+
+            return dummy.next;
+        }
+        #endregion
+
         #region 92. Reverse Linked List II
         public ListNode ReverseBetween(ListNode head, int left, int right)
         {

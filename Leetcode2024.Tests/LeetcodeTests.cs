@@ -22,6 +22,21 @@ namespace Leetcode2024.Tests
             leetcode = new LeetCode();
         }
         #endregion
+        #region 82. Remove Duplicates from Sorted List II
+        [Test]
+        public void DeleteDuplicatesTest1()
+        {
+            int[] nodes = { 1, 2, 3, 3, 4, 4, 5 };
+            int[] expectedNodes = { 1, 2, 5 };
+
+            ListNode node = leetcode.BuildListNode(nodes);
+            ListNode expected = leetcode.BuildListNode(expectedNodes);
+
+            var actual = leetcode.DeleteDuplicates(node);
+
+            Assert.IsTrue(leetcode.CompareListNode(expected, actual));
+        }
+        #endregion
 
         #region 19. Remove Nth Node From End of List
         [Test]
