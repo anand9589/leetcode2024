@@ -23,6 +23,27 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 2461. Maximum Sum of Distinct Subarrays With Length K
+        [Test]
+        public void MaximumSubarraySumTest1()
+        {
+            int[] nums = { 1, 5, 4, 2, 9, 9, 9 };
+            int k = 3;
+            int expected = 15;
+            var actual = leetcode.MaximumSubarraySum(nums, k);
+            Assert.AreEqual(expected, actual);
+        }
+        [Test]
+        public void MaximumSubarraySumTest2()
+        {
+            int[] nums = { 4,4,4 };
+            int k = 3;
+            int expected = 0;
+            var actual = leetcode.MaximumSubarraySum(nums, k);
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
         #region 862. Shortest Subarray with Sum at Least K
 
 

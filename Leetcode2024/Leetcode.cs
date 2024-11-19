@@ -178,8 +178,8 @@ namespace Leetcode2024
             foreach (int price in prices)
             {
                 buy1 = Math.Min(buy1, price);
-                profit1 = Math.Max(profit1, price-buy1);
-                buy2 = Math.Min(buy2, price-profit2);
+                profit1 = Math.Max(profit1, price - buy1);
+                buy2 = Math.Min(buy2, price - profit2);
                 profit2 = Math.Max(profit2, price - buy2);
             }
 
@@ -547,6 +547,13 @@ namespace Leetcode2024
 
             return stringBuilder.ToString();
         }
+        #endregion
+
+        #region 167. Two Sum II - Input Array Is Sorted
+        //public int[] TwoSum(int[] numbers, int target)
+        //{
+
+        //}
         #endregion
 
         #region 172. Factorial Trailing Zeroes
@@ -3597,6 +3604,52 @@ namespace Leetcode2024
             }
 
             return currHeight;
+        }
+        #endregion
+
+        #region 2461. Maximum Sum of Distinct Subarrays With Length K
+        public long MaximumSubarraySum(int[] nums, int k)
+        {
+            if (k == 1) return nums.Max();
+            long sum = 0;
+            Dictionary<int, int> map = new Dictionary<int, int>() { { nums[0], 0 } };
+            int i = 0;
+            int j = 1;
+            long currSum = nums[i];
+
+            while (j < k + i && j< nums.Length)
+            {
+                if (map.ContainsKey(nums[j]))
+                {
+                    int prevIndex = map[nums[j]];
+
+                    while (i<=prevIndex)
+                    {
+                        currSum -= nums[i];
+                        map.Remove(nums[i]);
+                        i++;
+                    }
+
+                    currSum += nums[j];
+                }
+                else
+                {
+                    currSum += nums[j];
+                }
+
+                map[nums[j]] = j;
+                if (i + k == j+1)
+                {
+                    sum = Math.Max(sum, currSum);
+
+                    currSum -= nums[i];
+                    map.Remove(nums[i]);
+                    i++;
+                }
+                j++;
+            }
+
+            return sum;
         }
         #endregion
 
