@@ -3431,6 +3431,82 @@ namespace Leetcode2024
             foreach (var wall in walls)
             {
                 grid[wall[0]][wall[1]] = w;
+                count++;
+            }
+            Queue<(int x, int y)> q = new Queue<(int, int)>();
+            foreach (var guard in guards)
+            {
+                q.Enqueue((guard[0], guard[1]));
+                grid[guard[0]][guard[1]] = g;
+                count++;
+            }
+
+            while (q.Count > 0)
+            {
+                (int x, int y) = q.Dequeue();
+
+                int up = x;
+                int down = x;
+
+                int left = y;
+                int right = y;
+
+                while (--up >= 0 && (grid[up][y] == 0 || grid[up][y] == c))
+                {
+                    if (grid[up][y] == c) { continue; }
+                    grid[up][y] = c;
+                    count++;
+                }
+
+                while (++down < m && (grid[down][y] == 0 || grid[down][y] == c))
+                {
+                    if (grid[down][y] == c) continue;
+                    grid[down][y] = c;
+                    count++;
+                }
+
+                while (--left >= 0 && (grid[x][left] == 0 || grid[x][left] == c))
+                {
+                    if (grid[x][left] == c) continue;
+                    grid[x][left] = c;
+                    count++;    
+                }
+
+                while (++right < n && (grid[x][right] == 0 || grid[x][right] == c))
+                {
+                    if (grid[x][right] == c) continue;
+                    grid[x][right] = c;
+                    count++;
+                }
+            }
+
+            //for (int i = 0; i < m; i++)
+            //{
+            //    for (int j = 0; j < n; j++)
+            //    {
+            //        if (grid[i][j] == 0) count++;
+            //    }
+            //}
+
+            return m * n - count;
+        }
+        public int CountUnguarded_1(int m, int n, int[][] guards, int[][] walls)
+        {
+            int count = 0;
+
+            int[][] grid = new int[m][];
+            for (int i = 0; i < m; i++)
+            {
+                grid[i] = new int[n];
+            }
+
+            const int w = -1;
+            const int g = -2;
+            const int c = -3;
+
+            foreach (var wall in walls)
+            {
+                grid[wall[0]][wall[1]] = w;
             }
             Queue<(int x, int y)> q = new Queue<(int, int)>();
             foreach (var guard in guards)
