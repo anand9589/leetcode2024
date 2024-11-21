@@ -22,6 +22,61 @@ namespace Leetcode2024.Tests
             leetcode = new LeetCode();
         }
         #endregion
+
+
+        #region 2257. Count Unguarded Cells in the Grid
+        [Test]
+        public void CountUnguardedTest1()
+        {
+            int m = 4, n = 6;
+            int[][] guards = new int[][]
+            {
+                new int[] {0,0},
+                new int[] {1,1},
+                new int[] {2,3}
+            };
+            int[][] walls = new int[][]
+            {
+                new int[] {0,1},
+                new int[] {2,2},
+                new int[] {1,4}
+            };
+            int expected = 7;
+            var actual = leetcode.CountUnguarded(m,n, guards, walls);
+            Assert.AreEqual(expected, actual);
+        }
+        #endregion
+
+        #region 2516. Take K of Each Character From Left and Right
+        [Test]
+        public void TakeCharactersTest1()
+        {
+            var l = leetcode.TakeCharacters("aabaaaacaabc", 2);
+        }
+        #endregion
+
+        #region  61. Rotate List
+        [Test]
+        public void RotateRightTest1()
+        {
+            int[] nodes = { 1, 2, 3, 4, 5 };
+            int k = 2;
+            int[] expectedNodes = { 4, 5, 1, 2, 3 };
+
+            ListNode node = leetcode.BuildListNode(nodes);
+            ListNode expected = leetcode.BuildListNode(nodes);
+            var actual = leetcode.RotateRight(node, k);
+            Assert.IsTrue(leetcode.CompareListNode(expected, actual));
+        }
+        [Test]
+        public void RotateRightTest2()
+        {
+            int[] nodes = { 0, 1, 2 };
+            int[] expectedNodes = { 2, 0, 1 };
+            ListNode node = leetcode.BuildListNode(nodes);
+            var actual = leetcode.RotateRight(node, 4);
+        }
+        #endregion
         #region 82. Remove Duplicates from Sorted List II
         [Test]
         public void DeleteDuplicatesTest1()

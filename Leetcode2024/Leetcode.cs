@@ -1624,7 +1624,7 @@ namespace Leetcode2024
         //    foreach (var item in coins)
         //    {
         //        int count = 1;
-        //        for (int i = item; i <= amount; i += item)
+        //        for (int size = item; size <= amount; size += item)
         //        {
         //            dp[item] = count++;
         //        }
@@ -1869,7 +1869,7 @@ namespace Leetcode2024
             Constraints:
 
             2 <= timePoints.length <= 2 * 104
-            timePoints[i] is in the format "HH:MM".
+            timePoints[size] is in the format "HH:MM".
 
          */
 
@@ -2606,15 +2606,15 @@ namespace Leetcode2024
         //    int balance = 0;
         //    int start = 0;
 
-        //    for (int i = 0; i < expr.Length; i++)
+        //    for (int size = 0; size < expr.Length; size++)
         //    {
-        //        char ch = expr[i];
+        //        char ch = expr[size];
         //        if (ch == '(') balance++;
         //        else if (ch == ')') balance--;
         //        else if (ch == ',' && balance == 0)
         //        {
-        //            subExprs.Add(expr.Substring(start, i - start));
-        //            start = i + 1;
+        //            subExprs.Add(expr.Substring(start, size - start));
+        //            start = size + 1;
         //        }
         //    }
 
@@ -2645,12 +2645,12 @@ namespace Leetcode2024
 
         //    Stack<char> stack = new Stack<char>();
 
-        //    int i = -1;
+        //    int size = -1;
         //    char op = ' ';
         //    int testIOndex;
-        //    while (++i < expression.Length)
+        //    while (++size < expression.Length)
         //    {
-        //        char c = expression[i];
+        //        char c = expression[size];
 
         //        switch (c)
         //        {
@@ -2660,18 +2660,18 @@ namespace Leetcode2024
         //                break;
         //            case '!':
 
-        //                op = processString(expression.Substring(i + 2), out testIOndex);
-        //                i = testIOndex;
+        //                op = processString(expression.Substring(size + 2), out testIOndex);
+        //                size = testIOndex;
         //                break;
         //            case '|':
 
-        //                op = processString(expression.Substring(i + 2), out testIOndex);
-        //                i = testIOndex;
+        //                op = processString(expression.Substring(size + 2), out testIOndex);
+        //                size = testIOndex;
         //                break;
         //            case '&':
 
-        //                op = processString(expression.Substring(i + 2), out testIOndex);
-        //                i = testIOndex;
+        //                op = processString(expression.Substring(size + 2), out testIOndex);
+        //                size = testIOndex;
         //                break;
         //            case '(':
 
@@ -2690,18 +2690,18 @@ namespace Leetcode2024
         //private char processOr(string expression, int startIndex, out int processedIndex)
         //{
         //    char res = 'f';
-        //    int i = startIndex-1;
+        //    int size = startIndex-1;
 
-        //    while (++i < expression.Length)
+        //    while (++size < expression.Length)
         //    {
-        //        char c = expression[i];
+        //        char c = expression[size];
         //        switch (c)
         //        {
         //            case 't':
         //                res = 't';
         //                break;
         //            case '!':
-        //                char not = processNot(expression, i + 2, out processedIndex);
+        //                char not = processNot(expression, size + 2, out processedIndex);
 
         //                if (not == 't')
         //                {
@@ -2710,7 +2710,7 @@ namespace Leetcode2024
 
         //                break;
         //            case '|':
-        //                char or = processOr(expression, i + 2, out processedIndex);
+        //                char or = processOr(expression, size + 2, out processedIndex);
 
         //                if (or == 't')
         //                {
@@ -2718,7 +2718,7 @@ namespace Leetcode2024
         //                }
         //                break;
         //            case '&':
-        //                char and = processAnd(expression, i + 2, out processedIndex);
+        //                char and = processAnd(expression, size + 2, out processedIndex);
 
         //                if (and == 't')
         //                {
@@ -2730,23 +2730,23 @@ namespace Leetcode2024
         //        }
         //    }
 
-        //    processedIndex = i;
+        //    processedIndex = size;
         //    return res;
         //}
         //private char processNot(string expression, int startIndex, out int processedIndex)
         //{
         //    char res = 'f';
-        //    int i = startIndex;
+        //    int size = startIndex;
 
-        //    while (i < expression.Length)
+        //    while (size < expression.Length)
         //    {
-        //        char c = expression[i];
+        //        char c = expression[size];
         //        switch (c)
         //        {
         //            case 't':
         //                res = 't';
         //                break;
-        //            case 'i':
+        //            case 'size':
 
         //                break;
         //            default:
@@ -2754,23 +2754,23 @@ namespace Leetcode2024
         //        }
         //    }
 
-        //    processedIndex = i;
+        //    processedIndex = size;
         //    return res;
         //}
         //private char processAnd(string expression, int startIndex, out int processedIndex)
         //{
         //    char res = 'f';
-        //    int i = startIndex;
+        //    int size = startIndex;
 
-        //    while (i < expression.Length)
+        //    while (size < expression.Length)
         //    {
-        //        char c = expression[i];
+        //        char c = expression[size];
         //        switch (c)
         //        {
         //            case 't':
         //                res = 't';
         //                break;
-        //            case 'i':
+        //            case 'size':
 
         //                break;
         //            default:
@@ -2778,7 +2778,7 @@ namespace Leetcode2024
         //        }
         //    }
 
-        //    processedIndex = i;
+        //    processedIndex = size;
         //    return res;
         //}
         #endregion
@@ -2895,13 +2895,13 @@ namespace Leetcode2024
         #region 1371. Find the Longest Substring Containing Vowels in Even Counts
 
         /*
-            Given the string words, return the size of the longest substring containing each vowel an even number of times. That is, 'a', 'e', 'i', 'o', and 'u' must appear an even number of times. 
+            Given the string words, return the size of the longest substring containing each vowel an even number of times. That is, 'a', 'e', 'size', 'o', and 'u' must appear an even number of times. 
 
             Example 1:
 
             Input: words = "eleetminicoworoep"
             Output: 13
-            Explanation: The longest substring is "leetminicowor" which contains two each of the vowels: e, i and o and zero of the vowels: a and u.
+            Explanation: The longest substring is "leetminicowor" which contains two each of the vowels: e, size and o and zero of the vowels: a and u.
             Example 2:
 
             Input: words = "leetcodeisgreat"
@@ -2911,7 +2911,7 @@ namespace Leetcode2024
 
             Input: words = "bcbcbc"
             Output: 6
-            Explanation: In this case, the given string "bcbcbc" is the longest because all vowels: a, e, i, o and u appear zero times.
+            Explanation: In this case, the given string "bcbcbc" is the longest because all vowels: a, e, size, o and u appear zero times.
 
 
             Constraints:
@@ -3413,6 +3413,75 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2257. Count Unguarded Cells in the Grid
+        public int CountUnguarded(int m, int n, int[][] guards, int[][] walls)
+        {
+            int count = 0;
+
+            int[][] grid = new int[m][];
+            for (int i = 0; i < m; i++)
+            {
+                grid[i] = new int[n];
+            }
+
+            const int w = -1;
+            const int g = -2;
+            const int c = -3;
+
+            foreach (var wall in walls)
+            {
+                grid[wall[0]][wall[1]] = w;
+            }
+            Queue<(int x, int y)> q = new Queue<(int, int)>();
+            foreach (var guard in guards)
+            {
+                q.Enqueue((guard[0], guard[1]));
+                grid[guard[0]][guard[1]] = g;
+            }
+
+            while (q.Count > 0)
+            {
+                (int x, int y) = q.Dequeue();
+
+                int up = x;
+                int down = x;
+
+                int left = y;
+                int right = y;
+
+                while (--up >= 0 && (grid[up][y] == 0 || grid[up][y] == c))
+                {
+                    grid[up][y] = c;
+                }
+
+                while (++down < m && (grid[down][y] == 0 || grid[down][y] == c))
+                {
+                    grid[down][y] = c;
+                }
+
+                while (--left >= 0 && (grid[x][left] == 0 || grid[x][left] == c))
+                {
+                    grid[x][left] = c;
+                }
+
+                while (++right < n && (grid[x][right] == 0 || grid[x][right] == c))
+                {
+                    grid[x][right] = c;
+                }
+            }
+
+            for (int i = 0; i < m; i++)
+            {
+                for (int j = 0; j < n; j++)
+                {
+                    if (grid[i][j] == 0) count++;
+                }
+            }
+
+            return count;
+        }
+        #endregion
+
         #region 2275. Largest Combination With Bitwise AND Greater Than Zero
 
         public int LargestCombination(int[] candidates)
@@ -3818,6 +3887,117 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2516. Take K of Each Character From Left and Right
+        public int TakeCharacters(string s, int k)
+        {
+            int[] count = new int[3];
+            int n = s.Length;
+
+            // Count total occurrences
+            foreach (char c in s)
+            {
+                count[c - 'a']++;
+            }
+
+            // Check if we have enough characters
+            for (int i = 0; i < 3; i++)
+            {
+                if (count[i] < k) return -1;
+            }
+
+            int[] window = new int[3];
+            int left = 0, maxWindow = 0;
+
+            // Find the longest window that leaves k of each character outside
+            for (int right = 0; right < n; right++)
+            {
+                window[s[right] - 'a']++;
+
+                // Shrink window if we take too many characters
+                while (
+                    left <= right &&
+                    (count[0] - window[0] < k ||
+                        count[1] - window[1] < k ||
+                        count[2] - window[2] < k)
+                )
+                {
+                    window[s[left] - 'a']--;
+                    left++;
+                }
+
+                maxWindow = Math.Max(maxWindow, right - left + 1);
+            }
+
+            return n - maxWindow;
+        }
+        public int TakeCharacters_2(string s, int k)
+        {
+            Dictionary<char, int> map = new Dictionary<char, int>()
+            {
+                {'a', 0},
+                {'b', 0},
+                {'c', 0}
+            };
+
+            foreach (char c in s)
+            {
+                map[c]++;
+            }
+
+            if (map['a'] < k || map['b'] < k || map['c'] < k) return -1;
+
+            int result = s.Length;
+
+            int left = 0;
+
+            Dictionary<char, int> currentCount = new Dictionary<char, int> { { 'a', 0 }, { 'b', 0 }, { 'c', 0 } };
+
+            for (int right = 0; right < s.Length; right++)
+            {
+                char rightChar = s[right];
+                currentCount[rightChar]++;
+
+                while (map['a'] - currentCount['a'] >= k &&
+                       map['b'] - currentCount['b'] >= k &&
+                       map['c'] - currentCount['c'] >= k)
+                {
+                    result = Math.Min(result, right - left + 1);
+                    char leftChar = s[left];
+                    currentCount[leftChar]--;
+                    left++;
+                }
+            }
+
+            return s.Length - result;
+        }
+
+        //public int TakeCharacters_Helper(string s, int k, int left, int right, int countA, int countB, int countC)
+        //{
+        //    if (countA >= k && countB >= k && countC >= k) return 0;
+
+        //    int currCountA = countA, currCountB = countB, currCountC = countC;
+
+        //    switch (s[left])
+        //    {
+        //        case 'a':
+        //            currCountA++;
+        //            break;
+        //        case 'b':
+        //            currCountB++;
+        //            break;
+        //        case 'c':
+        //            currCountC++;
+        //            break;
+        //        default:
+        //            break;
+        //    }
+
+        //    int leftCount = TakeCharacters_Helper(s, k, left, right, currCountA, currCountB, currCountC);
+
+        //    return 1 + Math.Min(TakeCharacters_Helper(s, k, left + 1, right, countA, countB, countC), TakeCharacters_Helper(s, k, left, right - 1, countA, countB, countC));
+        //}
+        #endregion
+
         #region 2563. Count the Number of Fair Pairs
         public long CountFairPairs(int[] nums, int lower, int upper)
         {
@@ -4059,21 +4239,21 @@ namespace Leetcode2024
                 if (!found) return j - 1;
             }
 
-            //for (int i = 0; i < grid.Length; i++)
+            //for (int size = 0; size < grid.Length; size++)
             //{
-            //    if (grid[i][0] < grid[i][1])
+            //    if (grid[size][0] < grid[size][1])
             //    {
-            //        result = Math.Max(result, dp_416[i][1] + 1);
+            //        result = Math.Max(result, dp_416[size][1] + 1);
             //    }
 
-            //    if (i - 1 >= 0 && grid[i][0] < grid[i - 1][1])
+            //    if (size - 1 >= 0 && grid[size][0] < grid[size - 1][1])
             //    {
-            //        result = Math.Max(result, dp_416[i - 1][1] + 1);
+            //        result = Math.Max(result, dp_416[size - 1][1] + 1);
             //    }
 
-            //    if (i + 1 < grid.Length && grid[i][0] < grid[i + 1][1])
+            //    if (size + 1 < grid.Length && grid[size][0] < grid[size + 1][1])
             //    {
-            //        result = Math.Max(result, dp_416[i + 1][1] + 1);
+            //        result = Math.Max(result, dp_416[size + 1][1] + 1);
             //    }
             //}
             return 0;
@@ -4781,6 +4961,58 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region  61. Rotate List
+        public ListNode RotateRight(ListNode head, int k)
+        {
+            if (head == null) return null;
+
+            ListNode dummy = new ListNode(-1, head);
+
+            ListNode fast = dummy.next;
+
+            int size = 0;
+            while (size < k && fast != null)
+            {
+                fast = fast.next;
+                size++;
+            }
+
+            if (size < k)
+            {
+                k %= size;
+
+                size = 0;
+                fast = dummy.next;
+                while (size < k && fast != null)
+                {
+                    fast = fast.next;
+                    size++;
+                }
+            }
+
+            if (fast != null)
+            {
+                ListNode slow = dummy.next;
+
+                while (fast.next != null)
+                {
+                    fast = fast.next;
+                    slow = slow.next;
+                }
+
+                //slow.next = null;
+                fast.next = dummy.next;
+
+                ListNode res = slow.next;
+
+                slow.next = null;
+                return res;
+            }
+
+            return dummy.next;
+        }
+        #endregion
+
         #region 82. Remove Duplicates from Sorted List II
         public ListNode DeleteDuplicates(ListNode head)
         {
@@ -4828,7 +5060,7 @@ namespace Leetcode2024
 
             }
 
-            //for (int i = 0; i < length; i++)
+            //for (int size = 0; size < length; size++)
             //{
 
             //}
