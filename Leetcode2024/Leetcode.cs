@@ -80,6 +80,224 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 30. Substring with Concatenation of All Words
+        public IList<int> FindSubstring(string s, string[] words)
+        {
+            HashSet<int> result = new HashSet<int>();
+            int wLen = words[0].Length;
+            int requiredLength = words.Length * wLen;
+
+            if (requiredLength <= s.Length)
+            {
+                Dictionary<string, int> map = new Dictionary<string, int>();
+                foreach (var word in words)
+                {
+                    if (map.ContainsKey(word))
+                    {
+                        map[word]++;
+                    }
+                    else
+                    {
+                        map[word] = 1;
+                    }
+                }
+                int i = 0;
+
+                while (i < s.Length - requiredLength + 1)
+                {
+                    if (result.Contains(i)) { i++; continue; }
+                    string curWord = s.Substring(i, wLen);
+                    if (map.ContainsKey(curWord))
+                    {
+
+                        if (allWordsFound(s.Substring(i, requiredLength), wLen, new Dictionary<string, int>(map)))
+                        {
+                            result.Add(i);
+                            if (i + requiredLength + wLen <= s.Length)
+                            {
+                                int nextIndex = i + requiredLength;
+                                string nextWord = s.Substring(nextIndex, wLen);
+                                while (nextWord == curWord)
+                                {
+                                    result.Add(nextIndex - i - wLen);
+                                    if (nextIndex + wLen <= s.Length)
+                                    {
+                                        curWord = nextWord;
+                                        nextIndex += wLen;
+                                        nextWord = s.Substring(nextIndex, wLen);
+                                    }
+                                    else
+                                    {
+                                        nextWord = "";
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+
+                    i++;
+                }
+            }
+
+            return result.ToList();
+        }
+
+        private bool allWordsFound(string s, int len, Dictionary<string, int> map)
+        {
+            int index = 0;
+
+            while (index + len <= s.Length)
+            {
+                string str = s.Substring(index, len);
+                if (!map.ContainsKey(str) || map[str] == 0) return false;
+                map[str]--;
+                index += len;
+            }
+            return true;
+        }
+
+        public IList<int> FindSubstring1(string s, string[] words)
+        {
+            List<int> result = new List<int>();
+            int wLen = words[0].Length;
+            int requiredLength = words.Length * wLen;
+
+            if (requiredLength <= s.Length)
+            {
+                Dictionary<string, int> map = new Dictionary<string, int>();
+                foreach (var word in words)
+                {
+                    if (map.ContainsKey(word))
+                    {
+                        map[word]++;
+                    }
+                    else
+                    {
+                        map[word] = 1;
+                    }
+                }
+                int i = 0;
+
+                while (i < s.Length - requiredLength + 1)
+                {
+                    var cloneDictionary = new Dictionary<string, int>(map);
+
+                    bool found = true;
+                    int j = 0;
+
+                    while (j < requiredLength && i + j + wLen <= s.Length)
+                    {
+                        string e = s.Substring(i + j, wLen);
+                        if (cloneDictionary.ContainsKey(e) && cloneDictionary[e] > 0)
+                        {
+
+                            j += wLen;
+                            cloneDictionary[e]--;
+                        }
+                        else
+                        {
+                            found = false;
+                            break;
+                        }
+                    }
+
+                    if (found && j == requiredLength)
+                    {
+                        result.Add(i);
+                    }
+
+                    i++;
+                }
+            }
+
+            return result;
+        }
+        //public IList<int> FindSubstring(string s, string[] words)
+        //{
+        //    List<int> result = new List<int>();
+        //    HashSet<int> indexes = new HashSet<int>();
+        //    int wLen = words[0].Length;
+        //    int requiredLength = words.Length * wLen;
+
+        //    if (requiredLength <= s.Length)
+        //    {
+        //        Dictionary<string, int> map = new Dictionary<string, int>();
+        //        foreach (var word in words)
+        //        {
+        //            if (map.ContainsKey(word))
+        //            {
+        //                map[word]++;
+        //            }
+        //            else
+        //            {
+        //                map[word] = 1;
+        //            }
+        //        }
+        //        int i = -1;
+
+        //        while (++i <= s.Length - requiredLength)
+        //        {
+        //            if (indexes.Contains(i)) { continue; }
+
+        //            string curWord = s.Substring(i, wLen);
+
+        //            if (map.ContainsKey(curWord))
+        //            {
+        //                int startIndex = i;
+
+        //                var cloneDictionary = new Dictionary<string, int>(map);
+        //                int j = 0;
+        //                while (startIndex < s.Length - requiredLength)
+        //                {
+
+        //                    bool found = true;
+
+        //                    while (j < requiredLength && startIndex + j + wLen < s.Length)
+        //                    {
+        //                        string e = s.Substring(i + j, wLen);
+        //                        if (cloneDictionary.ContainsKey(e) && cloneDictionary[e] > 0)
+        //                        {
+
+        //                            j += wLen;
+        //                            cloneDictionary[e]--;
+        //                        }
+        //                        else
+        //                        {
+        //                            found = false;
+        //                            break;
+        //                        }
+        //                    }
+
+        //                    if (found && j == requiredLength)
+        //                    {
+        //                        indexes.Add(i);
+        //                        //startIndex = i + wLen;
+
+        //                        ////cloneDictionary[curWord]++;
+
+        //                        //string nextWord = s.Substring(j + startIndex, wLen);
+
+        //                        //while (nextWord == curWord)
+        //                        //{
+        //                        //    indexes.Add(startIndex);
+        //                        //    startIndex += wLen;
+        //                        //    curWord = s.Substring()
+        //                        //}
+
+        //                    }
+
+        //                }
+        //            }
+        //            i++;
+        //        }
+        //    }
+
+        //    return result;
+        //}
+        #endregion
+
         #region 55. Jump Game
         public bool CanJump(int[] nums)
         {
@@ -727,6 +945,167 @@ namespace Leetcode2024
                 }
 
             }
+        }
+        #endregion
+
+        #region 207. Course Schedule
+        public bool CanFinish(int numCourses, int[][] prerequisites)
+        {
+            int[] nodes = new int[numCourses];
+            Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+            for (int i = 0; i < numCourses; i++)
+            {
+                map[i] = new List<int>();
+                nodes[i] = 1;
+            }
+
+            foreach (int[] prerequisite in prerequisites)
+            {
+                nodes[prerequisite[0]]++;
+                map[prerequisite[1]].Add(prerequisite[0]);
+            }
+            Queue<int> queue = new Queue<int>();
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (nodes[i] == 1)
+                {
+                    queue.Enqueue(i);
+                }
+            }
+
+            while (queue.Count > 0)
+            {
+                int key = queue.Dequeue();
+                nodes[key] = 0;
+                foreach (int val in map[key])
+                {
+                    if (nodes[val] <= 1) continue;
+                    nodes[val]--;
+                    if (nodes[val] == 1)
+                    {
+                        queue.Enqueue(val);
+                    }
+                }
+            }
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (nodes[i] > 0) return false;
+            }
+
+            return true;
+        }
+        public bool CanFinish_1(int numCourses, int[][] prerequisites)
+        {
+
+            int[] visited = new int[numCourses];
+
+            Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                map[i] = new List<int>();
+                //visited[i] = -1;
+            }
+
+            foreach (var pre in prerequisites)
+            {
+                map[pre[0]].Add(pre[1]);
+            }
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (visited[i] == 0)
+                {
+                    visited[i] = -1;
+                    if (!CanFinish_DFS_1(i, map, visited)) { return false; }
+                }
+            }
+
+            return true;
+
+        }
+
+        private bool CanFinish_DFS_1(int key, Dictionary<int, List<int>> map, int[] visited)
+        {
+            bool processed = true;
+            if (map[key].Count > 0)
+            {
+                foreach (var next in map[key])
+                {
+                    if (visited[next] == 1) continue;
+
+                    if (visited[next] == -1)
+                    {
+                        processed = false;
+                    }
+                    else
+                    {
+                        visited[next] = -1;
+                        processed = CanFinish_DFS_1(next, map, visited);
+                    }
+                    if (!processed) break;
+                }
+            }
+            if (processed)
+            {
+                visited[key] = 1;
+            }
+            return processed;
+        }
+        #endregion
+
+        #region 210. Course Schedule II
+        public int[] FindOrder(int numCourses, int[][] prerequisites)
+        {
+            int[] order = new int[numCourses];
+            int[] nodes = new int[numCourses];
+            Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                nodes[i] = 1;
+                map[i] = new List<int>();
+            }
+
+            foreach (var prerequisite in prerequisites)
+            {
+                nodes[prerequisite[0]]++;
+                map[prerequisite[1]].Add(prerequisite[0]);
+            }
+
+            Queue<int> queue = new Queue<int>();
+
+            for (int i = 0; i < numCourses; i++)
+            {
+                if (nodes[i] == 1)
+                {
+                    queue.Enqueue(i);
+                }
+            }
+            int nodeFound = 0;
+            while (queue.Count>0)
+            {
+                int key = queue.Dequeue();
+                nodes[key] = 0;
+                order[nodeFound] = key;
+                nodeFound++;
+
+                foreach (var edge in map[key])
+                {
+                    if (nodes[edge] <= 1) continue;
+
+                    nodes[edge]--;
+
+                    if (nodes[edge] == 1)
+                    {
+                        queue.Enqueue(edge);
+                    }
+                }
+            }
+
+            if (nodeFound < numCourses) return new int[0];
+            return order;
         }
         #endregion
 
@@ -1621,12 +2000,12 @@ namespace Leetcode2024
         //{
         //    int[] dp = new int[amount + 1];
         //    Array.Fill(dp, int.MaxValue);
-        //    foreach (var item in coins)
+        //    foreach (var next in coins)
         //    {
         //        int count = 1;
-        //        for (int size = item; size <= amount; size += item)
+        //        for (int size = next; size <= amount; size += next)
         //        {
-        //            dp[item] = count++;
+        //            dp[next] = count++;
         //        }
         //    }
 
@@ -1964,12 +2343,12 @@ namespace Leetcode2024
             Implement the MyCircularDeque_V1 class:
 
             MyCircularDeque_V1(int k) Initializes the deque with a maximum size of k.
-            boolean insertFront() Adds an item at the front of Deque. Returns true if the operation is successful, or false otherwise.
-            boolean insertLast() Adds an item at the rear of Deque. Returns true if the operation is successful, or false otherwise.
-            boolean deleteFront() Deletes an item from the front of Deque. Returns true if the operation is successful, or false otherwise.
-            boolean deleteLast() Deletes an item from the rear of Deque. Returns true if the operation is successful, or false otherwise.
-            int getFront() Returns the front item from the Deque. Returns -1 if the deque is empty.
-            int getRear() Returns the last item from Deque. Returns -1 if the deque is empty.
+            boolean insertFront() Adds an next at the front of Deque. Returns true if the operation is successful, or false otherwise.
+            boolean insertLast() Adds an next at the rear of Deque. Returns true if the operation is successful, or false otherwise.
+            boolean deleteFront() Deletes an next from the front of Deque. Returns true if the operation is successful, or false otherwise.
+            boolean deleteLast() Deletes an next from the rear of Deque. Returns true if the operation is successful, or false otherwise.
+            int getFront() Returns the front next from the Deque. Returns -1 if the deque is empty.
+            int getRear() Returns the last next from Deque. Returns -1 if the deque is empty.
             boolean isEmpty() Returns true if the deque is empty, or false otherwise.
             boolean isFull() Returns true if the deque is full, or false otherwise.
 
@@ -2512,6 +2891,36 @@ namespace Leetcode2024
             if (root1 == null || root2 == null || root1.val != root2.val) return false;
 
             return (FlipEquiv(root1.left, root2.right) && FlipEquiv(root1.right, root2.left)) || (FlipEquiv(root1.left, root2.left) && FlipEquiv(root1.right, root2.right));
+        }
+        #endregion
+
+        #region 1072. Flip Columns For Maximum Number of Equal Rows
+        public int MaxEqualRowsAfterFlips(int[][] matrix)
+        {
+            int result = 0;
+
+            Dictionary<string, int> patternFrequency = new Dictionary<string, int>();
+
+            foreach (var row in matrix)
+            {
+                var xorArray = normalizeRow(row);
+                string pattern = string.Join(",", xorArray);
+                if (patternFrequency.ContainsKey(pattern))
+                {
+                    patternFrequency[pattern]++;
+                }
+                else
+                {
+                    patternFrequency[pattern] = 1;
+                }
+            }
+
+            return patternFrequency.Values.Max();
+        }
+        private int[] normalizeRow(int[] row)
+        {
+            int first = row[0];
+            return row.Select(x => x ^ first).ToArray();
         }
         #endregion
 
@@ -3469,7 +3878,7 @@ namespace Leetcode2024
                 {
                     if (grid[x][left] == c) continue;
                     grid[x][left] = c;
-                    count++;    
+                    count++;
                 }
 
                 while (++right < n && (grid[x][right] == 0 || grid[x][right] == c))
@@ -4334,6 +4743,42 @@ namespace Leetcode2024
             //}
             return 0;
         }
+        #endregion
+
+        #region 2762. Continuous Subarrays
+        public long ContinuousSubarrays(int[] nums)
+        {
+            int left = 0;
+            long result = 0;
+            int maxVal = nums[0];
+            int minVal = nums[0];
+
+            for (int right = 0; right < nums.Length; right++)
+            {
+                // Update the max and min values in the current window
+                maxVal = Math.Max(maxVal, nums[right]);
+                minVal = Math.Min(minVal, nums[right]);
+
+                // Shrink the window if the condition is violated
+                while (maxVal - minVal > 2)
+                {
+                    left++;
+                    maxVal = int.MinValue;
+                    minVal = int.MaxValue;
+                    for (int i = left; i <= right; i++)
+                    {
+                        maxVal = Math.Max(maxVal, nums[i]);
+                        minVal = Math.Min(minVal, nums[i]);
+                    }
+                }
+
+                // Add the count of subarrays ending at `right`
+                result += (right - left + 1);
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region 2824. Count Pairs Whose Sum is Less than Target
