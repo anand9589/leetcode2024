@@ -235,32 +235,32 @@ namespace Leetcode2024
         //                map[word] = 1;
         //            }
         //        }
-        //        int i = -1;
+        //        int row = -1;
 
-        //        while (++i <= s.Length - requiredLength)
+        //        while (++row <= s.Length - requiredLength)
         //        {
-        //            if (indexes.Contains(i)) { continue; }
+        //            if (indexes.Contains(row)) { continue; }
 
-        //            string curWord = s.Substring(i, wLen);
+        //            string curWord = s.Substring(row, wLen);
 
         //            if (map.ContainsKey(curWord))
         //            {
-        //                int startIndex = i;
+        //                int startIndex = row;
 
         //                var cloneDictionary = new Dictionary<string, int>(map);
-        //                int j = 0;
+        //                int col = 0;
         //                while (startIndex < s.Length - requiredLength)
         //                {
 
         //                    bool found = true;
 
-        //                    while (j < requiredLength && startIndex + j + wLen < s.Length)
+        //                    while (col < requiredLength && startIndex + col + wLen < s.Length)
         //                    {
-        //                        string e = s.Substring(i + j, wLen);
+        //                        string e = s.Substring(row + col, wLen);
         //                        if (cloneDictionary.ContainsKey(e) && cloneDictionary[e] > 0)
         //                        {
 
-        //                            j += wLen;
+        //                            col += wLen;
         //                            cloneDictionary[e]--;
         //                        }
         //                        else
@@ -270,14 +270,14 @@ namespace Leetcode2024
         //                        }
         //                    }
 
-        //                    if (found && j == requiredLength)
+        //                    if (found && col == requiredLength)
         //                    {
-        //                        indexes.Add(i);
-        //                        //startIndex = i + wLen;
+        //                        indexes.Add(row);
+        //                        //startIndex = row + wLen;
 
         //                        ////cloneDictionary[curWord]++;
 
-        //                        //string nextWord = s.Substring(j + startIndex, wLen);
+        //                        //string nextWord = s.Substring(col + startIndex, wLen);
 
         //                        //while (nextWord == curWord)
         //                        //{
@@ -290,12 +290,88 @@ namespace Leetcode2024
 
         //                }
         //            }
-        //            i++;
+        //            row++;
         //        }
         //    }
 
         //    return result;
         //}
+        #endregion
+
+        #region 36. Valid Sudoku
+        public bool IsValidSudoku(char[][] board)
+        {
+            for (int row = 0; row < board.Length; row++)
+            {
+                for (int col = 0; col < board.Length; col++)
+                {
+                    if (board[row][col] == '.' || (
+                        validInCol(board, col, board[row][col], row)
+                        && validInRow(board, row, board[row][col], col)
+                        && validInGrid(board, row, col, board[row][col]))) continue;
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool validInRow(char[][] board, int row, char c, int colIndex)
+        {
+            int col = -1;
+
+            while (++col < colIndex)
+            {
+                if (board[row][col] == c) return false;
+
+            }
+            while (++col < board.Length)
+            {
+                if (board[row][col] == c) return false;
+            }
+
+            return true;
+        }
+
+        private bool validInCol(char[][] board, int col, char c, int rowIndex)
+        {
+            int row = -1;
+
+            while (++row < rowIndex)
+            {
+                if (board[row][col] == c) return false;
+
+            }
+            while (++row < board.Length)
+            {
+                if (board[row][col] == c) return false;
+            }
+
+            return true;
+        }
+
+        private bool validInGrid(char[][] board, int row, int col, char c)
+        {
+            int rowStart = row < 3 ? 0 : row < 6 ? 3 : 6;
+            int rowEnd = rowStart + 3;
+            int colStart = col < 3 ? 0 : col < 6 ? 3 : 6;
+            int colEnd = colStart + 3;
+
+            for (int r = rowStart; r < rowEnd; r++)
+            {
+                for (int cc = colStart; cc < colEnd; cc++)
+                {
+                    if (r == row && cc == col) continue;
+
+                    if (board[r][cc] == c) return false;
+                }
+            }
+
+            return true;
+        }
+
+
         #endregion
 
         #region 55. Jump Game
@@ -1005,7 +1081,7 @@ namespace Leetcode2024
             for (int i = 0; i < numCourses; i++)
             {
                 map[i] = new List<int>();
-                //visited[i] = -1;
+                //visited[row] = -1;
             }
 
             foreach (var pre in prerequisites)
@@ -1084,7 +1160,7 @@ namespace Leetcode2024
                 }
             }
             int nodeFound = 0;
-            while (queue.Count>0)
+            while (queue.Count > 0)
             {
                 int key = queue.Dequeue();
                 nodes[key] = 0;
@@ -3641,6 +3717,54 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1861. Rotating the Box
+        public char[][] RotateTheBox(char[][] box)
+        {
+            char[][] rotatedBox = new char[box[0].Length][];
+            for (int row = 0; row < box[0].Length; row++)
+            {
+                rotatedBox[row] = new char[box.Length];
+                for (int col = 0; col < box.Length; col++)
+                {
+                    rotatedBox[row][col] = box[box.Length - col - 1][row];
+                }
+            }
+
+            for (int col = 0; col < rotatedBox[0].Length; col++)
+            {
+                Queue<int> q = new Queue<int>();
+
+                for (int row = rotatedBox.Length - 1; row >= 0; row--)
+                {
+                    char ch = rotatedBox[row][col];
+
+                    switch (ch)
+                    {
+                        case '#':
+                            if (q.Count > 0)
+                            {
+                                int i = q.Dequeue();
+                                rotatedBox[i][col] = '#';
+                                rotatedBox[row][col] = '.';
+                                q.Enqueue(row);
+                            }
+                            break;
+                        case '*':
+                            q.Clear();
+                            break;
+                        default:
+                            q.Enqueue(row);
+                            break;
+                    }
+                }
+
+            }
+
+
+            return rotatedBox;
+        }
+        #endregion
+
         #region 1957. Delete Characters to Make Fancy String
         public string MakeFancyString(string s)
         {
@@ -3889,11 +4013,11 @@ namespace Leetcode2024
                 }
             }
 
-            //for (int i = 0; i < m; i++)
+            //for (int row = 0; row < m; row++)
             //{
-            //    for (int j = 0; j < n; j++)
+            //    for (int col = 0; col < n; col++)
             //    {
-            //        if (grid[i][j] == 0) count++;
+            //        if (grid[row][col] == 0) count++;
             //    }
             //}
 

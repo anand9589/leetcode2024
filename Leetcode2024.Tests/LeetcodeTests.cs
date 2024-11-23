@@ -23,7 +23,39 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 1861. Rotating the Box
+        [Test]
+        public void RotateTheBoxTest1()
+        {
+            char[][] box = new char[][]{
+                new char[]{'#','#','*','.','*','.' },
+                new char[]{'#','#','#','*','.','.'},
+                new char[]{'#','#','#','.','#','.' }
+            };
 
+            var leet = leetcode.RotateTheBox(box);
+
+        }
+        #endregion
+
+        #region 36. Valid Sudoku
+        [Test]
+        public void ValidSudokuTest()
+        {
+            string input = "\"3\",\".\",\".\",\".\",\".\",\"4\",\".\",\".\",\".\"],[\".\",\".\",\".\",\".\",\"1\",\".\",\"8\",\".\",\".\"],[\".\",\"7\",\"2\",\".\",\".\",\".\",\".\",\".\",\".\"],[\".\",\".\",\"5\",\".\",\".\",\".\",\".\",\".\",\".\"],[\".\",\"4\",\".\",\".\",\".\",\".\",\".\",\".\",\".\"],[\".\",\".\",\".\",\".\",\".\",\".\",\"3\",\".\",\".\"],[\".\",\".\",\".\",\".\",\".\",\".\",\".\",\".\",\"1\"],[\"1\",\"3\",\".\",\".\",\".\",\"5\",\".\",\".\",\".\"],[\".\",\".\",\".\",\".\",\"5\",\".\",\".\",\"2\",\".\"";
+            string[] rows = input.Split("],[");
+            char[][] board = new char[rows.Length][];
+
+            for (int i = 0; i < rows.Length; i++)
+            {
+                board[i] = rows[i].Split(",").Select(s => s[1]).ToArray();
+            }
+
+            var k = leetcode.IsValidSudoku(board);
+
+            Assert.IsFalse(k);
+        }
+        #endregion
         #region 207. Course Schedule
         [Test]
         public void CanFinishTest()
