@@ -80,6 +80,95 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 23. Merge k Sorted Lists
+        public ListNode MergeKLists(ListNode[] lists)
+        {
+
+            return MergeKListDivide(lists, 0, lists.Length - 1);
+        }
+
+        private ListNode MergeKListDivide(ListNode[] lists, int low, int high)
+        {
+            if (low > high) return null;
+            if (low == high) return lists[low];
+
+            int mid = (low + high) / 2;
+
+            ListNode l1 = MergeKListDivide(lists, low, mid);
+            ListNode l2 = MergeKListDivide(lists, mid + 1, high);
+
+            return MergeKListConquer(l1, l2);
+        }
+
+        private ListNode MergeKListConquer(ListNode l1, ListNode l2)
+        {
+            ListNode dummy = new ListNode(-1);
+            ListNode temp = dummy;
+            while (l1 != null && l2 != null)
+            {
+                if (l1.val <= l2.val)
+                {
+                    temp.next = l1;
+                    l1 = l1.next;
+                }
+                else
+                {
+                    temp.next = l2;
+                    l2 = l2.next;
+                }
+                temp = temp.next;
+            }
+            update(ref l1, ref temp);
+            update(ref l2, ref temp);
+            return dummy.next;
+        }
+
+        private static void update(ref ListNode l1, ref ListNode temp)
+        {
+            while (l1 != null)
+            {
+                temp.next = l1;
+                l1 = l1.next;
+                temp = temp.next;
+            }
+        }
+
+        public ListNode MergeKLists1(ListNode[] lists)
+        {
+            int len = lists.Length;
+            ListNode dummy = new ListNode(-1);
+
+            ListNode temp = dummy;
+            PriorityQueue<ListNode, int> pq = new PriorityQueue<ListNode, int>();
+
+            foreach (var item in lists)
+            {
+                ListNode t = item;
+                if (t != null)
+                {
+                    pq.Enqueue(t, t.val);
+                }
+            }
+
+            while (pq.Count > 0)
+            {
+
+                temp.next = pq.Dequeue();
+
+                temp = temp.next;
+
+                if (temp.next != null)
+                {
+                    pq.Enqueue(temp.next, temp.next.val);
+
+                    temp.next = null;
+                }
+            }
+
+            return dummy.next;
+        }
+        #endregion
+
         #region 30. Substring with Concatenation of All Words
         public IList<int> FindSubstring(string s, string[] words)
         {
@@ -481,6 +570,35 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 124. Binary Tree Maximum Path Sum
+        int maxPathSum = int.MinValue;
+        public int MaxPathSum(TreeNode root)
+        {
+            MaxPathSum_Helper(root);
+
+            return maxPathSum;
+        }
+
+
+        public int MaxPathSum_Helper(TreeNode root)
+        {
+            if (root == null) return 0;
+
+            int currSum = root.val;
+
+            int leftSubTree = MaxPathSum_Helper(root.left);
+            int rightSubTree = MaxPathSum_Helper(root.right);
+
+
+            currSum = Math.Max(currSum, currSum + Math.Max(leftSubTree, rightSubTree));
+
+            int sum = root.val + leftSubTree + rightSubTree;
+            maxPathSum = Math.Max(sum, maxPathSum);
+            maxPathSum = Math.Max(currSum, maxPathSum);
+            return currSum;
+        }
+        #endregion
+
         #region 125. Valid Palindrome
         public bool IsPalindrome(string s)
         {
@@ -514,6 +632,41 @@ namespace Leetcode2024
                 right--;
             }
             return true;
+        }
+        #endregion
+
+        #region 128. Longest Consecutive Sequence
+        public int LongestConsecutive(int[] nums)
+        {
+            if (nums.Length == 0) return 0;
+
+            int longestStreak = 1;
+            if (nums.Length > 1)
+            {
+                HashSet<int> set = new HashSet<int>();
+                foreach (int n in nums)
+                {
+                    set.Add(n);
+                }
+
+                foreach (int num in nums)
+                {
+                    if (set.Contains(num - 1)) continue;
+
+                    int currStreak = 1;
+
+                    int currN = num + 1;
+
+                    while (set.Contains(currN))
+                    {
+                        currN++;
+                        currStreak++;
+                    }
+
+                    longestStreak = Math.Max(longestStreak, currStreak);
+                }
+            }
+            return longestStreak;
         }
         #endregion
 
@@ -1275,6 +1428,33 @@ namespace Leetcode2024
             return result * result;
         }
 
+        #endregion
+
+        #region 228. Summary Ranges
+        public IList<string> SummaryRanges(int[] nums)
+        {
+            IList<string> result = new List<string>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (i + 1 < nums.Length && nums[i] + 1 == nums[i + 1])
+                {
+                    StringBuilder stringBuilder = new StringBuilder($"{nums[i]}->");
+                    while (i + 1 < nums.Length && nums[i] + 1 == nums[i + 1])
+                    {
+                        i++;
+                    }
+                    stringBuilder.Append(nums[i]);
+                    result.Add(stringBuilder.ToString());
+                }
+                else
+                {
+                    result.Add($"{nums[i]}");
+                }
+            }
+
+            return result;
+        }
         #endregion
 
         #region 229. Majority Element II
@@ -3174,7 +3354,7 @@ namespace Leetcode2024
 
         //private char processOr(string expression, int startIndex, out int processedIndex)
         //{
-        //    char res = 'f';
+        //    char longestStreak = 'f';
         //    int size = startIndex-1;
 
         //    while (++size < expression.Length)
@@ -3183,14 +3363,14 @@ namespace Leetcode2024
         //        switch (c)
         //        {
         //            case 't':
-        //                res = 't';
+        //                longestStreak = 't';
         //                break;
         //            case '!':
         //                char not = processNot(expression, size + 2, out processedIndex);
 
         //                if (not == 't')
         //                {
-        //                    res = 't';
+        //                    longestStreak = 't';
         //                }
 
         //                break;
@@ -3199,7 +3379,7 @@ namespace Leetcode2024
 
         //                if (or == 't')
         //                {
-        //                    res = 't';
+        //                    longestStreak = 't';
         //                }
         //                break;
         //            case '&':
@@ -3207,7 +3387,7 @@ namespace Leetcode2024
 
         //                if (and == 't')
         //                {
-        //                    res = 't';
+        //                    longestStreak = 't';
         //                }
         //                break;
         //            default:
@@ -3216,11 +3396,11 @@ namespace Leetcode2024
         //    }
 
         //    processedIndex = size;
-        //    return res;
+        //    return longestStreak;
         //}
         //private char processNot(string expression, int startIndex, out int processedIndex)
         //{
-        //    char res = 'f';
+        //    char longestStreak = 'f';
         //    int size = startIndex;
 
         //    while (size < expression.Length)
@@ -3229,7 +3409,7 @@ namespace Leetcode2024
         //        switch (c)
         //        {
         //            case 't':
-        //                res = 't';
+        //                longestStreak = 't';
         //                break;
         //            case 'size':
 
@@ -3240,11 +3420,11 @@ namespace Leetcode2024
         //    }
 
         //    processedIndex = size;
-        //    return res;
+        //    return longestStreak;
         //}
         //private char processAnd(string expression, int startIndex, out int processedIndex)
         //{
-        //    char res = 'f';
+        //    char longestStreak = 'f';
         //    int size = startIndex;
 
         //    while (size < expression.Length)
@@ -3253,7 +3433,7 @@ namespace Leetcode2024
         //        switch (c)
         //        {
         //            case 't':
-        //                res = 't';
+        //                longestStreak = 't';
         //                break;
         //            case 'size':
 
@@ -3264,7 +3444,7 @@ namespace Leetcode2024
         //    }
 
         //    processedIndex = size;
-        //    return res;
+        //    return longestStreak;
         //}
         #endregion
 

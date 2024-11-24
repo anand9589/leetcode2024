@@ -22,6 +22,46 @@ namespace Leetcode2024.Tests
             leetcode = new LeetCode();
         }
         #endregion
+        //[[1,4,5],[1,3,4],[2,6]]
+        #region  23. Merge k Sorted Lists
+        [Test]
+        public void MergeKListsTest()
+        {
+            ListNode[] lists = { leetcode.BuildListNode(new int[] { 1, 4, 5 }), leetcode.BuildListNode(new int[] { 1, 3, 4 }), leetcode.BuildListNode(new int[] { 2, 6 }) };
+
+            var k = leetcode.MergeKLists(lists);
+        } 
+        #endregion
+        #region 228. Summary Ranges
+        [Test]
+        public void SummaryRangesTest()
+        {
+            int[] arr = { 0, 1, 2, 4, 5, 7 };
+
+            var leet = leetcode.SummaryRanges(arr);
+        }
+        #endregion
+
+        #region 124. Binary Tree Maximum Path Sum
+        [Test]
+        public void MaxPathSumTest()
+        {
+            int?[] arr = { 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7 };
+            TreeNode treeNode = buildTree(arr);
+
+            var sum = leetcode.MaxPathSum(treeNode);
+            Assert.AreEqual(91, sum);
+        }
+        [Test]
+        public void MaxPathSumTest1()
+        {
+            int?[] arr = { 9, 6, -3, null, null, -6, 2, null, null, 2, null, -6, -6, -6 };
+            TreeNode treeNode = buildTree(arr);
+
+            var sum = leetcode.MaxPathSum(treeNode);
+            Assert.AreEqual(16, sum);
+        }
+        #endregion
 
         #region 1861. Rotating the Box
         [Test]
