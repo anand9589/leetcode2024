@@ -22,6 +22,23 @@ namespace Leetcode2024.Tests
             leetcode = new LeetCode();
         }
         #endregion
+
+
+        #region 224. Basic Calculator
+        [Test]
+        public void CalculateTest()
+        {
+            var k = leetcode.Calculate("(1+(4+5+2)-3)+(6+8)+(55+7)");
+        }
+        #endregion
+        #region 71. Simplify Path
+        [Test]
+        public void SimplifyPathTest()
+        {
+            var k = leetcode.SimplifyPath("/home/");
+        }
+        #endregion
+
         //[[1,4,5],[1,3,4],[2,6]]
         #region  23. Merge k Sorted Lists
         [Test]

@@ -1,7 +1,10 @@
 ﻿using Leetcode2024.Common.Models;
 using System;
+using System.ComponentModel;
 using System.Globalization;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -77,6 +80,36 @@ namespace Leetcode2024
             }
             longestSubstringLength = Math.Max(longestSubstringLength, i - start);
             return longestSubstringLength;
+        }
+        #endregion
+
+        #region 20. Valid Parentheses
+        public bool IsValid(string s)
+        {
+            int i = -1;
+            Stack<char> stack = new Stack<char>();
+            while (++i < s.Length)
+            {
+                switch (s[i])
+                {
+                    case '}':
+                        if (stack.Count == 0 || stack.Peek() != '{') return false;
+                        stack.Pop();
+                        break;
+                    case ')':
+                        if (stack.Count == 0 || stack.Peek() != '(') return false;
+                        stack.Pop();
+                        break;
+                    case ']':
+                        if (stack.Count == 0 || stack.Peek() != '[') return false;
+                        stack.Pop();
+                        break;
+                    default:
+                        stack.Push(s[i]);
+                        break;
+                }
+            }
+            return true;
         }
         #endregion
 
@@ -463,6 +496,36 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 46. Permutations
+        public IList<IList<int>> Permute(int[] nums)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+
+
+            Permute_BackTrack(result, nums, new HashSet<int>());
+            return result;
+        }
+
+        private void Permute_BackTrack(IList<IList<int>> result, int[] nums, HashSet<int> list)
+        {
+            if (list.Count == nums.Length)
+            {
+                result.Add(new List<int>(list));
+                return;
+            }
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!list.Contains(nums[i]))
+                {
+                    list.Add(nums[i]);
+                    Permute_BackTrack(result, nums, list);
+                    list.Remove(nums[i]);
+                }
+            }
+        }
+        #endregion
+
         #region 55. Jump Game
         public bool CanJump(int[] nums)
         {
@@ -477,6 +540,36 @@ namespace Leetcode2024
                 if (CanJumpIndex >= nums.Length - 1) return true;
             }
             return false;
+        }
+        #endregion
+
+        #region 71. Simplify Path
+        public string SimplifyPath(string path)
+        {
+            string[] paths = path.Split('/', StringSplitOptions.RemoveEmptyEntries);
+            Stack<string> stack = new Stack<string>();
+            foreach (var p in paths)
+            {
+                switch (p)
+                {
+                    case "..":
+                        stack.TryPop(out string s);
+                        break;
+                    case ".":
+                        break;
+                    default:
+                        stack.Push(p);
+                        break;
+                }
+            }
+            if (stack.Count == 0) return "/";
+
+            StringBuilder sb = new StringBuilder();
+            while (stack.Count > 0)
+            {
+                sb.Insert(0, "/" + stack.Pop());
+            }
+            return sb.ToString();
         }
         #endregion
 
@@ -512,6 +605,156 @@ namespace Leetcode2024
             int temp = nums[i];
             nums[i] = nums[j];
             nums[j] = temp;
+        }
+        #endregion
+
+        #region 77. Combinations
+        public IList<IList<int>> Combine(int n, int k)
+        {
+            IList<IList<int>> list = new List<IList<int>>();
+            combine_backTracking(list, 1, n, k, new List<int>());
+            return list;
+        }
+
+        private void combine_backTracking(IList<IList<int>> list, int startIndex, int n, int k, List<int> sublist)
+        {
+            if (sublist.Count == k)
+            {
+                list.Add(new List<int>(sublist));
+                return;
+            }
+            for (int i = startIndex; i <= n; i++)
+            {
+                sublist.Add(i);
+                combine_backTracking(list, i + 1, n, k, sublist);
+                sublist.RemoveAt(sublist.Count - 1);
+            }
+        }
+        #endregion
+
+        #region 98. Validate Binary Search Tree
+        public bool IsValidBST(TreeNode root)
+        {
+            return IsValidBST(root, int.MinValue, int.MaxValue);
+        }
+
+        private bool IsValidBST(TreeNode root, int minValue, int maxValue)
+        {
+            if (root == null) return true;
+
+            if (root.val <= minValue || root.val >= maxValue) return false;
+
+            return IsValidBST(root.left, minValue, root.val) && IsValidBST(root.right, root.val, maxValue);
+        }
+
+
+        #endregion
+
+        #region 102. Binary Tree Level Order Traversal
+        public IList<IList<int>> LevelOrder(TreeNode root)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            queue.Enqueue(root);
+
+            while (queue.Count > 0)
+            {
+                int count = queue.Count;
+                IList<int> lst = new List<int>();
+                while (count-- > 0)
+                {
+                    TreeNode node = queue.Dequeue();
+
+                    lst.Add(node.val);
+
+                    if (node.left != null)
+                    {
+                        queue.Enqueue(node.left);
+                    }
+                    if (node.right != null)
+                    {
+                        queue.Enqueue(node.right);
+                    }
+                }
+                result.Add(lst);
+            }
+
+
+            return result;
+        }
+        #endregion
+
+        #region 103. Binary Tree Zigzag Level Order Traversal
+        public IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+        {
+            IList<IList<int>> result = new List<IList<int>>();
+
+            if (root != null)
+            {
+                Queue<TreeNode> queue = new Queue<TreeNode>();
+                queue.Enqueue(root);
+                bool reverseFlag = false;
+                while (queue.Count > 0)
+                {
+                    int count = queue.Count;
+                    IList<int> lst = new List<int>();
+                    while (count-- > 0)
+                    {
+                        TreeNode node = queue.Dequeue();
+
+                        if (reverseFlag)
+                        {
+                            lst.Insert(0, node.val);
+                        }
+                        else
+                        {
+                            lst.Add(node.val);
+                        }
+
+
+                        if (node.left != null)
+                        {
+                            queue.Enqueue(node.left);
+                        }
+                        if (node.right != null)
+                        {
+                            queue.Enqueue(node.right);
+                        }
+                    }
+                    reverseFlag = !reverseFlag;
+                    result.Add(lst);
+                }
+            }
+
+            return result;
+        }
+        #endregion
+
+        #region 108. Convert Sorted Array to Binary Search Tree
+        public TreeNode SortedArrayToBST(int[] nums)
+        {
+            int low = 0;
+            int high = nums.Length - 1;
+
+
+            return SortedArrayToBST(nums, low, high);
+        }
+
+        public TreeNode SortedArrayToBST(int[] nums, int low, int high)
+        {
+            if (low > high) return null;
+            if (low == high) return new TreeNode(nums[low]);
+
+
+            int mid = (low + high) / 2;
+
+            TreeNode root = new TreeNode(nums[mid]);
+
+            root.left = SortedArrayToBST(nums, low, mid - 1);
+            root.right = SortedArrayToBST(nums, mid + 1, high);
+
+            return root;
+
         }
         #endregion
 
@@ -846,6 +1089,44 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 150. Evaluate Reverse Polish Notation
+        public int EvalRPN(string[] tokens)
+        {
+            Stack<int> stack = new Stack<int>();
+            int num1, num2;
+
+            foreach (var token in tokens)
+            {
+                int result;
+                switch (token)
+                {
+                    case "+":
+                        result = stack.Pop() + stack.Pop();
+                        break;
+                    case "-":
+                        num1 = stack.Pop();
+                        num2 = stack.Pop();
+                        result = num2 - num1;
+                        break;
+                    case "*":
+                        result = stack.Pop() * stack.Pop();
+                        break;
+                    case "/":
+                        num1 = stack.Pop();
+                        num2 = stack.Pop();
+                        result = num2 / num1;
+                        break;
+                    default:
+                        result = int.Parse(token);
+                        break;
+                }
+                stack.Push(result);
+            }
+
+            return stack.Pop();
+        }
+        #endregion
+
         #region 164. Maximum Gap
         public int MaximumGap(int[] nums)
         {
@@ -1177,6 +1458,64 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 199. Binary Tree Right Side View
+        public IList<int> RightSideView(TreeNode root)
+        {
+            IList<int> list = new List<int>();
+
+            if (root != null)
+            {
+                Queue<TreeNode> q = new Queue<TreeNode>();
+                q.Enqueue(root);
+
+                while (q.Count > 0)
+                {
+                    int count = q.Count();
+                    TreeNode currNode = null;
+
+                    while (count-- > 0)
+                    {
+                        currNode = q.Dequeue();
+
+                        if (currNode.left != null)
+                        {
+                            q.Enqueue(currNode.left);
+                        }
+                        if (currNode.right != null)
+                        {
+                            q.Enqueue(currNode.right);
+                        }
+                    }
+
+                    if (currNode != null) list.Add(currNode.val);
+                }
+            }
+            return list;
+        }
+        #endregion
+
+        #region 202. Happy Number
+        HashSet<int> visited = new HashSet<int>();
+        public bool IsHappy(int n)
+        {
+            if (n == 1) return true;
+            if (visited.Contains(n)) return false;
+            visited.Add(n);
+            int num = 0;
+
+            while (n > 0)
+            {
+                int k = n % 10;
+
+                num = num + (k * k);
+
+                n /= 10;
+            }
+
+            return IsHappy(num);
+        }
+        #endregion
+
         #region 207. Course Schedule
         public bool CanFinish(int numCourses, int[][] prerequisites)
         {
@@ -1390,6 +1729,33 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 219. Contains Duplicate II
+        public bool ContainsNearbyDuplicate(int[] nums, int k)
+        {
+            if (k == 1) return true;
+            HashSet<int> set = new HashSet<int>();
+            int startIndex = 0;
+            for (int i = 0; i <= k; i++)
+            {
+                if (set.Contains(nums[i])) return true;
+
+                set.Add(nums[i]);
+            }
+
+
+            for (int i = k + 1; i < nums.Length; i++)
+            {
+                set.Remove(nums[i - k - 1]);
+
+                if (set.Contains(nums[i])) return true;
+
+                set.Add(nums[i]);
+            }
+
+            return false;
+        }
+        #endregion
+
         #region 221. Maximal Square
         public int MaximalSquare(char[][] matrix)
         {
@@ -1428,6 +1794,59 @@ namespace Leetcode2024
             return result * result;
         }
 
+        #endregion
+
+        #region 224. Basic Calculator
+        public int Calculate(string s)
+        {
+            Stack<int> stack = new Stack<int>();
+
+            int num = 0;
+            int sign = 1;
+            int result = 0;
+
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = s[i];
+
+                switch (c)
+                {
+                    case ' ':
+                        break;
+                    case '+':
+                        sign = 1;
+                        break;
+                    case '-':
+                        sign = -1;
+                        break;
+                    case '(':
+                        stack.Push(result);
+                        stack.Push(sign);
+                        result = 0;
+                        sign = 1;
+                        break;
+                    case ')':
+                        result = stack.Pop() * result + stack.Pop();
+                        break;
+                    default:
+                        num = c - '0';
+
+                        int startIndex = i + 1;
+
+                        while (startIndex < s.Length && char.IsDigit(s[startIndex]))
+                        {
+                            num = num * 10 + s[startIndex] - '0';
+                            startIndex++;
+                        }
+
+                        result += sign * num;
+                        i = startIndex - 1;
+                        break;
+                }
+            }
+
+            return result;
+        }
         #endregion
 
         #region 228. Summary Ranges
@@ -1890,6 +2309,22 @@ namespace Leetcode2024
 
             maps.Add(expression, result);
             return result;
+        }
+        #endregion
+
+        #region 242. Valid Anagram
+        public bool IsAnagram(string s, string t)
+        {
+            if (s.Length != t.Length) return false;
+
+            char[] sA = s.ToCharArray();
+
+            Array.Sort(sA);
+            char[] tA = t.ToCharArray();
+
+            Array.Sort(tA);
+
+            return new string(tA) == new string(sA);
         }
         #endregion
 
@@ -2487,6 +2922,32 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 530. Minimum Absolute Difference in BST
+        int min = int.MaxValue;
+        int prev = int.MaxValue;
+        public int GetMinimumDifference(TreeNode root)
+        {
+            inorder_530(root);
+
+            return min;
+        }
+
+        private void inorder_530(TreeNode root)
+        {
+            if (root != null)
+            {
+                inorder_530(root.left);
+                if (prev != int.MaxValue)
+                {
+                    min = Math.Min(min, Math.Abs(prev - root.val));
+                }
+
+                prev = root.val;
+                inorder_530(root.right);
+            }
+        }
+        #endregion
+
         #region 539. Minimum Time Difference
         /*
             Given a list of 24-hour clock time points in "HH:MM" format, return the minimum minutes difference between any two time-points in the list. 
@@ -2589,6 +3050,43 @@ namespace Leetcode2024
             int min2 = getMinutes(timeArray2);
 
             return ((24 * 60) - min2) + min1;
+        }
+        #endregion
+
+        #region 637. Average of Levels in Binary Tree
+        public IList<double> AverageOfLevels(TreeNode root)
+        {
+            IList<double> result = new List<double>();
+
+            Queue<TreeNode> q = new Queue<TreeNode>();
+            q.Enqueue(root);
+
+            while (q.Count > 0)
+            {
+                int count = q.Count;
+                double nodeCount = (double)count;
+                long sum = 0;
+
+                while (count-- > 0)
+                {
+                    TreeNode node = q.Dequeue();
+                    sum += node.val;
+
+                    if (node.left != null)
+                    {
+                        q.Enqueue(node.left);
+                    }
+
+                    if (node.right != null)
+                    {
+                        q.Enqueue(node.right);
+                    }
+                }
+                double avg = (sum / nodeCount);
+
+                result.Add(avg);
+            }
+            return result;
         }
         #endregion
 
@@ -2941,6 +3439,60 @@ namespace Leetcode2024
             }
 
             return num;
+        }
+        #endregion
+
+        #region 773. Sliding Puzzle
+        public int SlidingPuzzle(int[][] board)
+        {
+            string curr = string.Join("", board[0]) + string.Join("", board[1]);
+            string target = "123450";
+
+            Queue<(string state, int move)> q = new Queue<(string state, int move)>();
+
+            q.Enqueue((curr, 0));
+            Dictionary<int, int[]> map = new Dictionary<int, int[]>()
+            {
+                {0,new int[]{1,3} },
+                {1,new int[]{0,2,4} },
+                {2,new int[]{1,5} },
+                {3,new int[]{0,4} },
+                {4,new int[]{1,3,5} },
+                {5,new int[]{2,4} }
+            };
+            HashSet<string> visited = new HashSet<string>();
+            visited.Add(curr);
+
+            while (q.Count > 0)
+            {
+                var current = q.Dequeue();
+
+                if (current.state == target) return current.move;
+                int zeroIndex = current.state.IndexOf('0');
+                foreach (var item in map[zeroIndex])
+                {
+                    char[] newState = current.state.ToCharArray();
+
+                    swap(newState, zeroIndex, item);
+
+                    string newStateString = new string(newState);
+
+                    if (!visited.Contains(newStateString))
+                    {
+                        visited.Add(newStateString);
+                        q.Enqueue((newStateString, current.move + 1));
+                    }
+                }
+            }
+
+            return -1;
+        }
+
+        private void swap(char[] chars, int i, int j)
+        {
+            char temp = chars[i];
+            chars[i] = chars[j];
+            chars[j] = temp;
         }
         #endregion
 
@@ -3970,6 +4522,36 @@ namespace Leetcode2024
             }
 
             return stringBuilder.ToString();
+        }
+        #endregion
+
+        #region 1975. Maximum Matrix Sum
+        public long MaxMatrixSum(int[][] matrix)
+        {
+            long sum = 0;
+            int minValue = 100001;
+            int negCount = 0;
+            bool zeroFound;
+            for (int row = 0; row < matrix.Length; row++)
+            {
+                for (int col = 0; col < matrix[row].Length; col++)
+                {
+                    int val = matrix[row][col];
+                    if (val <= 0)
+                    {
+                        val = Math.Abs(val);
+                        negCount++;
+                    }
+                    minValue = Math.Min(minValue, val);
+                    sum += val;
+                }
+            }
+
+            if (minValue == 0 || negCount % 2 == 0) return sum;
+
+            sum -= (minValue * 2);
+
+            return sum;
         }
         #endregion
 
@@ -5157,6 +5739,26 @@ namespace Leetcode2024
             }
 
             return result;
+        }
+        #endregion
+
+        #region 2924. Find Champion II
+        public int FindChampion(int n, int[][] edges)
+        {
+            HashSet<int> result = new HashSet<int>();
+            for (int i = 0; i < n; i++)
+            {
+                result.Add(i);
+            }
+
+            foreach (var edge in edges)
+            {
+                result.Remove(edge[1]);
+            }
+
+            if (result.Count != 1) return -1;
+
+            return result.First();
         }
         #endregion
 
