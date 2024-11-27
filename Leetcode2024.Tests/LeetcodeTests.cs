@@ -23,7 +23,21 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 3243. Shortest Distance After Road Addition Queries I
+        [Test]
+        public void ShortestDistanceAfterQueriesTest()
+        {
+            int n = 5;
+            int[][] queries = new int[][]
+            {
+                new int[]{2,4},
+                new int[]{0,2},
+                new int[]{0,4},
+            };
 
+            var k = leetcode.ShortestDistanceAfterQueries(n, queries);
+        }
+        #endregion
         #region 224. Basic Calculator
         [Test]
         public void CalculateTest()

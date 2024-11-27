@@ -5975,6 +5975,59 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 3243. Shortest Distance After Road Addition Queries I
+        public int[] ShortestDistanceAfterQueries(int n, int[][] queries)
+        {
+            int[] result = new int[queries.Length];
+            Dictionary<int, HashSet<int>> map = new Dictionary<int, HashSet<int>>();
+            int[] dp = new int[n];
+            for (int i = 0; i < n - 1; i++)
+            {
+                dp[i] = i;
+                map[i] = new HashSet<int>() { i + 1 };
+            }
+
+            dp[n - 1] = n - 1;
+            map[n - 1] = new HashSet<int>();
+
+            Queue<(int dest, int weight)> q = new Queue<(int dest, int weight)>();
+
+            for (int j = 0; j < queries.Length; j++)
+            {
+                q.Clear();
+                var query = queries[j];
+
+                int source = query[0];
+                int destination = query[1];
+
+                map[source].Add(destination);
+                int currWeight = dp[source];
+
+
+                q.Enqueue((source, currWeight));
+
+                while (q.Count > 0)
+                {
+                    var dq = q.Dequeue();
+
+                    foreach (var item in map[dq.dest])
+                    {
+                        if (dp[item] > dq.weight + 1)
+                        {
+                            dp[item] = dq.weight + 1;
+                            q.Enqueue((item, dp[item]));
+                        }
+                    }
+                }
+
+
+                result[j] = dp[n - 1];
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 3163. String Compression III
         public string CompressedString(string word)
         {
