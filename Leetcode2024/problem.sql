@@ -131,6 +131,7 @@ select customer_id, case when order_date = customer_pref_delivery_date then 1 el
 
 select CAST( (sum(delievryStatus) * 100.00) / count(delievryStatus) as decimal(18,2)) as immediate_percentage  from cte_delState where rowNum=1
 
+--
 drop table If Exists Activity
 Create table Activity (player_id int, device_id int, event_date date, games_played int)
 Truncate table Activity
@@ -155,6 +156,21 @@ CTE c
 JOIN Activity a
 on c.player_id = a.player_id
 and datediff(day,c.event_start_date, a.event_date) = 1
+GO
+
+with cte As(
+	select 
+		player_id
+		,event_date
+		,ROW_NUMBER() OVER(partition by player_id order by  event_date) as row 
+	from Activity
+)
+
+select 
+	CAST( COUNT(c.player_id) *1.0 / count(distinct a.player_id) as decimal(4,2)) as fraction  
+from 
+	activity a
+left join cte c on c.player_id = a.player_id and c.row = 1 and DATEDIFF(day,a.event_date,c.event_date)=-1
 
 
 
