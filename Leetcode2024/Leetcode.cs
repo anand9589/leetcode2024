@@ -2689,18 +2689,18 @@ namespace Leetcode2024
 
         //public int CoinChange(int[] coins, int amount)
         //{
-        //    int[] dp = new int[amount + 1];
-        //    Array.Fill(dp, int.MaxValue);
+        //    int[] grid = new int[amount + 1];
+        //    Array.Fill(grid, int.MaxValue);
         //    foreach (var next in coins)
         //    {
         //        int count = 1;
         //        for (int size = next; size <= amount; size += next)
         //        {
-        //            dp[next] = count++;
+        //            grid[next] = count++;
         //        }
         //    }
 
-        //    return dp[amount];
+        //    return grid[amount];
         //}
         #endregion
 
@@ -2735,7 +2735,7 @@ namespace Leetcode2024
 
             foreach (int num in nums)
             {
-                // Update dp array from target down to num
+                // Update grid array from target down to num
                 for (int i = target; i >= num; i--)
                 {
                     dp[i] = dp[i] || dp[i - num];
@@ -3860,7 +3860,7 @@ namespace Leetcode2024
         //    processedIndex = 0;
         //    if (expression.Length == 1) return expression[0];
 
-        //    Stack<char> stack = new Stack<char>();
+        //    Stack<char> obstacleQueue = new Stack<char>();
 
         //    int size = -1;
         //    char op = ' ';
@@ -3873,7 +3873,7 @@ namespace Leetcode2024
         //        {
         //            case 't':
         //            case 'f':
-        //                stack.Push(c);
+        //                obstacleQueue.Push(c);
         //                break;
         //            case '!':
 
@@ -3900,7 +3900,7 @@ namespace Leetcode2024
         //        }
         //    }
 
-        //    return stack.Pop();
+        //    return obstacleQueue.Pop();
         //}
 
 
@@ -4779,7 +4779,7 @@ namespace Leetcode2024
             //{
             //    for (int col = 0; col < n; col++)
             //    {
-            //        if (grid[row][col] == 0) count++;
+            //        if (grid1[row][col] == 0) count++;
             //    }
             //}
 
@@ -4895,6 +4895,135 @@ namespace Leetcode2024
 
             return bitCounts.Max();
         }
+        #endregion
+
+        #region 2290. Minimum Obstacle Removal to Reach Corner
+        public int MinimumObstacles(int[][] grid)
+        {
+            PriorityQueue<(int row, int col, int obstacles), int> pq = new PriorityQueue<(int row, int col, int obstacles), int>();
+            int ob = 0;
+            if (grid[0][0] == 1)
+            {
+                ob = 1;
+            }
+            pq.Enqueue((0, 0, ob), ob);
+            grid[0][0] = int.MaxValue;
+
+            while (pq.Count > 0)
+            {
+                var pp = pq.Dequeue();
+
+                if (pp.row == grid.Length - 1 && pp.col == grid[pp.row].Length - 1) return pp.obstacles;
+                checkAndAddNeighbours(grid, pp.row + 1, pp.col, pp.obstacles, pq);
+                checkAndAddNeighbours(grid, pp.row - 1, pp.col, pp.obstacles, pq);
+                checkAndAddNeighbours(grid, pp.row, pp.col + 1, pp.obstacles, pq);
+                checkAndAddNeighbours(grid, pp.row, pp.col - 1, pp.obstacles, pq);
+            }
+
+            return grid.Length * grid[0].Length;
+        }
+
+        private void checkAndAddNeighbours(int[][] grid, int row, int col, int obstacles, PriorityQueue<(int row, int col, int obstacles), int> pq)
+        {
+            if (row < 0 || col < 0 || row == grid.Length || col == grid[row].Length || grid[row][col] == int.MaxValue) return;
+
+            if (grid[row][col] == 1)
+            {
+                obstacles = obstacles + 1;
+            }
+
+            pq.Enqueue((row, col, obstacles), obstacles);
+        }
+
+        public int MinimumObstacles_1(int[][] grid)
+        {
+            for (int row = 0; row < grid.Length; row++)
+            {
+                for (int col = 0; col < grid[row].Length; col++)
+                {
+                    grid[row][col] *= -1;
+                }
+            }
+
+
+            Queue<(int row, int col)> queue = new Queue<(int row, int col)>();
+            Queue<(int row, int col)> obstacleQueue = new Queue<(int row, int col)>();
+
+            if (grid[0][0] == -1)
+            {
+                grid[0][0] = 2;
+            }
+            else
+            {
+                grid[0][0] = 1;
+            }
+
+            queue.Enqueue((0, 0));
+
+            while (obstacleQueue.Count > 0 || queue.Count > 0)
+            {
+                while (queue.Count > 0)
+                {
+                    var dq = queue.Dequeue();
+                    if (dq.row == grid.Length - 1 && dq.col == grid[dq.row].Length - 1) { return grid[grid.Length - 1][grid[0].Length - 1] - 1; }
+                    addInQueue(grid, dq.row + 1, dq.col, grid[dq.row][dq.col], queue, obstacleQueue);
+                    addInQueue(grid, dq.row - 1, dq.col, grid[dq.row][dq.col], queue, obstacleQueue);
+                    addInQueue(grid, dq.row, dq.col + 1, grid[dq.row][dq.col], queue, obstacleQueue);
+                    addInQueue(grid, dq.row, dq.col - 1, grid[dq.row][dq.col], queue, obstacleQueue);
+
+                }
+
+                if (obstacleQueue.Count > 0)
+                {
+                    var pop = obstacleQueue.Dequeue();
+
+                    int min = int.MaxValue;
+
+                    min = Math.Min(min, getNeighbour(pop.row - 1, pop.col, grid));
+
+                    min = Math.Min(min, getNeighbour(pop.row + 1, pop.col, grid));
+
+                    min = Math.Min(min, getNeighbour(pop.row, pop.col - 1, grid));
+
+                    min = Math.Min(min, getNeighbour(pop.row, pop.col + 1, grid));
+
+                    grid[pop.row][pop.col] = min + 1;
+
+                    queue.Enqueue(pop);
+                }
+            }
+
+
+
+
+            return grid[grid.Length - 1][grid[0].Length - 1] - 1;
+
+        }
+
+        private void addInQueue(int[][] grid, int row, int col, int value, Queue<(int row, int col)> queue, Queue<(int row, int col)> obstacleQueue)
+        {
+            if (row < 0 || col < 0 || row >= grid.Length || col >= grid[row].Length || grid[row][col] > 0 || grid[row][col] == -2) return;
+
+            if (grid[row][col] == 0)
+            {
+                grid[row][col] = value;
+                queue.Enqueue((row, col));
+            }
+            else
+            {
+                grid[row][col] = -2;
+                obstacleQueue.Enqueue((row, col));
+            }
+        }
+
+        private static int getNeighbour(int row, int col, int[][] dp)
+        {
+            if (row < 0 || col < 0 || row >= dp.Length || col >= dp[row].Length || dp[row][col] <= 0) return int.MaxValue;
+
+            return dp[row][col];
+        }
+
+
         #endregion
 
         #region 2357. Make Array Zero by Subtracting Equal Amounts
@@ -5409,6 +5538,71 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2577. Minimum Time to Visit a Cell In a Grid
+        public int MinimumTime(int[][] grid)
+        {
+            if (grid[0][1] == 1 || grid[1][0] == 1)
+            {
+
+                Queue<(int row, int col, int time)> q = new Queue<(int row, int col, int time)>();
+                PriorityQueue<(int row, int col, int time), int> pq = new PriorityQueue<(int row, int col, int time), int>();
+                q.Enqueue((0, 0, 0));
+
+                while (q.Count > 0 || pq.Count > 0)
+                {
+                    var dq = q.Dequeue();
+
+                    if (dq.row == grid.Length - 1 && dq.col == grid[dq.row].Length - 1) return dq.time;
+
+                    int nextTime = dq.time + 1;
+
+                    while (pq.Count > 0 && pq.Peek().time == nextTime)
+                    {
+                        q.Enqueue(pq.Dequeue());
+                    }
+
+                    checkAndAddInQueue(q, pq, grid, dq.row + 1, dq.col, dq.time + 1);
+
+                    checkAndAddInQueue(q, pq, grid, dq.row, dq.col + 1, dq.time + 1);
+
+                    checkAndAddInQueue(q, pq, grid, dq.row - 1, dq.col, dq.time + 1);
+
+                    checkAndAddInQueue(q, pq, grid, dq.row, dq.col - 1, dq.time + 1);
+
+                    if(q.Count == 0 && pq.Count>0)
+                    {
+                        nextTime = pq.Peek().time;
+
+                        while (pq.Count > 0 && pq.Peek().time == nextTime)
+                        {
+                            q.Enqueue(pq.Dequeue());
+                        }
+                    }
+                }
+            }
+            return -1;
+        }
+
+        private void checkAndAddInQueue(Queue<(int row, int col, int time)> q, PriorityQueue<(int row, int col, int time), int> pq, int[][] grid, int row, int col, int time)
+        {
+            if (row < 0 || col < 0 || row >= grid.Length || col >= grid[row].Length || grid[row][col] == -1) return;
+
+            if (grid[row][col] <= time)
+            {
+                q.Enqueue((row, col, time));
+            }
+            else
+            {
+                int diff = grid[row][col] - time;
+
+                if (diff % 2 == 1) diff += 1;
+
+                pq.Enqueue((row, col, time+diff), time+diff);
+            }
+            grid[row][col] = -1;
+        }
+        #endregion
+
         #region 2583. Kth Largest Sum in a Binary Tree
         public long KthLargestLevelSum(TreeNode root, int k)
         {
@@ -5610,19 +5804,19 @@ namespace Leetcode2024
                 if (!found) return j - 1;
             }
 
-            //for (int size = 0; size < grid.Length; size++)
+            //for (int size = 0; size < grid1.Length; size++)
             //{
-            //    if (grid[size][0] < grid[size][1])
+            //    if (grid1[size][0] < grid1[size][1])
             //    {
             //        result = Math.Max(result, dp_416[size][1] + 1);
             //    }
 
-            //    if (size - 1 >= 0 && grid[size][0] < grid[size - 1][1])
+            //    if (size - 1 >= 0 && grid1[size][0] < grid1[size - 1][1])
             //    {
             //        result = Math.Max(result, dp_416[size - 1][1] + 1);
             //    }
 
-            //    if (size + 1 < grid.Length && grid[size][0] < grid[size + 1][1])
+            //    if (size + 1 < grid1.Length && grid1[size][0] < grid1[size + 1][1])
             //    {
             //        result = Math.Max(result, dp_416[size + 1][1] + 1);
             //    }
