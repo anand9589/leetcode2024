@@ -5541,7 +5541,7 @@ namespace Leetcode2024
         #region 2577. Minimum Time to Visit a Cell In a Grid
         public int MinimumTime(int[][] grid)
         {
-            if (grid[0][1] == 1 || grid[1][0] == 1)
+            if (grid[0][1] <= 1 || grid[1][0] <= 1)
             {
 
                 Queue<(int row, int col, int time)> q = new Queue<(int row, int col, int time)>();
