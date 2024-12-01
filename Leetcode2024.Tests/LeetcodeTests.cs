@@ -23,6 +23,117 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 2097. Valid Arrangement of Pairs
+        [Test]
+        public void ValidArrangementTest4()
+        {
+            string s = "[[8,5],[8,7],[0,8],[0,5],[7,0],[5,0],[0,7],[8,0],[7,8]]";
+            int[][] pairs = build2DArray(s);
+
+            var k = leetcode.ValidArrangement(pairs);
+            string t = "[[8,0],[0,7],[7,8],[8,7],[7,0],[0,5],[5,0],[0,8],[8,5]]";
+            int[][] expected = build2DArray(t);
+            CollectionAssert.AreEqual(expected, k);
+        }
+        [Test]
+        public void ValidArrangementTest3()
+        {
+            string s = "[[5,1],[4,5],[11,9],[9,4],[1,10],[8,9],[10,8]]";
+            int[][] pairs = build2DArray(s);
+
+            var k = leetcode.ValidArrangement(pairs);
+            string t = "[[11,9],[9,4],[4,5],[5,1],[1,10],[10,8],[8,9]]";
+            int[][] expected = build2DArray(t);
+            CollectionAssert.AreEqual(expected, k);
+        }
+
+        private static int[][] build2DArray(string s)
+        {
+            s = s.Trim('[', ']');
+            s = s.Replace(" ", "");
+            string[] ss = s.Split("],[", StringSplitOptions.RemoveEmptyEntries);
+
+            int[][] pairs = new int[ss.Length][];
+
+            for (int i = 0; i < ss.Length; i++)
+            {
+                pairs[i] = Array.ConvertAll(ss[i].Split(',', StringSplitOptions.RemoveEmptyEntries), x => int.Parse(x));
+            }
+
+            return pairs;
+        }
+
+        [Test]
+        public void ValidArrangementTest2()
+        {
+            string s = "[[1,2],[1,3],[2,1]]";
+            s = s.Trim('[', ']');
+
+            string[] ss = s.Split("],[", StringSplitOptions.RemoveEmptyEntries);
+
+            int[][] pairs = new int[ss.Length][];
+
+            for (int i = 0; i < ss.Length; i++)
+            {
+                pairs[i] = Array.ConvertAll(ss[i].Split(',', StringSplitOptions.RemoveEmptyEntries), x => int.Parse(x));
+            }
+
+            var k = leetcode.ValidArrangement(pairs);
+            string t = "[[1,2],[2,1],[1,3]]";
+            int[][] expected = build2DArray(t);
+            CollectionAssert.AreEqual(expected, k);
+        }
+        [Test]
+        public void ValidArrangementTest1()
+        {
+            string s = "[[1,3],[3,2],[2,1]]";
+            s = s.Trim('[', ']');
+
+            string[] ss = s.Split("],[", StringSplitOptions.RemoveEmptyEntries);
+
+            int[][] pairs = new int[ss.Length][];
+
+            for (int i = 0; i < ss.Length; i++)
+            {
+                pairs[i] = Array.ConvertAll(ss[i].Split(',', StringSplitOptions.RemoveEmptyEntries), x => int.Parse(x));
+            }
+
+            var k = leetcode.ValidArrangement(pairs);
+            string t = "[[1,3],[3,2],[2,1]]";
+            int[][] expected = build2DArray(t);
+            CollectionAssert.AreEqual(expected, k);
+        }
+        [Test]
+        public void ValidArrangementTest()
+        {
+            string s = "[[5,1],[4,5],[11,9],[9,4]]";
+            s = s.Trim('[', ']');
+
+            string[] ss = s.Split("],[", StringSplitOptions.RemoveEmptyEntries);
+
+            int[][] pairs                = new int[ss.Length][];
+
+            for (int i = 0; i < ss.Length; i++)
+            {
+                pairs[i] = Array.ConvertAll(ss[i].Split(',', StringSplitOptions.RemoveEmptyEntries), x => int.Parse(x));
+            }
+
+            var k = leetcode.ValidArrangement(pairs);
+            string t = "[[11,9],[9,4],[4,5],[5,1]]";
+            int[][] expected = build2DArray(t);
+            CollectionAssert.AreEqual(expected, k);
+        }
+        #endregion
+
+        #region 238. Product of Array Except Self
+        [Test]
+        public void ProductExceptSelfTest()
+        {
+            int[] arr = { 1, 2, 3, 4 };
+
+            var k = leetcode.ProductExceptSelf(arr);
+        }
+        #endregion
 
         #region 2577. Minimum Time to Visit a Cell In a Grid
         [Test]
@@ -1834,7 +1945,7 @@ namespace Leetcode2024.Tests
         #endregion
 
         #region MaxMovesTest
-        //grid = [[2,4,3,5],[5,4,9,3],[3,4,2,11],[10,9,13,15]]
+        //pairs = [[2,4,3,5],[5,4,9,3],[3,4,2,11],[10,9,13,15]]
         [Test]
         public void MaxMovesTest1()
         {

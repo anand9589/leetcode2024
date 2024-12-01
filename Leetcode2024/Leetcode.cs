@@ -1,6 +1,7 @@
 ﻿using Leetcode2024.Common.Models;
 using System;
 using System.ComponentModel;
+using System.Data;
 using System.Globalization;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
@@ -2015,6 +2016,75 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 238. Product of Array Except Self
+        public int[] ProductExceptSelf(int[] nums)
+        {
+            int[] result = new int[nums.Length];
+
+            result[0] = 1;
+
+            for (int i = 1; i < nums.Length; i++)
+            {
+                result[i] = result[i - 1] * nums[i - 1];
+            }
+
+            int suffix = 1;
+
+            for (int i = nums.Length - 1; i >= 0; i--)
+            {
+                result[i] = suffix * result[i];
+                suffix *= nums[i];
+            }
+
+            return result;
+        }
+        public int[] ProductExceptSelf2(int[] nums)
+        {
+            int[] prefix = new int[nums.Length];
+            prefix[0] = nums[0];
+            for (int i = 1; i < nums.Length; i++)
+            {
+                prefix[i] = prefix[i - 1] * nums[i];
+            }
+
+            for (int i = nums.Length - 2; i >= 0; i--)
+            {
+                nums[i] *= nums[i + 1];
+            }
+
+            nums[0] = nums[1];
+            for (int i = 1; i < nums.Length - 1; i++)
+            {
+                nums[i] = prefix[i - 1] * nums[i + 1];
+            }
+            nums[nums.Length - 1] = prefix[nums.Length - 2];
+
+            return nums;
+        }
+        public int[] ProductExceptSelf1(int[] nums)
+        {
+            int[] prefixProduct = new int[nums.Length + 1];
+
+            int[] suffixProduct = new int[nums.Length + 1];
+
+            prefixProduct[0] = 1;
+            suffixProduct[suffixProduct.Length - 1] = 1;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                prefixProduct[i + 1] = prefixProduct[i] * nums[i];
+                suffixProduct[nums.Length - i - 1] = suffixProduct[nums.Length - i] * nums[nums.Length - 1 - i];
+            }
+
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                nums[i] = prefixProduct[i] * suffixProduct[i + 1];
+            }
+
+            return nums;
+        }
+        #endregion
+
         #region 240. Search a 2D Matrix II
         public bool SearchMatrix(int[][] matrix, int target)
         {
@@ -3096,7 +3166,7 @@ namespace Leetcode2024
 
             Implement the MyCircularDeque_V1 class:
 
-            MyCircularDeque_V1(int k) Initializes the deque with a maximum size of k.
+            MyCircularDeque_V1(int key) Initializes the deque with a maximum size of key.
             boolean insertFront() Adds an next at the front of Deque. Returns true if the operation is successful, or false otherwise.
             boolean insertLast() Adds an next at the rear of Deque. Returns true if the operation is successful, or false otherwise.
             boolean deleteFront() Deletes an next from the front of Deque. Returns true if the operation is successful, or false otherwise.
@@ -3130,7 +3200,7 @@ namespace Leetcode2024
 
             Constraints:
 
-            1 <= k <= 1000
+            1 <= key <= 1000
             0 <= value <= 1000
             At most 2000 calls will be made to insertFront, insertLast, deleteFront, deleteLast, getFront, getRear, isEmpty, isFull.
 
@@ -3389,7 +3459,7 @@ namespace Leetcode2024
 
         /**
          * Your MyCircularDeque_V1 object will be instantiated and called as such:
-         * MyCircularDeque_V1 obj = new MyCircularDeque_V1(k);
+         * MyCircularDeque_V1 obj = new MyCircularDeque_V1(key);
          * bool param_1 = obj.InsertFront(value);
          * bool param_2 = obj.InsertLast(value);
          * bool param_3 = obj.DeleteFront();
@@ -4109,6 +4179,25 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1346. Check If N and Its Double Exist
+        public bool CheckIfExist(int[] arr)
+        {
+            HashSet<int> set = new HashSet<int>();
+
+            set.Add(arr[0]);
+
+            for (int i = 1; i < arr.Length; i++)
+            {
+                if (set.Contains(arr[i] * 2) || (arr[i] % 2 == 0 && set.Contains(arr[i] / 2))) return true;
+
+                set.Add(arr[i]);
+            }
+
+
+            return false;
+        }
+        #endregion
+
         #region 1371. Find the Longest Substring Containing Vowels in Even Counts
 
         /*
@@ -4678,6 +4767,344 @@ namespace Leetcode2024
             }
 
             return result;
+        }
+        #endregion
+
+        #region 2097. Valid Arrangement of Pairs
+        public int[][] ValidArrangement(int[][] pairs)
+        {
+            int[][] result = new int[pairs.Length][];
+            Dictionary<int, Stack<int>> map = new Dictionary<int, Stack<int>>();
+            Dictionary<int, int> degree = new Dictionary<int, int>();
+
+            foreach (var pair in pairs)
+            {
+                if (!map.ContainsKey(pair[0]))
+                {
+                    map[pair[0]] = new Stack<int>();
+                }
+
+                map[pair[0]].Push(pair[1]);
+                degree[pair[0]] = degree.GetValueOrDefault(pair[0], 0) + 1;
+
+                degree[pair[1]] = degree.GetValueOrDefault(pair[1], 0) - 1;
+            }
+
+            int startNode = -1;
+
+            foreach (var key in degree.Keys)
+            {
+                if (degree[key] == 1)
+                {
+                    startNode = key;
+                    break;
+                }
+            }
+            if (startNode == -1) return pairs;
+            Stack<int> nodes = new Stack<int>();
+            nodes.Push(startNode);
+            int[] paths = new int[pairs.Length + 1];
+            int index = -1;
+
+            while (nodes.Count > 0)
+            {
+                if (map.ContainsKey(nodes.Peek()) && map[nodes.Peek()].Count > 0)
+                {
+                    nodes.Push(map[nodes.Peek()].Pop());
+                }
+                else
+                {
+                    paths[++index] = nodes.Pop();
+                }
+            }
+
+            int start = paths[--index];
+            for (int i = 0; i < result.Length; i++)
+            {
+                int end = paths[--index];
+                result[i] = new int[] { start, end };
+
+                start = end;
+            }
+
+            return result;
+        }
+        public int[][] ValidArrangement4(int[][] pairs)
+        {
+            int[][] result = new int[pairs.Length][];
+            Dictionary<int, Stack<int>> map = new Dictionary<int, Stack<int>>();
+            Dictionary<int, int> degree = new Dictionary<int, int>();
+
+            foreach (var pair in pairs)
+            {
+                if (!map.ContainsKey(pair[0]))
+                {
+                    map[pair[0]] = new Stack<int>();
+                }
+
+                map[pair[0]].Push(pair[1]);
+                degree[pair[0]] = degree.GetValueOrDefault(pair[0], 0) + 1;
+
+                degree[pair[1]] = degree.GetValueOrDefault(pair[1], 0) - 1;
+            }
+
+            int startNode = -1;
+
+            foreach (var key in degree.Keys)
+            {
+                if (degree[key] == 1)
+                {
+                    startNode = key;
+                    break;
+                }
+            }
+            if (startNode == -1) return pairs;
+            Stack<int> nodes = new Stack<int>();
+            nodes.Push(startNode);
+            Stack<int> paths = new Stack<int>();
+
+            while (nodes.Count > 0)
+            {
+                if (map.ContainsKey(nodes.Peek()) && map[nodes.Peek()].Count > 0)
+                {
+                    nodes.Push(map[nodes.Peek()].Pop());
+                }
+                else
+                {
+                    paths.Push(nodes.Pop());
+                }
+            }
+
+            int start = paths.Pop();
+            for (int i = 0; i < result.Length; i++)
+            {
+                int end = paths.Pop();
+                result[i] = new int[] { start, end };
+
+                start = end;
+            }
+
+            return result;
+        }
+        public int[][] ValidArrangement3(int[][] pairs)
+        {
+            var adjacencyList = new Dictionary<int, List<int>>();
+            var inOutDegree = new Dictionary<int, int>();
+
+            // Build graph and count in/out degrees
+            foreach (var pair in pairs)
+            {
+                if (!adjacencyList.ContainsKey(pair[0]))
+                {
+                    adjacencyList[pair[0]] = new List<int>();
+                }
+                adjacencyList[pair[0]].Add(pair[1]);
+
+                inOutDegree[pair[0]] = inOutDegree.GetValueOrDefault(pair[0], 0) + 1;  // out-degree
+                inOutDegree[pair[1]] = inOutDegree.GetValueOrDefault(pair[1], 0) - 1;  // in-degree
+            }
+
+            // Find starting node
+            int startNode = pairs[0][0];
+            foreach (var kvp in inOutDegree)
+            {
+                if (kvp.Value == 1)
+                {
+                    startNode = kvp.Key;
+                    break;
+                }
+            }
+
+            var path = new List<int>();
+            var nodeStack = new Stack<int>();
+            nodeStack.Push(startNode);
+
+            while (nodeStack.Count > 0)
+            {
+                if (!adjacencyList.ContainsKey(nodeStack.Peek()) ||
+                    adjacencyList[nodeStack.Peek()].Count == 0)
+                {
+                    path.Add(nodeStack.Pop());
+                }
+                else
+                {
+                    var neighbors = adjacencyList[nodeStack.Peek()];
+                    int nextNode = neighbors[neighbors.Count - 1];
+                    nodeStack.Push(nextNode);
+                    neighbors.RemoveAt(neighbors.Count - 1);
+                }
+            }
+
+            var arrangement = new List<int[]>();
+            int pathSize = path.Count;
+
+            for (int i = pathSize - 1; i > 0; --i)
+            {
+                arrangement.Add(new int[] { path[i], path[i - 1] });
+            }
+
+            return arrangement.ToArray();
+        }
+
+        public int[][] ValidArrangement2(int[][] pairs)
+        {
+            var adjacencyMatrix = new Dictionary<int, Queue<int>>();
+            var inDegree = new Dictionary<int, int>();
+            var outDegree = new Dictionary<int, int>();
+
+            // Build the adjacency list and track in-degrees and out-degrees
+            foreach (var pair in pairs)
+            {
+                int start = pair[0], end = pair[1];
+                if (!adjacencyMatrix.ContainsKey(start))
+                    adjacencyMatrix[start] = new Queue<int>();
+                adjacencyMatrix[start].Enqueue(end);
+
+                outDegree[start] = outDegree.GetValueOrDefault(start, 0) + 1;
+                inDegree[end] = inDegree.GetValueOrDefault(end, 0) + 1;
+            }
+
+            var result = new List<int>();
+
+            // Find the start node (outDegree == inDegree + 1)
+            int startNode = -1;
+            foreach (var node in outDegree.Keys)
+            {
+                if (outDegree[node] == inDegree.GetValueOrDefault(node, 0) + 1)
+                {
+                    startNode = node;
+                    break;
+                }
+            }
+
+            // If no such node exists, start from the first pair's first element
+            if (startNode == -1)
+            {
+                startNode = pairs[0][0];
+            }
+
+            // Start DFS traversal
+            Visit(startNode, adjacencyMatrix, result);
+
+            // Reverse the result since DFS gives us the path in reverse
+            result.Reverse();
+
+            // Construct the result pairs
+            int[][] pairedResult = new int[result.Count - 1][];
+            for (int i = 1; i < result.Count; i++)
+            {
+                pairedResult[i - 1] = new int[] { result[i - 1], result[i] };
+            }
+
+            return pairedResult;
+        }
+
+        private void Visit(int node, Dictionary<int, Queue<int>> adjMatrix, List<int> res)
+        {
+            if (adjMatrix.TryGetValue(node, out var neighbors))
+            {
+                while (neighbors.Count > 0)
+                {
+                    int nextNode = neighbors.Dequeue();
+                    Visit(nextNode, adjMatrix, res);
+                }
+            }
+            res.Add(node);
+        }
+
+        public int[][] ValidArrangement1(int[][] pairs)
+        {
+            int[][] result = new int[pairs.Length][];
+            int keyToStart = -1;
+            Dictionary<int, HashSet<int>> outMap = new Dictionary<int, HashSet<int>>();
+            Dictionary<int, HashSet<int>> inMap = new Dictionary<int, HashSet<int>>();
+
+            foreach (var pair in pairs)
+            {
+                updateMap(outMap, pair[0], pair[1]);
+                updateMap(inMap, pair[1], pair[0]);
+            }
+
+            foreach (var outMapKey in outMap.Keys)
+            {
+                if (!inMap.ContainsKey(outMapKey))
+                {
+                    keyToStart = outMapKey;
+                    break;
+                }
+            }
+
+            if (keyToStart == -1)
+            {
+                return reverseValidArrangements(inMap, outMap, pairs);
+            }
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                int key = keyToStart;
+                int value = outMap[key].FirstOrDefault();
+                result[i] = new int[] { key, value };
+
+                outMap[key].Remove(value);
+                inMap[value].Remove(key);
+
+                if (outMap[key].Count == 0) outMap.Remove(key);
+                if (inMap[value].Count == 0) inMap.Remove(value);
+
+                keyToStart = value;
+            }
+
+
+            return result;
+        }
+
+        private int[][] reverseValidArrangements(Dictionary<int, HashSet<int>> inMap, Dictionary<int, HashSet<int>> outMap, int[][] pairs)
+        {
+            int[][] result = new int[pairs.Length][];
+            int endValueToStart = -1;
+            foreach (var inMapKey in inMap.Keys)
+            {
+                if (!outMap.ContainsKey(inMapKey))
+                {
+                    endValueToStart = inMapKey;
+                    break;
+                }
+            }
+            if (endValueToStart == -1) return pairs;
+            for (int i = result.Length - 1; i >= 0; i--)
+            {
+                int key = getKey(inMap, endValueToStart);
+                int value = endValueToStart;
+
+                result[i] = new int[] { key, value };
+                outMap[key].Remove(value);
+
+                if (outMap[key].Count == 0) outMap.Remove(key);
+
+                endValueToStart = key;
+            }
+
+            return result;
+        }
+
+        private int getKey(Dictionary<int, HashSet<int>> map, int endValueToStart)
+        {
+            int key = map[endValueToStart].FirstOrDefault();
+
+            map[endValueToStart].Remove(key);
+
+            if (map[endValueToStart].Count == 0) map.Remove(endValueToStart);
+
+            return key;
+        }
+
+        private static void updateMap(Dictionary<int, HashSet<int>> map, int key, int value)
+        {
+            if (!map.ContainsKey(key))
+            {
+                map[key] = new HashSet<int>();
+            }
+            map[key].Add(value);
         }
         #endregion
 
@@ -5408,7 +5835,7 @@ namespace Leetcode2024
             int[] window = new int[3];
             int left = 0, maxWindow = 0;
 
-            // Find the longest window that leaves k of each character outside
+            // Find the longest window that leaves key of each character outside
             for (int right = 0; right < n; right++)
             {
                 window[s[right] - 'a']++;
@@ -5471,9 +5898,9 @@ namespace Leetcode2024
             return s.Length - result;
         }
 
-        //public int TakeCharacters_Helper(string s, int k, int left, int right, int countA, int countB, int countC)
+        //public int TakeCharacters_Helper(string s, int key, int left, int right, int countA, int countB, int countC)
         //{
-        //    if (countA >= k && countB >= k && countC >= k) return 0;
+        //    if (countA >= key && countB >= key && countC >= key) return 0;
 
         //    int currCountA = countA, currCountB = countB, currCountC = countC;
 
@@ -5492,9 +5919,9 @@ namespace Leetcode2024
         //            break;
         //    }
 
-        //    int leftCount = TakeCharacters_Helper(s, k, left, right, currCountA, currCountB, currCountC);
+        //    int leftCount = TakeCharacters_Helper(s, key, left, right, currCountA, currCountB, currCountC);
 
-        //    return 1 + Math.Min(TakeCharacters_Helper(s, k, left + 1, right, countA, countB, countC), TakeCharacters_Helper(s, k, left, right - 1, countA, countB, countC));
+        //    return 1 + Math.Min(TakeCharacters_Helper(s, key, left + 1, right, countA, countB, countC), TakeCharacters_Helper(s, key, left, right - 1, countA, countB, countC));
         //}
         #endregion
 
@@ -5569,7 +5996,7 @@ namespace Leetcode2024
 
                     checkAndAddInQueue(q, pq, grid, dq.row, dq.col - 1, dq.time + 1);
 
-                    if(q.Count == 0 && pq.Count>0)
+                    if (q.Count == 0 && pq.Count > 0)
                     {
                         nextTime = pq.Peek().time;
 
@@ -5597,7 +6024,7 @@ namespace Leetcode2024
 
                 if (diff % 2 == 1) diff += 1;
 
-                pq.Enqueue((row, col, time+diff), time+diff);
+                pq.Enqueue((row, col, time + diff), time + diff);
             }
             grid[row][col] = -1;
         }
