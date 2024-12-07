@@ -544,6 +544,50 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 60. Permutation Sequence
+        public string GetPermutation_1(int n, int k)
+        {
+            int[] ints = new int[n];
+            bool[] vis = new bool[n];
+
+            for (int i = 0; i < n; i++)
+            {
+                ints[i] = i + 1;
+            }
+            List<string> list = new List<string>();
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < n; i++)
+            {
+                vis[i] = true;
+                sb.Append(ints[i]);
+                GetPermutation_BackTrack(list, ints, vis, sb, k);
+
+                vis[i] = false;
+                sb.Remove(sb.Length - 1, 1);
+            }
+            return list.Last();
+        }
+
+        private void GetPermutation_BackTrack(List<string> list, int[] ints, bool[] vis, StringBuilder sb, int k)
+        {
+            if (list.Count == k) return;
+            if (sb.Length == ints.Length)
+            {
+                list.Add(sb.ToString());
+                return;
+            }
+            for (int i = 0; i < ints.Length; i++)
+            {
+                if (vis[i]) continue;
+                vis[i] = true;
+                sb.Append(ints[i]);
+                GetPermutation_BackTrack(list, ints, vis, sb, k);
+                vis[i] = false;
+                sb.Remove(sb.Length - 1, 1);
+            }
+        }
+        #endregion
+
         #region 71. Simplify Path
         public string SimplifyPath(string path)
         {
@@ -4518,6 +4562,44 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1760. Minimum Limit of Balls in a Bag
+        public int MinimumSize(int[] nums, int maxOperations)
+        {
+            int left = 1;
+            int right = nums.Max();
+            int result = right;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+
+                if (CanDivide(nums, maxOperations, mid))
+                {
+                    result = mid;
+                    right = mid - 1;
+                }
+                else
+                {
+                    left = mid + 1;
+                }
+            }
+            return result;
+        }
+
+        private bool CanDivide(int[] nums, int maxOperations, int maxBageSize)
+        {
+            int totalOperations = 0;
+            foreach (var balls in nums)
+            {
+                if (balls > maxBageSize)
+                {
+                    totalOperations += (balls - 1) / maxBageSize;
+                }
+                if (totalOperations > maxOperations) return false;
+            }
+            return true;
+        }
+        #endregion
+
         #region 1829. Maximum XOR for Each Query
         public int[] GetMaximumXor(int[] nums, int maximumBit)
         {
@@ -5105,6 +5187,59 @@ namespace Leetcode2024
                 map[key] = new HashSet<int>();
             }
             map[key].Add(value);
+        }
+        #endregion
+
+        #region 2109. Adding Spaces to a String 
+        public string AddSpaces(string s, int[] spaces)
+        {
+            char[] newString = new char[s.Length + spaces.Length];
+            int addedSpace = 0;
+
+            int i = -1;
+            int spaceIndex = 0;
+
+            while (++i < s.Length)
+            {
+                if (i == spaces[spaceIndex])
+                {
+                    newString[i + addedSpace] = ' ';
+                    spaceIndex++;
+                    addedSpace++;
+                }
+                newString[i + addedSpace] = s[i];
+
+            }
+            return new string(newString);
+        }
+        public string AddSpaces_1(string s, int[] spaces)
+        {
+            int curLen = spaces[0];
+            int curIndex = 0;
+
+
+            StringBuilder sb = new StringBuilder();
+            if (curLen == 0)
+            {
+                sb.Append(" ");
+            }
+            else
+            {
+                sb.Append(s.Substring(curIndex, curLen));
+                sb.Append(" ");
+            }
+            curIndex = spaces[0];
+            for (int i = 1; i < spaces.Length; i++)
+            {
+                curLen = spaces[i] - spaces[i - 1];
+                sb.Append(s.Substring(curIndex, curLen));
+                sb.Append(' ');
+                curIndex = spaces[i];
+            }
+
+            sb.Append(s.Substring(curIndex));
+
+            return sb.ToString();
         }
         #endregion
 
@@ -5925,6 +6060,28 @@ namespace Leetcode2024
         //}
         #endregion
 
+        #region 2554. Maximum Number of Integers to Choose From a Range I
+
+        public int MaxCount(int[] banned, int n, int maxSum)
+        {
+
+            int result = 0;
+            HashSet<int> seen = new HashSet<int>(banned);
+            int sum = 0;
+            for (int i = 1; i <= n; i++)
+            {
+                if (seen.Contains(i)) continue;
+                if (sum + i > maxSum) return result;
+
+                sum += i;
+                result++;
+
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 2563. Count the Number of Fair Pairs
         public long CountFairPairs(int[] nums, int lower, int upper)
         {
@@ -6324,6 +6481,28 @@ namespace Leetcode2024
             }
 
             return count;
+        }
+        #endregion
+
+        #region 2825. Make String a Subsequence Using Cyclic Increments
+        public bool CanMakeSubsequence(string str1, string str2)
+        {
+            int s1Index = 0, s2Index = 0;
+
+            while (s1Index < str1.Length && s2Index < str2.Length && str1.Length - s1Index >= str2.Length - s2Index)
+            {
+                if (str1[s1Index] == str2[s2Index] || str1[s1Index] + 1 == str2[s2Index] || (str1[s1Index] == 'z' && str2[s2Index] == 'a'))
+                {
+                    s1Index++;
+                    s2Index++;
+                }
+                else
+                {
+                    s1Index++;
+                }
+            }
+
+            return s2Index == str2.Length;
         }
         #endregion
 

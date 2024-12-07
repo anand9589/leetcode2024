@@ -23,6 +23,51 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+
+
+        #region 2825. Make String a Subsequence Using Cyclic Increments
+        [Test]
+        public void CanMakeSubsequenceTest()
+        {
+            string str1 = "abc", str2 = "ad";
+            Assert.IsTrue(leetcode.CanMakeSubsequence(str1, str2));
+        }
+        [Test]
+        public void CanMakeSubsequenceTest1()
+        {
+            string str1 = "zc", str2 = "ad";
+            Assert.IsTrue(leetcode.CanMakeSubsequence(str1, str2));
+        }
+        [Test]
+        public void CanMakeSubsequenceTest2()
+        {
+            string str1 = "ab", str2 = "d";
+            Assert.IsFalse(leetcode.CanMakeSubsequence(str1, str2));
+        }
+        [Test]
+        public void CanMakeSubsequenceTest3()
+        {
+            string str1 = "b", str2 = "v";
+            Assert.IsFalse(leetcode.CanMakeSubsequence(str1, str2));
+        }
+        [Test]
+        public void CanMakeSubsequenceTest4()
+        {
+            string str1 = "c", str2 = "b";
+            Assert.IsFalse(leetcode.CanMakeSubsequence(str1, str2));
+        }
+        #endregion
+        #region 2109. Adding Spaces to a String 
+        [Test]
+        public void AddSpacesTest()
+        {
+            string s = "icodeinpython";
+            int[] spaces = new int[] { 1, 5, 7, 9 };
+
+            var k = leetcode.AddSpaces(s, spaces);
+        }
+        #endregion
+
         #region 2097. Valid Arrangement of Pairs
         [Test]
         public void ValidArrangementTest4()
