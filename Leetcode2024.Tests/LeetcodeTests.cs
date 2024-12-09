@@ -22,8 +22,62 @@ namespace Leetcode2024.Tests
             leetcode = new LeetCode();
         }
         #endregion
+        #region 3152. Special Array II
+        [Test]
+        public void IsArraySpecialTest()
+        {
+            int[] nums = { 4, 3, 1, 6 };
 
+            int[][] queries = new int[][] { new int[] { 0, 2 }, new int[] { 2, 3 } };
 
+            var k = leetcode.IsArraySpecial(nums,queries);
+        }
+        #endregion
+
+        #region 2054. Two Best Non-Overlapping Events
+        [Test]
+        public void MaxTwoEventsTest()
+        {
+            int[][] events = new int[][]
+            {
+                new int[]{ 1, 3, 2 },new int[]{4, 5, 2},new int[]{1, 5, 5 }
+            };
+
+            var k = leetcode.MaxTwoEvents(events);
+        }
+        #endregion
+        #region 60. Permutation Sequence
+        [Test]
+        public void GetPermutationTest()
+        {
+            var k = leetcode.GetPermutation(3, 3);
+            Assert.AreEqual("213", k);
+        }
+        [Test]
+        public void GetPermutationTest1()
+        {
+            var k = leetcode.GetPermutation(4, 9);
+            Assert.AreEqual("2314", k);
+        }
+        [Test]
+        public void GetPermutationTest2()
+        {
+            var k = leetcode.GetPermutation(3, 1);
+            Assert.AreEqual("123", k);
+        }
+        [Test]
+        public void GetPermutationTest3()
+        {
+            var k = leetcode.GetPermutation(3, 5);
+            Assert.AreEqual("312", k);
+        }
+        [Test]
+        public void GetPermutationTest4()
+        {
+            var k = leetcode.GetPermutation(4, 22);
+            Assert.AreEqual("4231", k);
+        }
+        #endregion
 
         #region 2825. Make String a Subsequence Using Cyclic Increments
         [Test]

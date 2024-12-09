@@ -545,6 +545,80 @@ namespace Leetcode2024
         #endregion
 
         #region 60. Permutation Sequence
+        public string GetPermutation(int n, int k)
+        {
+            int[] arr = new int[n];
+            bool[] visit = new bool[n];
+            for (int i = 0; i < n; i++)
+            {
+                arr[i] = i + 1;
+            }
+
+            int nCopy = n;
+
+            StringBuilder stringBuilder = new StringBuilder();
+            while (k > 1)
+            {
+                int fact = getFact(--nCopy);
+                int pos = 0;
+                while (k > fact)
+                {
+                    pos++;
+                    k -= fact;
+                }
+                int cnt = 0;
+                for (int i = 0; i < n; i++)
+                {
+                    if (!visit[i])
+                    {
+                        if (cnt == pos)
+                        {
+                            stringBuilder.Append(arr[i]);
+                            visit[i] = true;
+                            break;
+                        }
+                        else
+                        {
+                            cnt++;
+                        }
+                    }
+                }
+            }
+
+            if (k == 0)
+            {
+                for (int i = n - 1; i >= 0; i--)
+                {
+                    if (!visit[i])
+                    {
+                        stringBuilder.Append(arr[i]);
+                        visit[i] = true;
+                    }
+                }
+            }
+            else if (k == 1)
+            {
+
+                for (int i = 0; i < n; i++)
+                {
+                    if (!visit[i])
+                    {
+                        stringBuilder.Append(arr[i]);
+                        visit[i] = true;
+                    }
+                }
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private int getFact(int v)
+        {
+            if (v <= 1) return v;
+
+            return v * getFact(v - 1);
+        }
+
         public string GetPermutation_1(int n, int k)
         {
             int[] ints = new int[n];
@@ -4754,6 +4828,175 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2054. Two Best Non-Overlapping Events
+        int[][] dp2054;
+        public int MaxTwoEvents(int[][] events)
+        {
+            Array.Sort(events, (x, y) => x[1] - y[1]);
+
+            int[] dp = new int[events.Length];
+
+            int res = 0;
+
+            dp[0] = events[0][2];
+
+            int[] ends = new int[events.Length];
+
+            for (int i = 0; i < events.Length; i++)
+            {
+                ends[i] = events[i][1];
+            }
+
+            for (int i = 1; i < events.Length; i++)
+            {
+                int index = getIndex(ends, events[i][0] - 1);
+
+                int currSum = events[i][2];
+
+                if (index != -1)
+                {
+                    currSum += dp[index];
+                }
+
+                dp[i] = Math.Max(dp[i - 1], currSum);
+
+                res = Math.Max(res, dp[i]);
+            }
+
+            return res;
+        }
+
+        private int getIndex(int[] ends, int target)
+        {
+            int low = 0; int high = ends.Length - 1;
+
+            int result = -1;
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+
+                if (ends[mid] <= target)
+                {
+                    result = mid;
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+            return result;
+        }
+
+        public int MaxTwoEvents_2(int[][] events)
+        {
+            Array.Sort(events, (x, y) => x[0] - y[0]);
+            dp2054 = new int[events.Length][];
+            for (int i = 0; i < events.Length; i++)
+            {
+                dp2054[i] = new int[3];
+
+                Array.Fill(dp2054[i], -1);
+            }
+
+
+
+            return MaxTwoEvents_2(events, 0, 0);
+        }
+
+        private int MaxTwoEvents_2(int[][] events, int index, int count)
+        {
+            if (count == 2 || index >= events.Length) return 0;
+
+            if (dp2054[index][count] == -1)
+            {
+                int end = events[index][1];
+
+                int low = index + 1;
+                int high = events.Length - 1;
+
+                while (low < high)
+                {
+                    int mid = (low + high) / 2;
+
+                    if (events[mid][0] > end)
+                    {
+                        high = mid;
+                    }
+                    else
+                    {
+                        low = mid + 1;
+                    }
+                }
+
+                int include = events[index][2] + (low < events.Length && events[low][0] > end ? MaxTwoEvents_2(events, low, count + 1) : 0);
+
+                int exclude = MaxTwoEvents_2(events, index + 1, count);
+
+                dp2054[index][count] = Math.Max(include, exclude);
+            }
+
+            return dp2054[index][count];
+        }
+
+        private int getNextOverlappingIndexId(int[][] events, int end, int start)
+        {
+            int low = start;
+            int high = events.Length - 1;
+            int resultIndex = -1;
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+
+                if (events[mid][0] > end)
+                {
+                    resultIndex = mid;
+                    high = mid - 1;
+                }
+                else
+                {
+                    low = mid + 1;
+                }
+            }
+
+            return resultIndex;
+        }
+
+        public int MaxTwoEvents_1(int[][] events)
+        {
+            Array.Sort(events, (x, y) => x[0] - y[0]);
+            dp2054 = new int[events.Length][];
+            for (int i = 0; i < events.Length; i++)
+            {
+                dp2054[i] = new int[events.Length];
+
+                Array.Fill(dp2054[i], -1);
+            }
+            return MaxTwoEvents_1(events, 0, 1);
+        }
+
+        public int MaxTwoEvents_1(int[][] events, int index1, int index2)
+        {
+            if (index1 >= events.Length || index2 >= events.Length || index1 == index2) return 0;
+            if (dp2054[index1][index2] != -1) return dp2054[index1][index2];
+            int currSum = 0;
+            if (overLappingEvents(events[index1], events[index2]) || overLappingEvents(events[index2], events[index1]))
+            {
+                currSum = Math.Max(events[index1][2], events[index2][2]);
+            }
+            else
+            {
+                currSum = events[index1][2] + events[index2][2];
+            }
+            return dp2054[index1][index2] = Math.Max(currSum, Math.Max(MaxTwoEvents_1(events, index1, index2 + 1), MaxTwoEvents_1(events, index2, index2 + 1)));
+        }
+
+        private bool overLappingEvents(int[] source, int[] target)
+        {
+            return (target[0] >= source[0] && target[0] <= source[1]) || (target[1] >= source[0] && target[1] <= source[1]);
+        }
+        #endregion
+
         #region 2064. Minimized Maximum of Products Distributed to Any Store
         public int MinimizedMaximum(int n, int[] quantities)
         {
@@ -6775,6 +7018,114 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 3152. Special Array II
+        public bool[] IsArraySpecial(int[] nums, int[][] queries)
+        {
+            int n = nums.Length;
+            int[] transitions = new int[n - 1];
+
+            // Compute the transitions array
+            for (int i = 0; i < n - 1; i++)
+            {
+                if (nums[i] % 2 != nums[i + 1] % 2)
+                {
+                    transitions[i] = 1;
+                }
+                else
+                {
+                    transitions[i] = 0;
+                }
+            }
+
+            // Compute the prefix sum of transitions
+            int[] prefix = new int[n];
+            for (int i = 1; i < n; i++)
+            {
+                prefix[i] = prefix[i - 1] + transitions[i - 1];
+            }
+
+            // Evaluate each query
+            bool[] result = new bool[queries.Length];
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+
+                var query = queries[i];
+                int from = query[0];
+                int to = query[1];
+
+                // Count the valid transitions in the range
+                int count = prefix[to] - prefix[from];
+
+                // The range is special if all transitions are valid
+                result[i] = count == (to - from);
+            }
+
+            return result;
+
+        }
+
+        public bool[] IsArraySpecial_1(int[] nums, int[][] queries)
+        {
+            bool[] array = new bool[queries.Length];
+
+            bool[][] dp = new bool[nums.Length][];
+            for (int i = 0; i < dp.Length; i++)
+            {
+                dp[i] = new bool[dp.Length];
+            }
+
+
+            for (int i = 0; i < dp.Length; i++)
+            {
+                dp[i][i] = true;
+                bool zeroFlag = nums[i] % 2 == 0;
+                for (int j = i + 1; j < dp.Length; j++)
+                {
+                    if (zeroFlag == (nums[j] % 2 == 0))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        dp[i][j] = true;
+                        zeroFlag = !zeroFlag;
+                    }
+                }
+            }
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+                array[i] = dp[queries[i][0]][queries[i][1]];
+            }
+
+            return array;
+        }
+        #endregion
+
+        #region 3163. String Compression III
+        public string CompressedString(string word)
+        {
+            int i = 0;
+            StringBuilder stringBuilder = new StringBuilder();
+            while (i < word.Length)
+            {
+                char currentChar = word[i];
+                int count = 1;
+
+                while (++i < word.Length && count <= 9 && currentChar == word[i])
+                {
+                    count++;
+                }
+
+                stringBuilder.Append(count);
+                stringBuilder.Append(currentChar);
+            }
+
+            return stringBuilder.ToString();
+        }
+        #endregion
+
         #region 3243. Shortest Distance After Road Addition Queries I
         public int[] ShortestDistanceAfterQueries(int n, int[][] queries)
         {
@@ -6825,29 +7176,6 @@ namespace Leetcode2024
             }
 
             return result;
-        }
-        #endregion
-
-        #region 3163. String Compression III
-        public string CompressedString(string word)
-        {
-            int i = 0;
-            StringBuilder stringBuilder = new StringBuilder();
-            while (i < word.Length)
-            {
-                char currentChar = word[i];
-                int count = 1;
-
-                while (++i < word.Length && count <= 9 && currentChar == word[i])
-                {
-                    count++;
-                }
-
-                stringBuilder.Append(count);
-                stringBuilder.Append(currentChar);
-            }
-
-            return stringBuilder.ToString();
         }
         #endregion
 

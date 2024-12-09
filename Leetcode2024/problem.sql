@@ -187,3 +187,83 @@ insert into Teacher (teacher_id, subject_id, dept_id) values (2, 4, 1)
 
 select teacher_id, COUNT(distinct subject_id) as cnt from Teacher
 group by teacher_id
+
+--1045. Customers Who Bought All Products
+
+drop table if exists Customer
+go
+drop table if exists Product
+go
+
+Create table Customer (customer_id int, product_key int)
+Create table Product (product_key int)
+Truncate table Customer
+insert into Customer (customer_id, product_key) values ('1', '5')
+insert into Customer (customer_id, product_key) values ('2', '6')
+insert into Customer (customer_id, product_key) values ('3', '5')
+insert into Customer (customer_id, product_key) values ('3', '6')
+insert into Customer (customer_id, product_key) values ('1', '6')
+Truncate table Product
+insert into Product (product_key) values ('5')
+insert into Product (product_key) values ('6')
+
+
+declare @productCount int = (select count(product_key) from Product)
+
+select customer_id from Customer
+group by customer_id having count(distinct product_key ) = @productCount
+
+--1731. The Number of Employees Which Report to Each Employee
+drop table If Exists Employees
+GO
+Create table Employees(employee_id int, name varchar(20), reports_to int, age int)
+Truncate table Employees
+insert into Employees (employee_id, name, reports_to, age) values (9, 'Hercy', NULL, 43)
+insert into Employees (employee_id, name, reports_to, age) values (6, 'Alice', 9, 41)
+insert into Employees (employee_id, name, reports_to, age) values (4, 'Bob', 9, 36)
+insert into Employees (employee_id, name, reports_to, age) values (2, 'Winston', NULL, 37)
+GO
+
+select 
+	e1.employee_id, 
+	e1.name,
+	count(e2.employee_id) as reports_count, 
+	CAST(avg(e2.age * 1.0) as decimal(4,0)) as average_age  
+from Employees e1
+inner join Employees e2 on e1.employee_id = e2.reports_to
+group by e1.employee_id, e1.name
+order by e1.employee_id
+
+
+--1789. Primary Department for Each Employee
+drop table if exists employee
+go
+
+Create table Employee (employee_id int, department_id int, primary_flag nchar(1))
+Truncate table Employee
+insert into Employee (employee_id, department_id, primary_flag) values (1, 1, 'N')
+insert into Employee (employee_id, department_id, primary_flag) values (2, 1, 'Y')
+insert into Employee (employee_id, department_id, primary_flag) values (2, 2, 'N')
+insert into Employee (employee_id, department_id, primary_flag) values (3, 3, 'N')
+insert into Employee (employee_id, department_id, primary_flag) values (4, 2, 'N')
+insert into Employee (employee_id, department_id, primary_flag) values (4, 3, 'Y')
+insert into Employee (employee_id, department_id, primary_flag) values (4, 4, 'N')
+
+
+select employee_id, department_id from Employee
+where primary_flag = 'Y'
+UNION
+select employee_id, min(department_id) as department_id from Employee
+group by employee_id having count( department_id)=1
+
+
+ SELECT 
+	employee_id, 
+	department_id 
+FROM (
+	select 
+		employee_id, 
+		department_id, 
+		ROW_NUMBER() OVER (PARTITION BY employee_id ORDER BY primary_flag DESC) as ROWNUMBER 
+	from Employee) s
+ WHERE S.ROWNUMBER = 1
