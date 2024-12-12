@@ -339,7 +339,7 @@ namespace Leetcode2024
         }
         //public IList<int> FindSubstring(string s, string[] words)
         //{
-        //    List<int> result = new List<int>();
+        //    List<int> ub = new List<int>();
         //    HashSet<int> indexes = new HashSet<int>();
         //    int wLen = words[0].Length;
         //    int requiredLength = words.Length * wLen;
@@ -417,7 +417,7 @@ namespace Leetcode2024
         //        }
         //    }
 
-        //    return result;
+        //    return ub;
         //}
         #endregion
 
@@ -5311,10 +5311,10 @@ namespace Leetcode2024
             // Start DFS traversal
             Visit(startNode, adjacencyMatrix, result);
 
-            // Reverse the result since DFS gives us the path in reverse
+            // Reverse the ub since DFS gives us the path in reverse
             result.Reverse();
 
-            // Construct the result pairs
+            // Construct the ub pairs
             int[][] pairedResult = new int[result.Count - 1][];
             for (int i = 1; i < result.Count; i++)
             {
@@ -6325,6 +6325,34 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2558. Take Gifts From the Richest Pile
+        public long PickGifts(int[] gifts, int k)
+        {
+            long result = 0;
+            PriorityQueue<int, int> pq = new PriorityQueue<int, int>(Comparer<int>.Create((x, y) => y - x));
+            //int i = -1;
+            foreach (var gift in gifts)
+            {
+                result += gift;
+                pq.Enqueue(gift, gift);
+            }
+
+            while (k-->0)
+            {
+                var x = pq.Dequeue();
+
+                var sqrtFloor = (int)Math.Floor(Math.Sqrt(x));
+
+                result -= (x - sqrtFloor);
+
+                pq.Enqueue(sqrtFloor, sqrtFloor);
+
+            }
+
+            return result;
+        }
+        #endregion
+
         #region 2563. Count the Number of Fair Pairs
         public long CountFairPairs(int[] nums, int lower, int upper)
         {
@@ -6635,17 +6663,17 @@ namespace Leetcode2024
             //{
             //    if (grid1[size][0] < grid1[size][1])
             //    {
-            //        result = Math.Max(result, dp_416[size][1] + 1);
+            //        ub = Math.Max(ub, dp_416[size][1] + 1);
             //    }
 
             //    if (size - 1 >= 0 && grid1[size][0] < grid1[size - 1][1])
             //    {
-            //        result = Math.Max(result, dp_416[size - 1][1] + 1);
+            //        ub = Math.Max(ub, dp_416[size - 1][1] + 1);
             //    }
 
             //    if (size + 1 < grid1.Length && grid1[size][0] < grid1[size + 1][1])
             //    {
-            //        result = Math.Max(result, dp_416[size + 1][1] + 1);
+            //        ub = Math.Max(ub, dp_416[size + 1][1] + 1);
             //    }
             //}
             return 0;
@@ -6686,6 +6714,93 @@ namespace Leetcode2024
             return result;
         }
 
+        #endregion
+
+        #region 2779. Maximum Beauty of an Array After Applying Operation
+        public int MaximumBeauty(int[] nums, int k)
+        {
+            if (nums.Length == 1) return 1;
+
+            Array.Sort(nums);
+            int maxBeauty = 0;
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                int ub = getUpperBound(nums, nums[i] + 2 * k);
+                maxBeauty = Math.Max(maxBeauty, ub - i + 1);
+            }
+
+            return maxBeauty;
+        }
+
+        private int getUpperBound(int[] nums, int val)
+        {
+            int low = 0, high = nums.Length - 1, ub = 0;
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+
+                if (nums[mid] <= val)
+                {
+                    ub = mid;
+                    low = mid + 1;
+                }
+                else
+                {
+                    high = mid - 1;
+                }
+            }
+            return ub;
+        }
+
+        public int MaximumBeauty2(int[] nums, int k)
+        {
+            if (nums.Length == 1) return 1;
+            Array.Sort(nums);
+            int maxBeauty = 0;
+            int right = 0;
+            for (int left = 0; left < nums.Length; left++)
+            {
+                while (right < nums.Length && nums[right] - nums[left] <= 2 * k)
+                {
+                    right++;
+                }
+
+                maxBeauty = Math.Max(maxBeauty, right - left);
+            }
+
+            return maxBeauty;
+        }
+        public int MaximumBeauty_1(int[] nums, int k)
+        {
+            if (nums.Length == 1) return 1;
+
+            int maxBeauty = 0;
+            int maxValue = 0;
+
+            foreach (var n in nums)
+            {
+                if (n > maxValue) maxValue = n;
+            }
+
+            int[] counterArray = new int[maxValue + 1];
+
+            foreach (var n in nums)
+            {
+                counterArray[Math.Max(n - k, 0)]++;
+                counterArray[Math.Min(n + k + 1, maxValue)]--;
+            }
+
+            int currSum = 0;
+
+            foreach (var count in counterArray)
+            {
+                currSum += count;
+                maxBeauty = Math.Max(maxBeauty, currSum);
+            }
+
+            return maxBeauty;
+        }
         #endregion
 
         #region 2824. Count Pairs Whose Sum is Less than Target
