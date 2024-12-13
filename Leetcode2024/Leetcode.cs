@@ -6337,7 +6337,7 @@ namespace Leetcode2024
                 pq.Enqueue(gift, gift);
             }
 
-            while (k-->0)
+            while (k-- > 0)
             {
                 var x = pq.Dequeue();
 
@@ -6502,6 +6502,126 @@ namespace Leetcode2024
             }
 
             return pq.Count < k ? -1 : pq.Dequeue();
+        }
+        #endregion
+
+        #region 2593. Find Score of an Array After Marking All Elements
+
+        public long FindScore(int[] nums)
+        {
+            long result = 0;
+
+            List<(int value, int index)> lst = new List<(int value, int index)>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                lst.Add((nums[i], i));
+            }
+            //
+            lst.Sort((x, y) =>
+            {
+                int c = x.value.CompareTo(y.value);
+                return c == 0 ? x.index.CompareTo(y.index) : c;
+            });
+
+
+            foreach (var item in lst)
+            {
+                if (nums[item.index] == -1) continue;
+
+                result += item.value;
+                nums[item.index] = -1;
+                if (item.index + 1 < nums.Length) nums[item.index + 1] = -1;
+                if (item.index - 1 >= 0) nums[item.index - 1] = -1;
+            }
+
+            return result;
+        }
+
+        public long FindScore_3(int[] nums)
+        {
+            long result = 0;
+
+            List<(int value, int index)> lst = new List<(int value, int index)>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                lst.Add((nums[i], i));
+            }
+            //
+            lst.Sort((x, y) =>
+            {
+                int c = x.value.CompareTo(y.value);
+                return c == 0 ? x.index.CompareTo(y.index) : c;
+            });
+
+            HashSet<int> marked = new HashSet<int>();
+            foreach (var item in lst)
+            {
+                if (marked.Contains(item.index)) continue;
+
+                result += item.value;
+
+                marked.Add(item.index);
+                marked.Add(item.index + 1);
+                marked.Add(item.index - 1);
+            }
+
+            return result;
+        }
+
+
+        public long FindScore_2(int[] nums)
+        {
+            long result = 0;
+
+            List<(int value, int index)> lst = new List<(int value, int index)>();
+
+            for (int i = 0; i < nums.Length; i++)
+            {
+                lst.Add((nums[i], i));
+            }
+
+            var l = lst.OrderBy(x => x.value).ThenBy(x => x.index);
+
+            HashSet<int> marked = new HashSet<int>();
+            foreach (var item in l)
+            {
+                if (marked.Contains(item.index)) continue;
+
+                result += item.value;
+
+                marked.Add(item.index);
+                marked.Add(item.index + 1);
+                marked.Add(item.index - 1);
+            }
+
+            return result;
+        }
+
+        public long FindScore_1(int[] nums)
+        {
+            long result = 0;
+            HashSet<int> marked = new HashSet<int>();
+            PriorityQueue<int, (int, int)> pq = new PriorityQueue<int, (int, int)>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                pq.Enqueue(i, (nums[i], i));
+            }
+
+            while (pq.Count > 0)
+            {
+                int dq = pq.Dequeue();
+                if (!marked.Contains(dq))
+                {
+                    result += nums[dq];
+
+                    marked.Add(dq);
+                    marked.Add(dq - 1);
+                    marked.Add(dq + 1);
+                }
+            }
+            return result;
         }
         #endregion
 
