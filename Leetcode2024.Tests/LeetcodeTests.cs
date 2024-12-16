@@ -14,12 +14,32 @@ namespace Leetcode2024.Tests
         }
         */
 
+
         #region Setup
         LeetCode leetcode;
         [SetUp]
         public void Setup()
         {
             leetcode = new LeetCode();
+        }
+        #endregion
+
+        #region 1792. Maximum Average Pass Ratio
+        [Test]
+        public void MaxAverageRatioTest()
+        {
+            int[][] classes = new int[][]
+            {
+                new int[]{1,2 },
+                new int[]{3,5 },
+                new int[]{2,2}
+            };
+
+            int extraStudents = 2;
+
+            var k = leetcode.MaxAverageRatio(classes, extraStudents);
+
+            Assert.AreEqual(0.78333, k);
         }
         #endregion
         #region 3152. Special Array II

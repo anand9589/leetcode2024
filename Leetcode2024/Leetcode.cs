@@ -4674,6 +4674,57 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1792. Maximum Average Pass Ratio
+        public double MaxAverageRatio(int[][] classes, int extraStudents)
+        {
+            PriorityQueue<(double x, double y), double> pq = new PriorityQueue<(double x, double y), double>();
+
+            double sum = 0.0;
+            foreach (int[] classArr in classes)
+            {
+                double n1 = (double)classArr[0];
+                double n2 = (double)classArr[1];
+                double currentRatio = n1 / n2;
+                double nextRatio = (n1 + 1) / (n2 + 1);
+                double priority = currentRatio - nextRatio;
+                sum += currentRatio;
+                pq.Enqueue((n1, n2), priority);
+            }
+
+            while (extraStudents-- > 0)
+            {
+                var pp = pq.Dequeue();
+
+                double n1 = pp.x;
+                double n2 = pp.y;
+
+                double currentRatio = n1 / n2;
+                sum -= currentRatio;
+                n1 += 1;
+                n2 += 1;
+                currentRatio = n1 / n2;
+                double nextRatio = (n1 + 1) / (n2 + 1);
+                double priority = currentRatio - nextRatio;
+
+                sum += currentRatio;
+                pq.Enqueue((n1, n2), priority);
+            }
+
+
+            return sum/classes.Length;
+        }
+
+        public class DoubleComparer : IComparer<double>
+        {
+            public int Compare(double x, double y)
+            {
+                if (x < y) return 1;
+                if (x > y) return -1;
+                return 0;
+            }
+        }
+        #endregion
+
         #region 1829. Maximum XOR for Each Query
         public int[] GetMaximumXor(int[] nums, int maximumBit)
         {
