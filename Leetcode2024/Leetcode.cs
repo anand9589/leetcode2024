@@ -7498,6 +7498,27 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 3264. Final Array State After K Multiplication Operations I
+        public int[] GetFinalState(int[] nums, int k, int multiplier)
+        {
+            PriorityQueue<int, int> pq = new PriorityQueue<int, int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                pq.Enqueue(i, nums[i]);
+            }
+
+            while (k-- > 0)
+            {
+                var dq = pq.Dequeue();
+
+                nums[dq] *= multiplier;
+
+                pq.Enqueue(dq, nums[dq]);
+            }
+            return nums;
+        }
+        #endregion
+
         #region 3340. Check Balanced String
         public bool IsBalanced(string num)
         {
