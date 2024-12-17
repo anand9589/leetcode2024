@@ -24,6 +24,41 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+
+        #region 2182. Construct String With Repeat Limit
+
+        [Test]
+        public void RepeatLimitedStringTest()
+        {
+            string s = "cczazcc";
+            int repeatLimit = 3;
+
+            var k = leetcode.RepeatLimitedString(s, repeatLimit);
+
+            Assert.AreEqual("zzcccac", k);
+
+        }
+
+        [Test]
+        public void RepeatLimitedStringTest1()
+        {
+            string s = "aababab";
+            int repeatLimit = 3;
+
+            var k = leetcode.RepeatLimitedString(s, repeatLimit);
+
+            Assert.AreEqual("bbabaaa", k);
+
+        }
+        #endregion
+
+        #region 3386. Button with Longest Push Time
+        [Test]
+        public void ButtonWithLongestTimeTest()
+        {
+
+        }
+        #endregion
         #region 1792. Maximum Average Pass Ratio
         [Test]
         public void MaxAverageRatioTest()

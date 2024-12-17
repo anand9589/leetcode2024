@@ -4711,7 +4711,7 @@ namespace Leetcode2024
             }
 
 
-            return sum/classes.Length;
+            return sum / classes.Length;
         }
 
         public class DoubleComparer : IComparer<double>
@@ -5532,6 +5532,53 @@ namespace Leetcode2024
             }
 
             sb.Append(s.Substring(curIndex));
+
+            return sb.ToString();
+        }
+        #endregion
+
+        #region 2182. Construct String With Repeat Limit
+        public string RepeatLimitedString(string s, int repeatLimit)
+        {
+            int[] charCount = new int[26];
+            foreach (char c in s)
+            {
+                charCount[c - 'a']++;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            int nextAvailable = 25;
+            for (int i = 25; i >=0; i--)
+            {
+                nextAvailable = i - 1;
+                while (charCount[i]>0)
+                {
+                    if (charCount[i] <= repeatLimit)
+                    {
+                        sb.Append((char)(i + 'a'), charCount[i]);
+                        charCount[i] = 0;
+                    }
+                    else
+                    {
+                        sb.Append((char)(i + 'a'), repeatLimit);
+                        charCount[i] -= repeatLimit;
+                        while (nextAvailable >=0 && charCount[nextAvailable]==0)
+                        {
+                            nextAvailable--;   
+                        }
+                        if (nextAvailable >= 0 && charCount[nextAvailable]>0)
+                        {
+                            sb.Append((char)(nextAvailable + 'a'));
+                            charCount[nextAvailable]--;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+
 
             return sb.ToString();
         }
