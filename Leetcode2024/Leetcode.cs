@@ -7683,6 +7683,61 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 3386. Button with Longest Push Time
+        public int ButtonWithLongestTime(int[][] events)
+        {
+            int btnLongest = events[0][0];
+            int longestTime = events[0][1];
+            for (int i = 1; i < events.Length; i++)
+            {
+                int timeTakenToPress = events[i][1] - events[i - 1][1];
+                if (timeTakenToPress > longestTime)
+                {
+                    longestTime = timeTakenToPress;
+                    btnLongest = events[i][0];
+                }
+                else if(timeTakenToPress == longestTime && btnLongest > events[i][0])
+                {
+                    btnLongest = events[i][0];
+                }
+            }
+            return btnLongest;
+        }
+
+        public int ButtonWithLongestTime1(int[][] events)
+        {
+            int btnLongest = events[0][0];
+            int longestTime = events[0][1];
+            Dictionary<int, int> map = new Dictionary<int, int>();
+            map.Add(btnLongest, 0);
+            int prevTime = longestTime;
+            for (int i = 1; i < events.Length; i++)
+            {
+                int timeTakenToPress = events[i][1] - prevTime;
+                if (timeTakenToPress == longestTime)
+                {
+                    if (map.ContainsKey(events[i][0]) && map[events[i][0]] < map[btnLongest])
+                    {
+                        btnLongest = events[i][0];
+                    }
+                }
+                else if (timeTakenToPress > longestTime)
+                {
+                    btnLongest = events[i][0];
+                }
+                if (!map.ContainsKey(events[i][0]))
+                {
+                    map.Add(events[i][0], i);
+                }
+                prevTime += timeTakenToPress;
+            }
+
+
+
+            return btnLongest;
+        }
+        #endregion
+
         #region MockTests
         public int FindPeakElement(int[] nums)
         {
