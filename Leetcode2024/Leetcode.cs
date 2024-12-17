@@ -6901,6 +6901,50 @@ namespace Leetcode2024
         #region 2762. Continuous Subarrays
         public long ContinuousSubarrays(int[] nums)
         {
+            if (nums.Length == 1) return 1;
+            long count = 0;
+            int left = 0, right = 0, currMin = nums[0], currMax = nums[0];
+
+            for (right = 0; right < nums.Length; right++)
+            {
+                currMax = Math.Max(currMax, nums[right]);
+                currMin = Math.Min(currMin, nums[right]);
+
+                if (currMax - currMin > 2)
+                {
+                    count += getSubArrayCount(right - left);
+                    left = right;
+                    currMin = nums[left];
+                    currMax = nums[left];
+
+                    while (left > 0 && Math.Abs(nums[right] - nums[left - 1]) <= 2)
+                    {
+                        left--;
+                        currMin = Math.Min(currMin, nums[left]);
+                        currMax = Math.Max(currMax, nums[left]);
+                    }
+
+                    if (left < right)
+                    {
+                        count -= getSubArrayCount(right - left);
+                    }
+                }
+            }
+
+            if (right > left)
+            {
+                count += getSubArrayCount(right - left);
+            }
+            return count;
+        }
+
+        private long getSubArrayCount(int total)
+        {
+            return total * (total + 1) / 2;
+        }
+
+        public long ContinuousSubarrays_1(int[] nums)
+        {
             int left = 0;
             long result = 0;
             int maxVal = nums[0];
