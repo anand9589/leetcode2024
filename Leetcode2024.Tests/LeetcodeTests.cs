@@ -24,6 +24,14 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 1475. Final Prices With a Special Discount in a Shop
+        [Test]
+        public void FinalPricesTest()
+        {
+            int[] prices = { 8, 4, 6, 2, 3 };
+            var k = leetcode.FinalPrices(prices);
+        }
+        #endregion
 
         #region 2182. Construct String With Repeat Limit
 

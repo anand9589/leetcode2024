@@ -4431,6 +4431,24 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 1475. Final Prices With a Special Discount in a Shop
+        public int[] FinalPrices(int[] prices)
+        {
+            for (int i = 0; i < prices.Length-1; i++)
+            {                
+                for (int j = i + 1; j < prices.Length; j++)
+                {
+                    if (prices[j] <= prices[i])
+                    {
+                        prices[i] = prices[i] - prices[j];
+                        break;
+                    }
+                }
+            }
+            return prices;
+        }
+        #endregion
+
         #region 1492. The kth Factor of n
         public int KthFactor(int n, int k)
         {
