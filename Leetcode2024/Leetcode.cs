@@ -1,12 +1,5 @@
 ﻿using Leetcode2024.Common.Models;
-using System;
-using System.ComponentModel;
 using System.Data;
-using System.Globalization;
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace Leetcode2024
@@ -661,6 +654,65 @@ namespace Leetcode2024
             }
         }
         #endregion
+
+        #region 65. Valid Number
+        public bool IsNumber(string s)
+        {
+            if (s.StartsWith("e") || s.StartsWith("E") || s.EndsWith("e") || s.EndsWith("E") || s == ".") return false;
+
+            if (s.Length == 1) return char.IsDigit(s[0]);
+
+            int i = 0;
+
+            bool dotEncountered = false;
+            bool expEncountered = false;
+            if (s[0] == '.')
+            {
+                dotEncountered = true;
+            }
+            else if (s[0] != '+' && s[0] != '-' && !char.IsDigit(s[0])) return false;
+            while (++i < s.Length)
+            {
+                if (char.IsDigit(s[i])) continue;
+                if (s[i] == 'e' || s[i] == 'E')
+                {
+                    if (expEncountered) return false;
+                    if (!char.IsDigit(s[i - 1]))
+                    {
+                        if (s[i - 1] == '.')
+                        {
+                            if (i == 1) return false;
+                            if (!char.IsDigit(s[i - 2])) return false;
+                        }
+
+                        if (i == 1 && (s[i - 1] == '+' || s[i - 1] == '-')) return false;
+                    }
+                    expEncountered = true;
+                }
+                else if (s[i] == '+' || s[i] == '-')
+                {
+                    if (s[i - 1] == 'E' || s[i - 1] == 'e')
+                    {
+                        if (i == s.Length - 1 || !char.IsDigit(s[i + 1])) return false;
+                        continue;
+                    }
+                    return false;
+                }
+                else if (s[i] == '.')
+                {
+                    if (dotEncountered || expEncountered || (i == s.Length - 1 && !char.IsDigit(s[i - 1]))) return false;
+                    dotEncountered = true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+        #endregion
+
 
         #region 71. Simplify Path
         public string SimplifyPath(string path)

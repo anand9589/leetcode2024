@@ -24,6 +24,26 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+        #region 65. Valid Number
+        [Test]
+        public void ValidNumberTestSuccess()
+        {
+            string[] valid = { "46.e3", "005047e+6" };
+            foreach (string s in valid)
+            {
+                Assert.IsTrue(leetcode.IsNumber(s));
+            }
+        }
+        [Test]
+        public void ValidNumberTestFail()
+        {
+            string[] invalid = { ".e1", "4e+", "+E3", "6e6.5", "+.E3" };
+            foreach (string s in invalid)
+            {
+                Assert.IsFalse(leetcode.IsNumber(s));
+            }
+        }
+        #endregion
         #region 1475. Final Prices With a Special Discount in a Shop
         [Test]
         public void FinalPricesTest()
