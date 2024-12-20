@@ -713,7 +713,6 @@ namespace Leetcode2024
         }
         #endregion
 
-
         #region 71. Simplify Path
         public string SimplifyPath(string path)
         {
@@ -926,6 +925,28 @@ namespace Leetcode2024
 
             return root;
 
+        }
+        #endregion
+
+        #region 115. Distinct Subsequences
+        public int NumDistinct(string s, string t)
+        {
+            int[] dp = new int[t.Length + 1];
+            dp[0] = 1;
+            int k = -1;
+            while (++k < s.Length)
+            {
+                for (int i = dp.Length - 1; i > 0; i--)
+                {
+
+                    if (t[i - 1] == s[k])
+                    {
+                        dp[i] += dp[i - 1];
+                    }
+                }
+            }
+
+            return dp[t.Length];
         }
         #endregion
 

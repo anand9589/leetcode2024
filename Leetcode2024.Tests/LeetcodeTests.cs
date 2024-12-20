@@ -24,6 +24,21 @@ namespace Leetcode2024.Tests
         }
         #endregion
 
+
+
+        #region 115. Distinct Subsequences
+        [Test]
+        public void NumDistinctTest()
+        {
+            string s = "rabbbit";
+            string t = "rabbit";
+
+            var k = leetcode.NumDistinct(s, t);
+            Assert.AreEqual(3, k);  
+        }
+
+        #endregion
+
         #region 65. Valid Number
         [Test]
         public void ValidNumberTestSuccess()
