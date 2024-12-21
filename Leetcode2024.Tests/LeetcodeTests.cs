@@ -25,6 +25,65 @@ namespace Leetcode2024.Tests
         #endregion
 
 
+        #region 2872. Maximum Number of K-Divisible Components
+        [Test]
+        public void MaxKDivisibleComponentsTest()
+        {
+            int n = 5, k = 6;
+            int[][] edges = new int[][]
+            {
+                    new int[]{0,2},
+                    new int[]{1,2},
+                    new int[]{1,3},
+                    new int[]{2,4}
+            };
+            int[] values = { 1, 8, 1, 4, 4 };
+            var re = leetcode.MaxKDivisibleComponents(n, edges, values, k);
+
+            Assert.AreEqual(2, re);
+
+        }
+
+        [Test]
+        public void MaxKDivisibleComponentsTest1()
+        {
+            int n = 7, k = 3;
+            int[][] edges = new int[][]
+            {
+                    new int[]{0,1},
+                    new int[]{0,2},
+                    new int[]{1,3},
+                    new int[]{1,4},
+                    new int[]{2,5},
+                    new int[]{2,6}
+            };
+            int[] values = { 3, 0, 6, 1, 5, 2, 1 };
+            var re = leetcode.MaxKDivisibleComponents(n, edges, values, k);
+
+            Assert.AreEqual(3, re);
+
+        }
+
+        [Test]
+        public void MaxKDivisibleComponentsTest2()
+        {
+            int n = 7, k = 7;
+            int[][] edges = new int[][]
+            {
+                    new int[]{0,1},
+                    new int[]{0,2},
+                    new int[]{1,3},
+                    new int[]{1,4},
+                    new int[]{2,5},
+                    new int[]{2,6}
+            };
+            int[] values = { 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000, 1000000000 };
+            var re = leetcode.MaxKDivisibleComponents(n, edges, values, k);
+
+            Assert.AreEqual(1, re);
+
+        }
+        #endregion
 
         #region 115. Distinct Subsequences
         [Test]
@@ -120,6 +179,56 @@ namespace Leetcode2024.Tests
             Assert.AreEqual(0.78333, k);
         }
         #endregion
+
+        #region 2762. Continuous Subarrays
+        [Test]
+        public void ContinuousSubarraysTest()
+        {
+            int[] nums = { 5, 4, 2, 4 };
+
+            var k = leetcode.ContinuousSubarrays(nums);
+
+            Assert.AreEqual(8, k);
+        }
+        [Test]
+        public void ContinuousSubarraysTest1()
+        {
+            int[] nums = { 1,2,3 };
+
+            var k = leetcode.ContinuousSubarrays(nums);
+
+            Assert.AreEqual(6, k);
+        }
+        [Test]
+        public void ContinuousSubarraysTest2()
+        {
+            int[] nums = { 1, 2, 3,4 };
+
+            var k = leetcode.ContinuousSubarrays(nums);
+
+            Assert.AreEqual(9, k);
+        }
+        [Test]
+        public void ContinuousSubarraysTest3()
+        {
+            int[] nums = { 65, 66, 67, 66, 66, 65, 64, 65, 65, 64 };
+
+            var k = leetcode.ContinuousSubarrays(nums);
+
+            Assert.AreEqual(43, k);
+        }
+        #endregion
+        #region 188. Best Time to Buy and Sell Stock IV
+        [Test]
+        public void MaxProfitTest()
+        {
+            int k = 2;
+            int[] prices = { 3, 2, 6, 5, 0, 3 };
+
+            var res = leetcode.MaxProfit(k, prices);
+        } 
+        #endregion
+
         #region 3152. Special Array II
         [Test]
         public void IsArraySpecialTest()

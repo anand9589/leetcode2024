@@ -1615,6 +1615,76 @@ namespace Leetcode2024
 
         #endregion
 
+        #region 188. Best Time to Buy and Sell Stock IV
+
+        public int MaxProfit(int k, int[] prices)
+        {
+            int[,,] dp = new int[prices.Length + 1, prices.Length + 1, k];
+            for (int i = 0; i <= prices.Length; i++)
+            {
+                for (int j = 0; j <= prices.Length; j++)
+                {
+                    for (int l = 0; l < k; l++)
+                    {
+                        dp[i, j, l] = -1;
+                    }
+                }
+            }
+            return MaxProfit_Recursion(k, prices, 0, 0, -1, dp);
+        }
+
+        private int MaxProfit_Recursion(int k, int[] prices, int profit, int currIndex, int buyIndex, int[,,] dp)
+        {
+            if (k == 0 || currIndex == prices.Length) return profit;
+            if (dp[buyIndex + 1, currIndex + 1, k - 1] != -1) return dp[buyIndex + 1, currIndex + 1, k - 1];
+
+            if (buyIndex == -1)
+            {
+                dp[buyIndex + 1, currIndex + 1, k - 1] = Math.Max(MaxProfit_Recursion(k, prices, profit, currIndex + 1, buyIndex, dp), MaxProfit_Recursion(k, prices, profit, currIndex + 1, currIndex, dp));
+            }
+            else
+            {
+                if (prices[currIndex] <= prices[buyIndex])
+                {
+                    dp[buyIndex + 1, currIndex + 1, k - 1] = MaxProfit_Recursion(k, prices, profit, currIndex + 1, buyIndex, dp);
+                }
+                else
+                {
+                    dp[buyIndex + 1, currIndex + 1, k - 1] = Math.Max(MaxProfit_Recursion(k, prices, profit, currIndex + 1, buyIndex, dp),
+                        MaxProfit_Recursion(k - 1, prices, profit + (prices[currIndex] - prices[buyIndex]), currIndex + 1, -1, dp));
+                }
+            }
+
+            return dp[buyIndex + 1, currIndex + 1, k - 1];
+        }
+        public int MaxProfit_1(int k, int[] prices)
+        {
+            return MaxProfit_Recursion_1(k, prices, 0, 0, -1);
+        }
+
+        private int MaxProfit_Recursion_1(int k, int[] prices, int profit, int currIndex, int buyIndex)
+        {
+            if (k == 0 || currIndex == prices.Length) return profit;
+
+            if (buyIndex == -1)
+            {
+                return Math.Max(MaxProfit_Recursion_1(k, prices, profit, currIndex + 1, buyIndex), MaxProfit_Recursion_1(k, prices, profit, currIndex + 1, currIndex));
+            }
+            else
+            {
+                if (prices[currIndex] <= prices[buyIndex])
+                {
+                    return MaxProfit_Recursion_1(k, prices, profit, currIndex + 1, buyIndex);
+                }
+                else
+                {
+                    return Math.Max(MaxProfit_Recursion_1(k, prices, profit, currIndex + 1, buyIndex),
+                        MaxProfit_Recursion_1(k - 1, prices, profit + (prices[currIndex] - prices[buyIndex]), currIndex + 1, -1));
+                }
+            }
+        }
+        #endregion
+
         #region 189. Rotate Array
         public void Rotate(int[] nums, int k)
         {
@@ -3703,6 +3773,36 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 769. Max Chunks To Make Sorted
+        public int MaxChunksToSorted(int[] arr)
+        {
+            int count = 0;
+            int i = 0;
+            while (i < arr.Length)
+            {
+                if (i != arr[i])
+                {
+                    int max = arr[i];
+
+                    int j = i + 1;
+                    while (j <= max)
+                    {
+                        max = Math.Max(arr[j], max);
+                        j++;
+                    }
+                    i = j;
+                }
+                else
+                {
+                    i++;
+                }
+                count++;
+            }
+
+            return count;
+        }
+        #endregion
+
         #region 773. Sliding Puzzle
         public int SlidingPuzzle(int[][] board)
         {
@@ -4507,8 +4607,8 @@ namespace Leetcode2024
         #region 1475. Final Prices With a Special Discount in a Shop
         public int[] FinalPrices(int[] prices)
         {
-            for (int i = 0; i < prices.Length-1; i++)
-            {                
+            for (int i = 0; i < prices.Length - 1; i++)
+            {
                 for (int j = i + 1; j < prices.Length; j++)
                 {
                     if (prices[j] <= prices[i])
@@ -5639,10 +5739,10 @@ namespace Leetcode2024
 
             StringBuilder sb = new StringBuilder();
             int nextAvailable = 25;
-            for (int i = 25; i >=0; i--)
+            for (int i = 25; i >= 0; i--)
             {
                 nextAvailable = i - 1;
-                while (charCount[i]>0)
+                while (charCount[i] > 0)
                 {
                     if (charCount[i] <= repeatLimit)
                     {
@@ -5653,11 +5753,11 @@ namespace Leetcode2024
                     {
                         sb.Append((char)(i + 'a'), repeatLimit);
                         charCount[i] -= repeatLimit;
-                        while (nextAvailable >=0 && charCount[nextAvailable]==0)
+                        while (nextAvailable >= 0 && charCount[nextAvailable] == 0)
                         {
-                            nextAvailable--;   
+                            nextAvailable--;
                         }
-                        if (nextAvailable >= 0 && charCount[nextAvailable]>0)
+                        if (nextAvailable >= 0 && charCount[nextAvailable] > 0)
                         {
                             sb.Append((char)(nextAvailable + 'a'));
                             charCount[nextAvailable]--;
@@ -7217,6 +7317,56 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2872. Maximum Number of K-Divisible Components
+
+        int components = 0;
+        public int MaxKDivisibleComponents(int n, int[][] edges, int[] values, int k)
+        {
+            bool[] visited = new bool[n];
+
+            Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+            for (int i = 0; i < n; i++)
+            {
+                map.Add(i, new List<int>());
+            }
+
+            foreach (var edge in edges)
+            {
+                map[edge[0]].Add(edge[1]);
+                map[edge[1]].Add(edge[0]);
+            }
+
+            processNode(0, map, visited, values, k);
+
+            return components;
+        }
+
+        private long processNode(int i, Dictionary<int, List<int>> map, bool[] visited, int[] values, int k)
+        {
+            visited[i] = true;
+
+            long curSum = 0;
+
+            foreach (var item in map[i])
+            {
+                if (!visited[item])
+                {
+                    curSum += processNode(item, map, visited, values, k);
+                }
+            }
+
+            curSum += values[i];
+
+            if (curSum % k == 0)
+            {
+                components++;
+                curSum = 0;
+            }
+
+            return curSum;
+        }
+        #endregion
+
         #region 2914. Minimum Number of Changes to Make Binary String Beautiful
         public int MinChanges(string s)
         {
@@ -7831,7 +7981,7 @@ namespace Leetcode2024
                     longestTime = timeTakenToPress;
                     btnLongest = events[i][0];
                 }
-                else if(timeTakenToPress == longestTime && btnLongest > events[i][0])
+                else if (timeTakenToPress == longestTime && btnLongest > events[i][0])
                 {
                     btnLongest = events[i][0];
                 }
