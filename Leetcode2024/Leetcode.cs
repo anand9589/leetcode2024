@@ -6336,6 +6336,94 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2463. Minimum Total Distance Traveled
+        public long MinimumTotalDistance_V1(IList<int> robot, int[][] factory)
+        {
+            long result = long.MaxValue;
+            robot = robot.OrderBy(x => x).ToList();
+            Array.Sort(factory, (x, y) => x[0].CompareTo(y[0]));
+            int n = robot.Count;
+            int m = factory.Length;
+
+            int[,] dp = new int[n + 1, m + 1];
+
+            for (int i = 0; i <= n; i++)
+            {
+                for (int j = 0; j <= m; j++)
+                {
+                    dp[i, j] = int.MaxValue / 2;
+                }
+            }
+
+            dp[0, 0] = 0;
+
+            for (int j = 1; j <= m; j++)
+            {
+                int pos = factory[j - 1][0];
+                int limit = factory[j - 1][1];
+
+                for (int i = 0; i <= n; i++)
+                    dp[i, j] = dp[i, j - 1];
+
+                for (int k = 1; k <= limit; k++)
+                {
+                    for (int i = k; i <= n; i++)
+                    {
+                        int distance = Math.Abs(pos - robot[i - k]);
+                        dp[i, j] = Math.Min(dp[i, j], dp[i - k, j - 1] + distance * k);
+                    }
+                }
+            }
+            return dp[n, m];
+        }
+
+        public long MinimumTotalDistance(IList<int> robot, int[][] factory)
+        {
+
+            var sortedRobot = robot.OrderBy(x => x).ToArray();
+            Array.Sort(factory, (a, b) => a[0].CompareTo(b[0]));
+
+            int m = sortedRobot.Length;
+            int n = factory.Length;
+
+            long[,] dp = new long[m + 1, n + 1];
+            for (int i = 0; i <= m; i++)
+            {
+                for (int j = 0; j <= n; j++)
+                {
+                    dp[i, j] = long.MaxValue;
+                }
+            }
+            dp[m, n] = 0;
+
+            for (int j = n - 1; j >= 0; j--)
+            {
+                long prefixSum = 0;
+                var deque = new LinkedList<(int, long)>();
+                deque.AddLast((m, 0));
+
+                for (int i = m - 1; i >= 0; i--)
+                {
+                    prefixSum += Math.Abs(sortedRobot[i] - factory[j][0]);
+
+                    if (deque.Count > 0 && deque.First.Value.Item1 > i + factory[j][1])
+                    {
+                        deque.RemoveFirst();
+                    }
+
+                    long currentValue = dp[i, j + 1] - prefixSum;
+                    while (deque.Count > 0 && deque.Last.Value.Item2 >= currentValue)
+                    {
+                        deque.RemoveLast();
+                    }
+                    deque.AddLast((i, currentValue));
+                    dp[i, j] = deque.First.Value.Item2 + prefixSum;
+                }
+            }
+            return dp[0, 0];
+        }
+        #endregion
+
         #region 2471. Minimum Number of Operations to Sort a Binary Tree by Level
         public int MinimumOperations(TreeNode root)
         {
@@ -6436,93 +6524,6 @@ namespace Leetcode2024
 
         //    return answer;
         //}
-        #endregion
-        #region 2463. Minimum Total Distance Traveled
-        public long MinimumTotalDistance_V1(IList<int> robot, int[][] factory)
-        {
-            long result = long.MaxValue;
-            robot = robot.OrderBy(x => x).ToList();
-            Array.Sort(factory, (x, y) => x[0].CompareTo(y[0]));
-            int n = robot.Count;
-            int m = factory.Length;
-
-            int[,] dp = new int[n + 1, m + 1];
-
-            for (int i = 0; i <= n; i++)
-            {
-                for (int j = 0; j <= m; j++)
-                {
-                    dp[i, j] = int.MaxValue / 2;
-                }
-            }
-
-            dp[0, 0] = 0;
-
-            for (int j = 1; j <= m; j++)
-            {
-                int pos = factory[j - 1][0];
-                int limit = factory[j - 1][1];
-
-                for (int i = 0; i <= n; i++)
-                    dp[i, j] = dp[i, j - 1];
-
-                for (int k = 1; k <= limit; k++)
-                {
-                    for (int i = k; i <= n; i++)
-                    {
-                        int distance = Math.Abs(pos - robot[i - k]);
-                        dp[i, j] = Math.Min(dp[i, j], dp[i - k, j - 1] + distance * k);
-                    }
-                }
-            }
-            return dp[n, m];
-        }
-
-        public long MinimumTotalDistance(IList<int> robot, int[][] factory)
-        {
-
-            var sortedRobot = robot.OrderBy(x => x).ToArray();
-            Array.Sort(factory, (a, b) => a[0].CompareTo(b[0]));
-
-            int m = sortedRobot.Length;
-            int n = factory.Length;
-
-            long[,] dp = new long[m + 1, n + 1];
-            for (int i = 0; i <= m; i++)
-            {
-                for (int j = 0; j <= n; j++)
-                {
-                    dp[i, j] = long.MaxValue;
-                }
-            }
-            dp[m, n] = 0;
-
-            for (int j = n - 1; j >= 0; j--)
-            {
-                long prefixSum = 0;
-                var deque = new LinkedList<(int, long)>();
-                deque.AddLast((m, 0));
-
-                for (int i = m - 1; i >= 0; i--)
-                {
-                    prefixSum += Math.Abs(sortedRobot[i] - factory[j][0]);
-
-                    if (deque.Count > 0 && deque.First.Value.Item1 > i + factory[j][1])
-                    {
-                        deque.RemoveFirst();
-                    }
-
-                    long currentValue = dp[i, j + 1] - prefixSum;
-                    while (deque.Count > 0 && deque.Last.Value.Item2 >= currentValue)
-                    {
-                        deque.RemoveLast();
-                    }
-                    deque.AddLast((i, currentValue));
-                    dp[i, j] = deque.First.Value.Item2 + prefixSum;
-                }
-            }
-            return dp[0, 0];
-        }
         #endregion
 
         #region 2490. Circular Sentence
