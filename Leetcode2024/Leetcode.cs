@@ -1,4 +1,5 @@
 ﻿using Leetcode2024.Common.Models;
+using System.ComponentModel.Design;
 using System.Data;
 using System.Text;
 
@@ -6335,6 +6336,107 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2471. Minimum Number of Operations to Sort a Binary Tree by Level
+        public int MinimumOperations(TreeNode root)
+        {
+            Queue<TreeNode> queue = new Queue<TreeNode>();
+            int swaps = 0;
+
+            queue.Enqueue(root);
+
+            while (queue.Count > 0)
+            {
+
+                int k = queue.Count();
+                int[] nodes = new int[k];
+                int i = 0;
+                while (i < k)
+                {
+                    TreeNode treeNode = queue.Dequeue();
+
+                    if (treeNode.left != null)
+                    {
+                        queue.Enqueue(treeNode.left);
+                    }
+
+                    if (treeNode.right != null)
+                    {
+                        queue.Enqueue(treeNode.right);
+                    }
+                    nodes[i++] = treeNode.val;
+                }
+
+
+                swaps += makeSorted(nodes);
+            }
+
+            return swaps;
+        }
+
+        private int makeSorted(int[] nodes)
+        {
+            int swaps = 0;
+            int[] copyArray = new int[nodes.Length];
+            Array.Copy(nodes, copyArray, nodes.Length);
+
+            Array.Sort(copyArray);
+
+            Dictionary<int, int> map = new Dictionary<int, int>();
+            bool needToSort = false;
+            map[nodes[0]] = 0;
+            for (int i = 1; i < nodes.Length; i++)
+            {
+                map[nodes[i]] = i;
+                if (nodes[i] < nodes[i - 1])
+                {
+                    needToSort = true;
+                }
+            }
+            if (needToSort)
+            {
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    if (copyArray[i] == nodes[i]) continue;
+
+                    swaps++;
+
+                    int cur = map[copyArray[i]];
+                    map[nodes[i]] = cur;
+                    nodes[cur] = nodes[i];
+                }
+
+
+            }
+            return swaps;
+        }
+
+        //public long MinimumReplacement(int[] nums)
+        //{
+        //    long answer = 0;
+        //    int n = nums.Length;
+
+        //    // Start from the second last element, as the last one is always sorted.
+        //    for (int i = n - 2; i >= 0; i--)
+        //    {
+        //        // No need to break if they are already in order.
+        //        if (nums[i] <= nums[i + 1])
+        //        {
+        //            continue;
+        //        }
+
+        //        // Count how many elements are made from breaking nums[i].
+        //        long numElements = (long)(nums[i] + nums[i + 1] - 1) / (long)nums[i + 1];
+
+        //        // It requires numElements - 1 replacement operations.
+        //        answer += numElements - 1;
+
+        //        // Maximize nums[i] after replacement.
+        //        nums[i] = nums[i] / (int)numElements;
+        //    }
+
+        //    return answer;
+        //}
+        #endregion
         #region 2463. Minimum Total Distance Traveled
         public long MinimumTotalDistance_V1(IList<int> robot, int[][] factory)
         {
@@ -7440,6 +7542,337 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 2940. Find Building Where Alice and Bob Can Meet
+        public int[] LeftmostBuildingQueries(int[] heights, int[][] queries)
+        {
+            List<int[]>[] lists = new List<int[]>[heights.Length];
+
+            int[] result = new int[queries.Length];
+            Array.Fill(result, -1);
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int alice = queries[i][0];
+                int bob = queries[i][1];
+
+                if (alice > bob)
+                {
+                    fun1(heights, lists, result, i, alice, bob);
+                }
+                else if (alice < bob)
+                {
+                    fun1(heights, lists, result, i, bob, alice);
+                }
+                else
+                {
+                    result[i] = alice;
+                }
+            }
+
+            PriorityQueue<int[], int> pq = new PriorityQueue<int[], int>();
+
+            for (int i = 0; i < heights.Length; i++)
+            {
+                while (pq.Count > 0 && pq.Peek()[0] < heights[i])
+                {
+                    var top = pq.Dequeue();
+                    result[top[1]] = i;
+                }
+
+                if (lists[i] != null)
+                {
+                    foreach (var item in lists[i])
+                    {
+                        pq.Enqueue(item, item[0]);
+                    }
+                }
+            }
+            return result;
+        }
+
+        private static void fun1(int[] heights, List<int[]>[] lists, int[] result, int i, int index1, int index2)
+        {
+            if (heights[index1] > heights[index2])
+            {
+                result[i] = index1;
+            }
+            else
+            {
+                if (lists[index1] == null)
+                {
+                    lists[index1] = new List<int[]>();
+                }
+                lists[index1].Add(new int[] { heights[index2] });
+            }
+        }
+
+        public int[] LeftmostBuildingQueries_4(int[] heights, int[][] queries)
+        {
+            int[] result = new int[queries.Length];
+            var nextMaxIndices = getNextMaxIndices(heights);
+
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int alice = queries[i][0];
+                int bob = queries[i][1];
+
+                if (alice == bob)
+                {
+                    result[i] = alice;
+                }
+                else if (bob > alice)
+                {
+                    result[i] = getIndex(heights, nextMaxIndices, alice, bob);
+                }
+                else
+                {
+                    result[i] = getIndex(heights, nextMaxIndices, bob, alice);
+                }
+            }
+            return result;
+        }
+        private int getIndex(int[] heights, List<int>[] nextMaxIndices, int alice, int bob)
+        {
+            int index;
+            if (heights[bob] > heights[alice])
+            {
+                index = bob;
+            }
+            else
+            {
+                index = searchIndex(nextMaxIndices[bob], heights[alice], heights);
+            }
+
+            return index;
+        }
+        private int searchIndex(List<int> list, int searchValue, int[] heights)
+        {
+            if (list.Count == 0 || heights[list.Last()] <= searchValue) return -1;
+
+            int low = 0, high = list.Count - 1;
+            if (heights[list[low]] > searchValue) return list[low];
+
+            int index = high;
+            while (low <= high)
+            {
+                int mid = (low + high) / 2;
+                if (heights[list[mid]] > searchValue)
+                {
+                    index = mid;
+                    high = mid - 1;
+                }
+                else
+                {
+                    low = mid + 1;
+                }
+            }
+            return list[index];
+        }
+        private static List<int>[] getNextMaxIndices(int[] heights)
+        {
+            List<int>[] result = new List<int>[heights.Length];
+
+            int index = heights.Length - 1;
+            result[index] = new List<int>();
+            Stack<int> s = new Stack<int>();
+            s.Push(index);
+
+            index--;
+
+            for (; index >= 0; index--)
+            {
+                result[index] = new List<int>();
+
+                while (s.Count > 0 && heights[s.Peek()] < heights[index])
+                {
+                    s.Pop();
+                }
+                if (s.Count > 0)
+                {
+                    result[index].Add(s.Peek());
+                    result[index].AddRange(result[s.Peek()]);
+
+                }
+                s.Push(index);
+            }
+
+            return result;
+        }
+
+        public int[] LeftmostBuildingQueries_3(int[] heights, int[][] queries)
+        {
+            int[] nextMaxIndex = getNextMaxIndex(heights);
+            int[] result = new int[queries.Length];
+            Dictionary<string, int> map = new Dictionary<string, int>();
+            for (int i = 0; i < result.Length; i++)
+            {
+                int alice = queries[i][0];
+                int bob = queries[i][1];
+                string mapKey = $"{alice},{bob}";
+
+                if (map.ContainsKey(mapKey))
+                {
+                    result[i] = map[mapKey];
+                    continue;
+                }
+
+                if (alice == bob)
+                {
+                    result[i] = alice;
+                }
+                else if (alice > bob && heights[alice] > heights[bob])
+                {
+                    result[i] = alice;
+                }
+                else if (alice < bob && heights[alice] < heights[bob])
+                {
+                    result[i] = bob;
+                }
+                else if (alice > bob)
+                {
+                    result[i] = updateIndex(heights, nextMaxIndex, result, i, bob, alice);
+                }
+                else
+                {
+                    result[i] = updateIndex(heights, nextMaxIndex, result, i, alice, bob);
+                }
+                map[mapKey] = result[i];
+            }
+
+            return result;
+        }
+        private int[] getNextMaxIndex(int[] heights)
+        {
+            int[] nextMaxIndex = new int[heights.Length];
+            int index = heights.Length - 1;
+            Stack<int> indexStack = new Stack<int>();
+            indexStack.Push(index);
+            nextMaxIndex[index] = -1;
+            index--;
+            for (; index >= 0; index--)
+            {
+                while (indexStack.Count > 0 && heights[indexStack.Peek()] <= heights[index])
+                {
+                    indexStack.Pop();
+                }
+                if (indexStack.Count == 0)
+                {
+                    nextMaxIndex[index] = -1;
+                    indexStack.Push(index);
+                }
+                else
+                {
+                    nextMaxIndex[index] = indexStack.Peek();
+                    indexStack.Push(index);
+                }
+            }
+
+
+            return nextMaxIndex;
+        }
+        private static int updateIndex(int[] heights, int[] nextMaxIndex, int[] result, int i, int alice, int bob)
+        {
+            int nextIndex = nextMaxIndex[bob];
+
+            while (nextIndex != -1 && heights[nextIndex] <= heights[alice])
+            {
+                nextIndex = nextMaxIndex[nextIndex];
+            }
+            return nextIndex;
+        }
+
+        public int[] LeftmostBuildingQueries_2(int[] heights, int[][] queries)
+        {
+            int[] nextMaxIndex = getNextMaxIndex(heights);
+            int[] result = new int[queries.Length];
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                int alice = queries[i][0];
+                int bob = queries[i][1];
+                if (alice == bob)
+                {
+                    result[i] = alice;
+                    continue;
+                }
+
+                if (alice > bob && heights[alice] > heights[bob])
+                {
+                    result[i] = alice;
+                    continue;
+                }
+                if (alice < bob && heights[alice] < heights[bob])
+                {
+                    result[i] = bob;
+                    continue;
+                }
+
+                if (alice > bob)
+                {
+                    result[i] = updateIndex(heights, nextMaxIndex, result, i, bob, alice);
+                }
+                else
+                {
+                    result[i] = updateIndex(heights, nextMaxIndex, result, i, alice, bob);
+                }
+
+            }
+
+            return result;
+        }
+
+        public int[] LeftmostBuildingQueries_1(int[] heights, int[][] queries)
+        {
+            int[] nextMaxIndex = getNextMaxIndex(heights);
+            int[] result = new int[queries.Length];
+
+            for (int i = 0; i < result.Length; i++)
+            {
+                int alice = queries[i][0];
+                int bob = queries[i][1];
+                if (alice == bob)
+                {
+                    result[i] = alice;
+                }
+                else if (alice > bob)
+                {
+                    updateIndex(heights, nextMaxIndex, result, i, alice, bob);
+                }
+                else
+                {
+                    if (heights[bob] > heights[alice])
+                    {
+                        result[i] = bob;
+                    }
+                    else
+                    {
+                        updateIndex(heights, nextMaxIndex, result, i, bob, alice);
+                    }
+                }
+
+            }
+
+            return result;
+        }
+
+        //private static void updateIndex(int[] heights, int[] nextMaxIndex, int[] result, int i, int index1, int index2)
+        //{
+        //    if (heights[index1] > heights[index2])
+        //    {
+        //        result[i] = index1;
+        //    }
+        //    else
+        //    {
+        //        int nextIndex = nextMaxIndex[index1];
+        //        while (nextIndex != -1 && heights[index2] >= nextMaxIndex[nextIndex])
+        //        {
+        //            nextIndex = nextMaxIndex[nextIndex];
+        //        }
+        //        result[i] = nextIndex;
+        //    }
+        //}
+        #endregion
+
         #region 3011. Find if Array Can Be Sorted
         public bool CanSortArray(int[] nums)
         {
@@ -8020,6 +8453,26 @@ namespace Leetcode2024
 
 
             return btnLongest;
+        }
+        #endregion
+
+        #region 3392. Count Subarrays of Length Three With a Condition
+        public int CountSubarrays(int[] nums)
+        {
+            int res = 0;
+            int index = 1;
+
+            while (++index < nums.Length)
+            {
+                int target = nums[index - 1];
+                if (target % 2 == 0)
+                {
+                    target /= 2;
+
+                    if (target == nums[index] + nums[index - 2]) res++;
+                }
+            }
+            return res;
         }
         #endregion
 
