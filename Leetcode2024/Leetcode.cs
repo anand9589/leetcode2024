@@ -3255,6 +3255,68 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 515. Find Largest Value in Each Tree Row
+        public IList<int> LargestValues(TreeNode root)
+        {
+            IList<int> result = new List<int>();
+
+            inorder(root, result, 0);
+
+            return result;
+        }
+
+        private void inorder(TreeNode root, IList<int> result, int level)
+        {
+            if (root == null) return;
+
+            if(level == result.Count)
+            {
+                result.Add(root.val);
+            }
+            else
+            {
+                result[level] = Math.Max(result[level], root.val);
+            }
+
+            inorder(root.left, result, level+1);
+            inorder(root.right, result, level + 1);
+        }
+
+        public IList<int> LargestValues1(TreeNode root)
+        {
+            IList<int> result = new List<int>();
+            if (root != null)
+            {
+                Queue<TreeNode> q = new Queue<TreeNode>();
+                q.Enqueue(root);
+
+                while (q.Count > 0)
+                {
+                    int max = int.MinValue;
+
+                    int k = q.Count;
+                    while (k-- > 0)
+                    {
+                        TreeNode node = q.Dequeue();
+                        max = Math.Max(max, node.val);
+
+                        if (node.left != null)
+                        {
+                            q.Enqueue(node.left);
+                        }
+
+                        if (node.right != null)
+                        {
+                            q.Enqueue(node.right);
+                        }
+                    }
+                    result.Add(max);
+                }
+            }
+            return result;
+        }
+        #endregion
+
         #region 530. Minimum Absolute Difference in BST
         int min = int.MaxValue;
         int prev = int.MaxValue;
@@ -8319,18 +8381,18 @@ namespace Leetcode2024
         #region 3203. Find Minimum Diameter After Merging Two Trees
         public int MinimumDiameterAfterMerge(int[][] edges1, int[][] edges2)
         {
-            
+
             int dia1 = getDiameter(edges1);
             int dia2 = getDiameter(edges2);
 
-            int combined = (int)Math.Ceiling(dia1/2.0) + (int)Math.Ceiling(dia2 / 2.0) + 1;
-            return Math.Max(Math.Max(dia1,dia2),combined);
+            int combined = (int)Math.Ceiling(dia1 / 2.0) + (int)Math.Ceiling(dia2 / 2.0) + 1;
+            return Math.Max(Math.Max(dia1, dia2), combined);
         }
 
         public int getDiameter(int[][] edges)
         {
             int n = edges.Length + 1;
-            if(n==1) return 0;
+            if (n == 1) return 0;
 
             Dictionary<int, Dictionary<int, int>> map = new Dictionary<int, Dictionary<int, int>>();
             for (int i = 0; i < n; i++)
