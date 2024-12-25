@@ -2912,6 +2912,65 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 310. Minimum Height Trees
+        public IList<int> FindMinHeightTrees(int n, int[][] edges)
+        {
+            IList<int> result = new List<int>();
+            if (n <= 2)
+            {
+                for (int i = 0; i < n; i++)
+                {
+                    result.Add(i);
+                }
+            }
+            else
+            {
+                int[] indegree = new int[n];
+                Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+                for (int i = 0; i < n; i++)
+                {
+                    map.Add(i, new List<int>());
+                }
+                foreach (int[] edge in edges)
+                {
+                    map[edge[0]].Add(edge[1]);
+                    map[edge[1]].Add(edge[0]);
+                    indegree[edge[0]]++;
+                    indegree[edge[1]]++;
+                }
+                Queue<int> q = new Queue<int>();
+                for (int i = 0; i < n; i++)
+                {
+                    if (indegree[i] == 1)
+                    {
+                        q.Enqueue(i);
+                    }
+                }
+
+                while (q.Count > 0)
+                {
+                    result.Clear();
+                    int k = q.Count;
+
+                    while (k-->0)
+                    {
+                        var dq = q.Dequeue();
+                        result.Add(dq);
+                        foreach (var neighbor in map[dq])
+                        {
+                            indegree[neighbor]--;
+
+                            if (indegree[neighbor] == 1) { q.Enqueue(neighbor); }
+                        }
+                    }
+                }
+            }
+
+
+            return result;
+        }
+        #endregion
+
         #region 316. Remove Duplicate Letters
         public string RemoveDuplicateLetters(string s)
         {
@@ -3269,7 +3328,7 @@ namespace Leetcode2024
         {
             if (root == null) return;
 
-            if(level == result.Count)
+            if (level == result.Count)
             {
                 result.Add(root.val);
             }
@@ -3278,7 +3337,7 @@ namespace Leetcode2024
                 result[level] = Math.Max(result[level], root.val);
             }
 
-            inorder(root.left, result, level+1);
+            inorder(root.left, result, level + 1);
             inorder(root.right, result, level + 1);
         }
 
@@ -8389,7 +8448,83 @@ namespace Leetcode2024
             return Math.Max(Math.Max(dia1, dia2), combined);
         }
 
-        public int getDiameter(int[][] edges)
+        private int getDiameter(int[][] edges)
+        {
+            if (edges.Length <= 1) return edges.Length;
+
+            Dictionary<int, HashSet<int>> map = new Dictionary<int, HashSet<int>>();
+
+            for (int i = 0; i <= edges.Length; i++)
+            {
+                map.Add(i, new HashSet<int>());
+            }
+            foreach (var edge in edges)
+            {
+                map[edge[0]].Add(edge[1]);
+                map[edge[1]].Add(edge[0]);
+            }
+
+            return getDiameter(map);
+        }
+
+        private int getDiameter(Dictionary<int, HashSet<int>> map)
+        {
+            Queue<int> q = new Queue<int>();
+            q.Enqueue(0);
+            int last = -1;
+            while (q.Count > 0)
+            {
+                var d = q.Dequeue();
+                
+                foreach (var neighbor in map[d])
+                {
+                    if (!map[0].Contains(neighbor))
+                    {
+                        q.Enqueue(neighbor);
+                        map[0].Add(neighbor);
+                        last = neighbor;
+                    }
+                }
+            }
+
+
+            q.Enqueue(last);
+            int count = 0;
+
+            while (q.Count>0)
+            {
+                int k = q.Count;
+                while (k-- > 0)
+                {
+                    var d = q.Dequeue();
+
+                    foreach (var neighbor in map[d])
+                    {
+                        if (!map[last].Contains(neighbor))
+                        {
+                            q.Enqueue(neighbor);
+                            map[0].Add(neighbor);
+                        }
+                    }
+                }
+                count++;
+            }
+
+
+            return count-1;
+        }
+
+        public int MinimumDiameterAfterMerge1(int[][] edges1, int[][] edges2)
+        {
+
+            int dia1 = getDiameter1(edges1);
+            int dia2 = getDiameter1(edges2);
+
+            int combined = (int)Math.Ceiling(dia1 / 2.0) + (int)Math.Ceiling(dia2 / 2.0) + 1;
+            return Math.Max(Math.Max(dia1, dia2), combined);
+        }
+
+        public int getDiameter1(int[][] edges)
         {
             int n = edges.Length + 1;
             if (n == 1) return 0;
@@ -8417,13 +8552,13 @@ namespace Leetcode2024
 
                 max = Math.Max(max, w);
 
-                process(map, q, s, d);
-                process(map, q, d, s);
+                process1(map, q, s, d);
+                process1(map, q, d, s);
             }
             return max;
         }
 
-        private static void process(Dictionary<int, Dictionary<int, int>> map, Queue<(int s, int d, int w)> q, int s, int d)
+        private static void process1(Dictionary<int, Dictionary<int, int>> map, Queue<(int s, int d, int w)> q, int s, int d)
         {
             int w = map[s][d];
             foreach (var key in map[s].Keys)
