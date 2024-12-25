@@ -1,4 +1,5 @@
 ﻿using Leetcode2024.Common.Models;
+using System.Collections;
 using System.ComponentModel.Design;
 using System.Data;
 using System.Text;
@@ -340,16 +341,16 @@ namespace Leetcode2024
 
         //    if (requiredLength <= s.Length)
         //    {
-        //        Dictionary<string, int> map = new Dictionary<string, int>();
+        //        Dictionary<string, int> matrix = new Dictionary<string, int>();
         //        foreach (var word in words)
         //        {
-        //            if (map.ContainsKey(word))
+        //            if (matrix.ContainsKey(word))
         //            {
-        //                map[word]++;
+        //                matrix[word]++;
         //            }
         //            else
         //            {
-        //                map[word] = 1;
+        //                matrix[word] = 1;
         //            }
         //        }
         //        int row = -1;
@@ -360,11 +361,11 @@ namespace Leetcode2024
 
         //            string curWord = s.Substring(row, wLen);
 
-        //            if (map.ContainsKey(curWord))
+        //            if (matrix.ContainsKey(curWord))
         //            {
         //                int startIndex = row;
 
-        //                var cloneDictionary = new Dictionary<string, int>(map);
+        //                var cloneDictionary = new Dictionary<string, int>(matrix);
         //                int col = 0;
         //                while (startIndex < s.Length - requiredLength)
         //                {
@@ -3922,7 +3923,7 @@ namespace Leetcode2024
         //    }
 
         //    int left = occurences[end];
-        //    int right = length - occurences[]
+        //    int value = length - occurences[]
         //    if (end == 0)
         //    {
         //        left++;
@@ -6668,7 +6669,7 @@ namespace Leetcode2024
             return s.Length - result;
         }
 
-        //public int TakeCharacters_Helper(string s, int key, int left, int right, int countA, int countB, int countC)
+        //public int TakeCharacters_Helper(string s, int key, int left, int value, int countA, int countB, int countC)
         //{
         //    if (countA >= key && countB >= key && countC >= key) return 0;
 
@@ -6689,9 +6690,9 @@ namespace Leetcode2024
         //            break;
         //    }
 
-        //    int leftCount = TakeCharacters_Helper(s, key, left, right, currCountA, currCountB, currCountC);
+        //    int leftCount = TakeCharacters_Helper(s, key, left, value, currCountA, currCountB, currCountC);
 
-        //    return 1 + Math.Min(TakeCharacters_Helper(s, key, left + 1, right, countA, countB, countC), TakeCharacters_Helper(s, key, left, right - 1, countA, countB, countC));
+        //    return 1 + Math.Min(TakeCharacters_Helper(s, key, left + 1, value, countA, countB, countC), TakeCharacters_Helper(s, key, left, value - 1, countA, countB, countC));
         //}
         #endregion
 
@@ -7263,7 +7264,7 @@ namespace Leetcode2024
                     }
                 }
 
-                // Add the count of subarrays ending at `right`
+                // Add the count of subarrays ending at `value`
                 result += (right - left + 1);
             }
 
@@ -7544,7 +7545,172 @@ namespace Leetcode2024
         #endregion
 
         #region 2940. Find Building Where Alice and Bob Can Meet
+        public int[] LeftmostBuildingQueries5(int[] heights, int[][] queries)
+        {
+            int[] result = new int[queries.Length];
+            int[] nextMaxIndex = getNextMaxIndex(heights);
+            SegmentNode segmentNode = new SegmentNode(heights, 0, heights.Length - 1);
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int alice = queries[i][0];
+                int bob = queries[i][1];
+
+                if (alice == bob)
+                {
+                    result[i] = alice;
+                }
+                else
+                {
+
+                    if (alice > bob)
+                    {
+                        int temp = alice;
+                        alice = bob;
+                        bob = temp;
+                    }
+                    if (heights[bob] > heights[alice])
+                    {
+                        result[i] = bob;
+                    }
+                    else if (nextMaxIndex[alice] == -1 || nextMaxIndex[bob] == -1)
+                    {
+                        result[i] = -1;
+                    }
+                    else if (heights[nextMaxIndex[bob]] > heights[alice])
+                    {
+                        result[i] = nextMaxIndex[bob];
+                    }
+                    else
+                    {
+                        int index = segmentNode.SearchIndex(heights, nextMaxIndex[bob] + 1, heights.Length - 1, heights[alice]);
+                        result[i] = index == int.MaxValue ? -1 : index;
+                    }
+                }
+
+            }
+            return result;
+        }
         public int[] LeftmostBuildingQueries(int[] heights, int[][] queries)
+        {
+            int[] result = new int[queries.Length];
+            SegmentNode segmentNode = new SegmentNode(heights, 0, heights.Length - 1);
+            for (int i = 0; i < queries.Length; i++)
+            {
+                int alice = queries[i][0];
+                int bob = queries[i][1];
+
+                if (alice == bob)
+                {
+                    result[i] = alice;
+                }
+                else
+                {
+
+                    if (alice > bob)
+                    {
+                        int temp = alice;
+                        alice = bob;
+                        bob = temp;
+                    }
+                    if (heights[bob] > heights[alice])
+                    {
+                        result[i] = bob;
+                    }
+                    else
+                    {
+                        int index = segmentNode.SearchIndex(heights, bob + 1, heights.Length - 1, heights[alice]);
+                        result[i] = index == int.MaxValue ? -1 : index;
+                    }
+                }
+
+            }
+            return result;
+        }
+        private int[] getNextMaxIndex(int[] heights)
+        {
+            int[] nextMaxIndex = new int[heights.Length];
+            int index = heights.Length - 1;
+            Stack<int> indexStack = new Stack<int>();
+            indexStack.Push(index);
+            nextMaxIndex[index] = -1;
+            index--;
+            for (; index >= 0; index--)
+            {
+                while (indexStack.Count > 0 && heights[indexStack.Peek()] <= heights[index])
+                {
+                    indexStack.Pop();
+                }
+                if (indexStack.Count == 0)
+                {
+                    nextMaxIndex[index] = -1;
+                    indexStack.Push(index);
+                }
+                else
+                {
+                    nextMaxIndex[index] = indexStack.Peek();
+                    indexStack.Push(index);
+                }
+            }
+
+
+            return nextMaxIndex;
+        }
+
+        class SegmentNode
+        {
+            private int min;
+            private int max;
+            public int MaxIndex { get; set; }
+            public SegmentNode Left { get; set; }
+            public SegmentNode Right { get; set; }
+            public SegmentNode(int[] heights, int left, int right)
+            {
+                if (left == right)
+                {
+                    MaxIndex = left;
+                }
+                else
+                {
+                    int mid = (left + right) / 2;
+                    Left = new SegmentNode(heights, left, mid);
+                    Right = new SegmentNode(heights, mid + 1, right);
+
+                    if (heights[Left.MaxIndex] > heights[Right.MaxIndex])
+                    {
+                        MaxIndex = Left.MaxIndex;
+                    }
+                    else
+                    {
+                        MaxIndex = Right.MaxIndex;
+                    }
+                }
+
+                min = left;
+                max = right;
+            }
+
+            internal int SearchIndex(int[] heights, int left, int right, int value)
+            {
+                if (heights[MaxIndex] <= value || max < left) return int.MaxValue;
+                int result = int.MaxValue;
+                if (Left != null)
+                {
+                    result = Left.SearchIndex(heights, left, right, value);
+                }
+                if (result == int.MaxValue && Right != null)
+                {
+                    result = Right.SearchIndex(heights, left, right, value);
+                }
+                if (result == int.MaxValue && min >= left)
+                {
+                    result = MaxIndex;
+                }
+
+                return result;
+            }
+        }
+
+        public int[] LeftmostBuildingQueries3(int[] heights, int[][] queries)
         {
             List<int[]>[] lists = new List<int[]>[heights.Length];
 
@@ -7742,35 +7908,7 @@ namespace Leetcode2024
 
             return result;
         }
-        private int[] getNextMaxIndex(int[] heights)
-        {
-            int[] nextMaxIndex = new int[heights.Length];
-            int index = heights.Length - 1;
-            Stack<int> indexStack = new Stack<int>();
-            indexStack.Push(index);
-            nextMaxIndex[index] = -1;
-            index--;
-            for (; index >= 0; index--)
-            {
-                while (indexStack.Count > 0 && heights[indexStack.Peek()] <= heights[index])
-                {
-                    indexStack.Pop();
-                }
-                if (indexStack.Count == 0)
-                {
-                    nextMaxIndex[index] = -1;
-                    indexStack.Push(index);
-                }
-                else
-                {
-                    nextMaxIndex[index] = indexStack.Peek();
-                    indexStack.Push(index);
-                }
-            }
 
-
-            return nextMaxIndex;
-        }
         private static int updateIndex(int[] heights, int[] nextMaxIndex, int[] result, int i, int alice, int bob)
         {
             int nextIndex = nextMaxIndex[bob];
@@ -8175,6 +8313,69 @@ namespace Leetcode2024
             }
 
             return stringBuilder.ToString();
+        }
+        #endregion
+
+        #region 3203. Find Minimum Diameter After Merging Two Trees
+        public int MinimumDiameterAfterMerge(int[][] edges1, int[][] edges2)
+        {
+            
+            int dia1 = getDiameter(edges1);
+            int dia2 = getDiameter(edges2);
+
+            int combined = (int)Math.Ceiling(dia1/2.0) + (int)Math.Ceiling(dia2 / 2.0) + 1;
+            return Math.Max(Math.Max(dia1,dia2),combined);
+        }
+
+        public int getDiameter(int[][] edges)
+        {
+            int n = edges.Length + 1;
+            if(n==1) return 0;
+
+            Dictionary<int, Dictionary<int, int>> map = new Dictionary<int, Dictionary<int, int>>();
+            for (int i = 0; i < n; i++)
+            {
+                map.Add(i, new Dictionary<int, int>());
+            }
+            Queue<(int s, int d, int w)> q = new Queue<(int s, int d, int w)>();
+            foreach (int[] edge in edges)
+            {
+                map[edge[0]].Add(edge[1], 1);
+                map[edge[1]].Add(edge[0], 1);
+                q.Enqueue((edge[0], edge[1], 1));
+            }
+            int max = 1;
+            while (q.Count > 0)
+            {
+                var dq = q.Dequeue();
+
+                int s = dq.s;
+                int d = dq.d;
+                int w = dq.w;
+
+                max = Math.Max(max, w);
+
+                process(map, q, s, d);
+                process(map, q, d, s);
+            }
+            return max;
+        }
+
+        private static void process(Dictionary<int, Dictionary<int, int>> map, Queue<(int s, int d, int w)> q, int s, int d)
+        {
+            int w = map[s][d];
+            foreach (var key in map[s].Keys)
+            {
+                if (key == d) continue;
+                int w1 = w + map[s][key];
+
+                if (!map[d].ContainsKey(key) || w1 < map[d][key])
+                {
+                    map[d][key] = w1;
+                    map[key][d] = w1;
+                    q.Enqueue((d, key, w1));
+                }
+            }
         }
         #endregion
 
