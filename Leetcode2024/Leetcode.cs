@@ -8440,7 +8440,6 @@ namespace Leetcode2024
         #region 3203. Find Minimum Diameter After Merging Two Trees
         public int MinimumDiameterAfterMerge(int[][] edges1, int[][] edges2)
         {
-
             int dia1 = getDiameter(edges1);
             int dia2 = getDiameter(edges2);
 
@@ -8449,6 +8448,77 @@ namespace Leetcode2024
         }
 
         private int getDiameter(int[][] edges)
+        {
+            if (edges.Length <= 1) return edges.Length;
+
+            int n = edges.Length + 1;
+
+            bool[] visited = new bool[n];
+
+            Dictionary<int, List<int>> map = new Dictionary<int, List<int>>();
+            for (int i = 0; i < n; i++)
+            {
+                map.Add(i, new List<int>());
+            }
+            foreach (int[] edge in edges)
+            {
+                map[edge[0]].Add(edge[1]);
+                map[edge[1]].Add(edge[0]);
+            }
+            Queue<int> q = new Queue<int>();
+            q.Enqueue(0);
+            visited[0] = true;
+            int last = 0;
+            while (q.Count>0)
+            {
+                int dq = q.Dequeue();
+                last = dq;
+                foreach (var neighbor in map[dq])
+                {
+                    if (!visited[neighbor])
+                    {
+                        q.Enqueue(neighbor);
+                        visited[neighbor] = true;
+                    }
+                }
+            }
+            visited = new bool[n];
+            q.Enqueue(last);
+            visited[last] = true;
+            int count = 0;
+            while (q.Count>0)
+            {
+                int k = q.Count;
+
+                while (k-->0)
+                {
+                    var dq = q.Dequeue();
+
+                    foreach (var neighbor in map[dq])
+                    {
+                        if (!visited[neighbor])
+                        {
+                            q.Enqueue(neighbor);
+                            visited[neighbor] = true;
+                        }
+                    }
+                }
+                count++;
+            }
+            return count-1;
+        }
+
+        public int MinimumDiameterAfterMerge2(int[][] edges1, int[][] edges2)
+        {
+
+            int dia1 = getDiameter2(edges1);
+            int dia2 = getDiameter2(edges2);
+
+            int combined = (int)Math.Ceiling(dia1 / 2.0) + (int)Math.Ceiling(dia2 / 2.0) + 1;
+            return Math.Max(Math.Max(dia1, dia2), combined);
+        }
+
+        private int getDiameter2(int[][] edges)
         {
             if (edges.Length <= 1) return edges.Length;
 
@@ -8464,10 +8534,10 @@ namespace Leetcode2024
                 map[edge[1]].Add(edge[0]);
             }
 
-            return getDiameter(map);
+            return getDiameter2(map);
         }
 
-        private int getDiameter(Dictionary<int, HashSet<int>> map)
+        private int getDiameter2(Dictionary<int, HashSet<int>> map)
         {
             Queue<int> q = new Queue<int>();
             q.Enqueue(0);
