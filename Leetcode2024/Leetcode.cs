@@ -1,7 +1,11 @@
 ﻿using Leetcode2024.Common.Models;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data;
+using System.Drawing;
+using System.Globalization;
 using System.Text;
 
 namespace Leetcode2024
@@ -1069,6 +1073,88 @@ namespace Leetcode2024
                 right--;
             }
             return true;
+        }
+        #endregion
+
+        #region 126. Word Ladder II
+        public IList<IList<string>> FindLadders(string beginWord, string endWord, IList<string> wordList)
+        {
+            IList<IList<string>> ladders = new List<IList<string>>();
+            HashSet<string> wordSet = new HashSet<string>(wordList);
+
+            if (wordSet.Contains(endWord))
+            {
+                wordSet.Remove(beginWord);
+
+                Dictionary<string, int> distanceMap = new Dictionary<string, int>();
+                Dictionary<string, HashSet<string>> predecessorMap = new Dictionary<string, HashSet<string>>();
+
+                bool endWordFound = false;
+                Queue<string> q = new Queue<string>();
+                q.Enqueue(beginWord);
+                distanceMap[beginWord] = 0;
+                int steps = 0;
+                while (q.Count > 0 && !endWordFound)
+                {
+                    steps++;
+                    int qSize = q.Count;
+                    while (qSize-- > 0)
+                    {
+                        string currentWord = q.Dequeue();
+                        char[] currentWordArray = currentWord.ToCharArray();
+                        for (int i = 0; i < currentWordArray.Length; i++)
+                        {
+                            for (char c = 'a'; c <= 'z'; c++)
+                            {
+                                currentWordArray[i] = c;
+
+                                string newWord = new string(currentWordArray);
+
+                                if (predecessorMap.ContainsKey(newWord) && distanceMap[newWord] == steps)
+                                {
+                                    predecessorMap[newWord].Add(currentWord);
+                                }
+
+                                if (!wordSet.Contains(newWord)) continue;
+
+                                distanceMap[newWord] = steps;
+                                predecessorMap[newWord] = new HashSet<string>() { currentWord };
+                                wordSet.Remove(newWord);
+                                q.Enqueue(newWord);
+                                if (!endWordFound)
+                                {
+                                    endWordFound = endWord == newWord;
+                                }
+                            }
+                            currentWordArray[i] = currentWord[i];
+                        }
+                    }
+                }
+
+                if (endWordFound)
+                {
+                    Stack<string> stack = new Stack<string>();
+                    stack.Push(endWord);
+                    backTrackPath(ladders, stack, predecessorMap, endWord, distanceMap[endWord] + 1);
+                }
+            }
+
+            return ladders;
+        }
+
+        private void backTrackPath(IList<IList<string>> ladders, Stack<string> stack, Dictionary<string, HashSet<string>> predecessorMap, string currentWord, int len)
+        {
+            if (stack.Count == len)
+            {
+                ladders.Add(stack.ToList());
+                return;
+            }
+            foreach (var item in predecessorMap[currentWord])
+            {
+                stack.Push(item);
+                backTrackPath(ladders, stack, predecessorMap, item, len);
+                stack.Pop();
+            }
         }
         #endregion
 
@@ -2952,7 +3038,7 @@ namespace Leetcode2024
                     result.Clear();
                     int k = q.Count;
 
-                    while (k-->0)
+                    while (k-- > 0)
                     {
                         var dq = q.Dequeue();
                         result.Add(dq);
@@ -3311,6 +3397,32 @@ namespace Leetcode2024
                 }
                 return "";
             }
+        }
+        #endregion
+
+        #region 494. Target Sum
+        int count = 0;
+        public int FindTargetSumWays(int[] nums, int target)
+        {
+            FindTargetSumWays_Recursion(nums, 0, target);
+
+
+            return count;
+        }
+
+        private void FindTargetSumWays_Recursion(int[] nums, int index, int target)
+        {
+            if (index == nums.Length)
+            {
+                if (target == 0)
+                {
+                    count++;
+                }
+                return;
+            }
+
+            FindTargetSumWays_Recursion(nums, index + 1, target - nums[index]);
+            FindTargetSumWays_Recursion(nums, index + 1, target + nums[index]);
         }
         #endregion
 
@@ -3896,6 +4008,206 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 689. Maximum Sum of 3 Non-Overlapping Subarrays
+
+
+        public int[] MaxSumOfThreeSubarrays(int[] nums, int k)
+        {
+            int n = nums.Length - k + 1;
+
+            int[] sums = new int[n];
+            int windowSum = 0;
+            for (int i = 0; i < k; i++)
+            {
+                windowSum += nums[i];
+            }
+            sums[0] = windowSum;
+
+            for (int i = k; i < nums.Length; i++)
+            {
+                windowSum = windowSum - nums[i - k] + nums[i];
+                sums[i - k + 1] = windowSum;
+            }
+
+            int[][] memo = new int[n][];
+            for (int i = 0; i < n; i++)
+            {
+                memo[i] = new int[3];
+                Array.Fill(memo[i], -1);
+            }
+
+            List<int> indices = new List<int>();
+
+            MaxSumOfThreeSubarrays_Helper(sums, k, 0, 2, memo);
+
+            MaxSumOfThreeSubarrays_DFS(sums, k, 0, 2, memo, indices);
+
+            int[] result = new int[3];
+            for (int i = 0; i < 3; i++)
+            {
+                result[i] = indices[i];
+            }
+
+            return result;
+        }
+
+        private void MaxSumOfThreeSubarrays_DFS(int[] sums, int k, int index, int rem, int[][] memo, List<int> indices)
+        {
+            if (rem < 0) return;
+            if (index >= sums.Length) return;
+
+            int keep = sums[index] + MaxSumOfThreeSubarrays_Helper(sums, k, index + k, rem - 1, memo);
+            int skip = MaxSumOfThreeSubarrays_Helper(sums, k, index + 1, rem, memo);
+
+            if (keep >= skip)
+            {
+                indices.Add(index);
+                MaxSumOfThreeSubarrays_DFS(sums, k, index + k, rem - 1, memo, indices);
+            }
+            else
+            {
+                MaxSumOfThreeSubarrays_DFS(sums, k, index + 1, rem, memo, indices);
+            }
+        }
+
+        private int MaxSumOfThreeSubarrays_Helper(int[] sums, int k, int index, int rem, int[][] memo)
+        {
+            if (rem < 0) return 0;
+
+            if (index >= sums.Length) return rem >= 0 ? int.MinValue : 0;
+
+            if (memo[index][rem] != -1) return memo[index][rem];
+
+            int keepCurrent = sums[index] + MaxSumOfThreeSubarrays_Helper(sums, k, index + k, rem - 1, memo);
+            int skipCurrent = MaxSumOfThreeSubarrays_Helper(sums, k, index + 1, rem, memo);
+
+            return memo[index][rem] = Math.Max(keepCurrent, skipCurrent);
+        }
+
+
+        public int[] MaxSumOfThreeSubarrays2(int[] nums, int k)
+        {
+            int n = nums.Length - k + 1;
+
+            int[] sums = new int[n];
+            int windowSum = 0;
+            for (int i = 0; i < k; i++)
+            {
+                windowSum += nums[i];
+            }
+            sums[0] = windowSum;
+
+            for (int i = k; i < nums.Length; i++)
+            {
+                windowSum = windowSum - nums[i - k] + nums[i];
+                sums[i - k + 1] = windowSum;
+            }
+
+            int[][] memo = new int[n][];
+            for (int i = 0; i < n; i++)
+            {
+                memo[i] = new int[4];
+                Array.Fill(memo[i], -1);
+            }
+
+            List<int> indices = new List<int>();
+
+            MaxSumOfThreeSubarrays_Helper1(sums, k, 0, 3, memo);
+
+            MaxSumOfThreeSubarrays_DFS1(sums, k, 0, 3, memo, indices);
+
+            int[] result = new int[3];
+            for (int i = 0; i < 3; i++)
+            {
+                result[i] = indices[i];
+            }
+
+            return result;
+        }
+
+        private void MaxSumOfThreeSubarrays_DFS1(int[] sums, int k, int index, int rem, int[][] memo, List<int> indices)
+        {
+            if (rem == 0) return;
+            if (index >= sums.Length) return;
+
+            int keep = sums[index] + MaxSumOfThreeSubarrays_Helper1(sums, k, index + k, rem - 1, memo);
+            int skip = MaxSumOfThreeSubarrays_Helper1(sums, k, index + 1, rem, memo);
+
+            if (keep >= skip)
+            {
+                indices.Add(index);
+                MaxSumOfThreeSubarrays_DFS1(sums, k, index + k, rem - 1, memo, indices);
+            }
+            else
+            {
+                MaxSumOfThreeSubarrays_DFS1(sums, k, index + 1, rem, memo, indices);
+            }
+        }
+
+        private int MaxSumOfThreeSubarrays_Helper1(int[] sums, int k, int index, int rem, int[][] memo)
+        {
+            if (rem == 0) return 0;
+
+            if (index >= sums.Length) return rem > 0 ? int.MinValue : 0;
+
+            if (memo[index][rem] != -1) return memo[index][rem];
+
+            int keepCurrent = sums[index] + MaxSumOfThreeSubarrays_Helper1(sums, k, index + k, rem - 1, memo);
+            int skipCurrent = MaxSumOfThreeSubarrays_Helper1(sums, k, index + 1, rem, memo);
+
+            return memo[index][rem] = Math.Max(keepCurrent, skipCurrent);
+        }
+
+        int max = 0;
+        int index1, index2, index3;
+        public int[] MaxSumOfThreeSubarrays1(int[] nums, int k)
+        {
+            int[] result = new int[3];
+            int[] subArraySum = new int[nums.Length - k + 1];
+            int sum = nums[0];
+            for (int i = 1; i < k; i++)
+            {
+                sum += nums[i];
+            }
+
+            subArraySum[0] = sum;
+
+            for (int i = k; i < nums.Length; i++)
+            {
+                sum -= nums[i - k];
+                sum += nums[i];
+                subArraySum[i - k + 1] = sum;
+            }
+
+
+
+            MaxSumOfThreeSubarrays_Helper1(subArraySum, new List<int>(), 0, k);
+            return result;
+        }
+
+        public void MaxSumOfThreeSubarrays_Helper1(int[] subArraySum, List<int> list, int currIndex, int size)
+        {
+            if (list.Count == 3)
+            {
+                int currSum = subArraySum[list[0]] + subArraySum[list[1]] + subArraySum[list[2]];
+
+                if (max < currSum || (max == currSum && (index1 > list[0] || index2 > list[1] || index3 > list[2])))
+                {
+                    index1 = list[0];
+                    index2 = list[1];
+                    index3 = list[2];
+                    max = currSum;
+                }
+                return;
+            }
+            if (currIndex >= subArraySum.Length) return;
+
+            MaxSumOfThreeSubarrays_Helper1(subArraySum, list, currIndex + 1, size);
+            list.Add(currIndex);
+            MaxSumOfThreeSubarrays_Helper1(subArraySum, list, currIndex + size, size);
+        }
+        #endregion
+
         #region 769. Max Chunks To Make Sorted
         public int MaxChunksToSorted(int[] arr)
         {
@@ -4184,6 +4496,97 @@ namespace Leetcode2024
 
             return (FlipEquiv(root1.left, root2.right) && FlipEquiv(root1.right, root2.left)) || (FlipEquiv(root1.left, root2.left) && FlipEquiv(root1.right, root2.right));
         }
+        #endregion
+
+        #region 983. Minimum Cost For Tickets
+        public int MincostTickets(int[] days, int[] costs)
+        {
+            int maxLen = days.Max();
+            int[] dp = new int[maxLen + 1];
+            int i = 1;
+            int daysIndex = 0;
+            for (; i <= Math.Min(7, maxLen); i++)
+            {
+                if (i == days[daysIndex])
+                {
+                    int oneDay = dp[i - 1] + costs[0];
+                    dp[i] = Math.Min(oneDay, Math.Min(costs[1], costs[2]));
+                    daysIndex++;
+                }
+                else
+                {
+                    dp[i] = dp[i - 1];
+                }
+            }
+
+            for (; i <= Math.Min(30, maxLen); i++)
+            {
+                if (i == days[daysIndex])
+                {
+                    int oneDay = dp[i - 1] + costs[0];
+                    int week = dp[i - 7] + costs[1];
+                    dp[i] = Math.Min(oneDay, Math.Min(week, costs[2]));
+                    daysIndex++;
+                }
+                else
+                {
+                    dp[i] = dp[i - 1];
+                }
+            }
+
+
+            for (; i <= maxLen; i++)
+            {
+                if (i == days[daysIndex])
+                {
+                    int oneDay = dp[i - 1] + costs[0];
+                    int week = dp[i - 7] + costs[1];
+                    int month = dp[i - 30] + costs[2];
+                    dp[i] = Math.Min(oneDay, Math.Min(week, month));
+                    daysIndex++;
+                }
+                else
+                {
+                    dp[i] = dp[i - 1];
+                }
+            }
+            return dp[maxLen];
+        }
+        #endregion
+
+        #region 1014. Best Sightseeing Pair
+        public int MaxScoreSightseeingPair(int[] values)
+        {
+            int maxScore = 0;
+            int left = values[0];
+
+            for (int i = 1; i < values.Length; i++)
+            {
+                int right = values[i] - i;
+
+                maxScore = Math.Max(maxScore, right + left);
+
+                int currentLeft = values[i] + i;
+
+                left = Math.Max(left, currentLeft);
+            }
+
+            return maxScore;
+        }
+        public int MaxScoreSightseeingPair_TLE(int[] values)
+        {
+            int result = 0;
+            for (int i = 0; i < values.Length - 1; i++)
+            {
+                for (int j = i + 1; j < values.Length; j++)
+                {
+                    result = Math.Max(result, values[i] + values[j] + i - j);
+                }
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region 1072. Flip Columns For Maximum Number of Equal Rows
@@ -8469,7 +8872,7 @@ namespace Leetcode2024
             q.Enqueue(0);
             visited[0] = true;
             int last = 0;
-            while (q.Count>0)
+            while (q.Count > 0)
             {
                 int dq = q.Dequeue();
                 last = dq;
@@ -8486,11 +8889,11 @@ namespace Leetcode2024
             q.Enqueue(last);
             visited[last] = true;
             int count = 0;
-            while (q.Count>0)
+            while (q.Count > 0)
             {
                 int k = q.Count;
 
-                while (k-->0)
+                while (k-- > 0)
                 {
                     var dq = q.Dequeue();
 
@@ -8505,7 +8908,7 @@ namespace Leetcode2024
                 }
                 count++;
             }
-            return count-1;
+            return count - 1;
         }
 
         public int MinimumDiameterAfterMerge2(int[][] edges1, int[][] edges2)
@@ -8545,7 +8948,7 @@ namespace Leetcode2024
             while (q.Count > 0)
             {
                 var d = q.Dequeue();
-                
+
                 foreach (var neighbor in map[d])
                 {
                     if (!map[0].Contains(neighbor))
@@ -8561,7 +8964,7 @@ namespace Leetcode2024
             q.Enqueue(last);
             int count = 0;
 
-            while (q.Count>0)
+            while (q.Count > 0)
             {
                 int k = q.Count;
                 while (k-- > 0)
@@ -8581,7 +8984,7 @@ namespace Leetcode2024
             }
 
 
-            return count-1;
+            return count - 1;
         }
 
         public int MinimumDiameterAfterMerge1(int[][] edges1, int[][] edges2)

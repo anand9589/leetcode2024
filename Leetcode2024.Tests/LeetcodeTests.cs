@@ -53,7 +53,60 @@ namespace Leetcode2024.Tests
             return result;
         }
         #endregion
+        #region 983. Minimum Cost For Tickets
+        [Test]
+        public void MincostTicketsTest()
+        {
+            int[] days = { 1, 4, 6, 7, 8, 20 };
+            int[] costs = { 2, 7, 15 };
+            var k = leetcode.MincostTickets(days, costs);
+        }
 
+        [Test]
+        public void MincostTicketsTest1()
+        {
+            int[] days = { 1, 4, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 21, 22, 23, 27, 28 };
+            int[] costs = { 3,13,45 };
+            var k = leetcode.MincostTickets(days, costs);
+        }
+        #endregion
+        #region 689. Maximum Sum of 3 Non-Overlapping Subarrays
+        [Test]
+        public void MaxSumOfThreeSubarraysTest()
+        {
+            int[] nums = { 1, 2, 1, 2, 6, 7, 5, 1 };
+            int k = 2;
+
+            var res = leetcode.MaxSumOfThreeSubarrays(nums, k);
+        }
+        #endregion
+
+        #region 126. Word Ladder II
+        [Test]
+        public void FindLaddersTest()
+        {
+            string beginWord = "hit", endWord = "cog";
+            string[] wordList = { "hot", "dot", "dog", "lot", "log", "cog" };
+            var k = leetcode.FindLadders(beginWord, endWord, wordList);
+            Assert.AreEqual(2, k.Count);
+        }
+        [Test]
+        public void FindLaddersTest1()
+        {
+            string beginWord = "hot", endWord = "dog";
+            string[] wordList = { "hot", "cog", "dog", "tot", "hog", "hop", "pot", "dot" };
+            var k = leetcode.FindLadders(beginWord, endWord, wordList);
+            Assert.AreEqual(2, k.Count);
+        }
+        [Test]
+        public void FindLaddersTest2()
+        {
+            string beginWord = "hit", endWord = "cog";
+            string[] wordList = { "hot", "dot", "dog", "lot", "log" };
+            var k = leetcode.FindLadders(beginWord, endWord, wordList);
+            Assert.AreEqual(0, k.Count);
+        }
+        #endregion
 
         #region 3203. Find Minimum Diameter After Merging Two Trees
 
@@ -132,12 +185,12 @@ namespace Leetcode2024.Tests
         [Test]
         public void LeftmostBuildingQueriesTest12()
         {
-            int[] heights = { 365090275,579123633,833823350,705845946,718130844,336581598,890977294,897260022 };
+            int[] heights = { 365090275, 579123633, 833823350, 705845946, 718130844, 336581598, 890977294, 897260022 };
             string queryStr = "[[7,5],[6,6],[5,4],[0,7],[2,3],[4,0],[0,3]]";
             int[][] queries = getMultiDimArray(queryStr);
 
             var k = leetcode.LeftmostBuildingQueries(heights, queries);
-            int[] expected = { 7,6,6,7,6,4,3 };
+            int[] expected = { 7, 6, 6, 7, 6, 4, 3 };
             CollectionAssert.AreEqual(expected, k);
         }
 
@@ -149,7 +202,7 @@ namespace Leetcode2024.Tests
             int[][] queries = getMultiDimArray(queryStr);
 
             var k = leetcode.LeftmostBuildingQueries(heights, queries);
-            int[] expected = { 0,1,-1,-1,-1,1,1,-1,-1,-1,-1,-1,2,3,4,-1,-1,3,3,4,-1,-1,4,4,4};
+            int[] expected = { 0, 1, -1, -1, -1, 1, 1, -1, -1, -1, -1, -1, 2, 3, 4, -1, -1, 3, 3, 4, -1, -1, 4, 4, 4 };
             CollectionAssert.AreEqual(expected, k);
         }
 
@@ -255,7 +308,7 @@ namespace Leetcode2024.Tests
             int[][] queries = getMultiDimArray(queryStr);
 
             var k = leetcode.LeftmostBuildingQueries(heights, queries);
-            int[] expected = { 0,3,3,3,3,1,2,3,3,2,2,3,3,3,3,3 };
+            int[] expected = { 0, 3, 3, 3, 3, 1, 2, 3, 3, 2, 2, 3, 3, 3, 3, 3 };
             CollectionAssert.AreEqual(expected, k);
         }
 
