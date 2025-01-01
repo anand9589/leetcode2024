@@ -53,6 +53,19 @@ namespace Leetcode2024.Tests
             return result;
         }
         #endregion
+
+
+        #region 1422. Maximum Score After Splitting a String
+        [Test]
+        public void MaxScoreTest()
+        {
+            string s = "011101";
+            var k = leetcode.MaxScore(s);
+            Assert.AreEqual(5, k);
+        }
+
+
+        #endregion
         #region 983. Minimum Cost For Tickets
         [Test]
         public void MincostTicketsTest()
