@@ -1193,6 +1193,51 @@ namespace Leetcode2024
         }
         #endregion
 
+        #region 132. Palindrome Partitioning II
+        public int MinCut(string s)
+        {
+            bool[][] palindromeMatrix = new bool[s.Length][];
+            palindromeMatrix[0] = new bool[s.Length];
+            palindromeMatrix[0][0] = true;
+            int[] minCutDP = new int[s.Length];
+            for (int i = 1; i < s.Length; i++)
+            {
+                palindromeMatrix[i] = new bool[s.Length];
+                palindromeMatrix[i][i] = true;
+                palindromeMatrix[i][i - 1] = true;
+                minCutDP[i] = i;
+            }
+            int lenToIterate = 1;
+
+            while (lenToIterate <= s.Length)
+            {
+                int i = 0;
+                for (int j = i + lenToIterate; j < s.Length; j++)
+                {
+                    if (s[i] == s[j] && palindromeMatrix[i + 1][j - 1])
+                    {
+                        palindromeMatrix[i][j] = true;                        
+                    }
+                    i++;
+                }
+                lenToIterate++;
+            }
+
+
+            for (int end = 1; end < s.Length; end++)
+            {
+                for (int start = 0; start <= end; start++)
+                {
+                    if (palindromeMatrix[start][end])
+                    {
+                        minCutDP[end] = Math.Min(minCutDP[end], start > 0 ? 1 + minCutDP[start - 1] : 0);
+                    }
+                }
+            }
+            return minCutDP[s.Length - 1];
+        }
+        #endregion
+
         #region 134. Gas Station
         public int CanCompleteCircuit(int[] gas, int[] cost)
         {
@@ -4355,15 +4400,15 @@ namespace Leetcode2024
         //        return (occurences[end] + 1) * (length - occurences[end]);
         //    }
 
-        //    int left = occurences[end];
+        //    int zero = occurences[end];
         //    int value = length - occurences[]
         //    if (end == 0)
         //    {
-        //        left++;
+        //        zero++;
         //    }
         //    else
         //    {
-        //        left -= occurences[end - 1];
+        //        zero -= occurences[end - 1];
         //    }
 
 
@@ -5165,7 +5210,7 @@ namespace Leetcode2024
                 else
                 {
                     one--;
-        }
+                }
 
                 result = Math.Max(result, zero + one);
             }
@@ -7073,22 +7118,22 @@ namespace Leetcode2024
         //    int n = nums.Length;
 
         //    // Start from the second last element, as the last one is always sorted.
-        //    for (int i = n - 2; i >= 0; i--)
+        //    for (int start = n - 2; start >= 0; start--)
         //    {
         //        // No need to break if they are already in order.
-        //        if (nums[i] <= nums[i + 1])
+        //        if (nums[start] <= nums[start + 1])
         //        {
         //            continue;
         //        }
 
-        //        // Count how many elements are made from breaking nums[i].
-        //        long numElements = (long)(nums[i] + nums[i + 1] - 1) / (long)nums[i + 1];
+        //        // Count how many elements are made from breaking nums[start].
+        //        long numElements = (long)(nums[start] + nums[start + 1] - 1) / (long)nums[start + 1];
 
         //        // It requires numElements - 1 replacement operations.
         //        answer += numElements - 1;
 
-        //        // Maximize nums[i] after replacement.
-        //        nums[i] = nums[i] / (int)numElements;
+        //        // Maximize nums[start] after replacement.
+        //        nums[start] = nums[start] / (int)numElements;
         //    }
 
         //    return answer;
@@ -7237,13 +7282,13 @@ namespace Leetcode2024
             return s.Length - result;
         }
 
-        //public int TakeCharacters_Helper(string s, int key, int left, int value, int countA, int countB, int countC)
+        //public int TakeCharacters_Helper(string s, int key, int zero, int value, int countA, int countB, int countC)
         //{
         //    if (countA >= key && countB >= key && countC >= key) return 0;
 
         //    int currCountA = countA, currCountB = countB, currCountC = countC;
 
-        //    switch (s[left])
+        //    switch (s[zero])
         //    {
         //        case 'a':
         //            currCountA++;
@@ -7258,9 +7303,9 @@ namespace Leetcode2024
         //            break;
         //    }
 
-        //    int leftCount = TakeCharacters_Helper(s, key, left, value, currCountA, currCountB, currCountC);
+        //    int leftCount = TakeCharacters_Helper(s, key, zero, value, currCountA, currCountB, currCountC);
 
-        //    return 1 + Math.Min(TakeCharacters_Helper(s, key, left + 1, value, countA, countB, countC), TakeCharacters_Helper(s, key, left, value - 1, countA, countB, countC));
+        //    return 1 + Math.Min(TakeCharacters_Helper(s, key, zero + 1, value, countA, countB, countC), TakeCharacters_Helper(s, key, zero, value - 1, countA, countB, countC));
         //}
         #endregion
 
@@ -7291,7 +7336,7 @@ namespace Leetcode2024
         {
             long result = 0;
             PriorityQueue<int, int> pq = new PriorityQueue<int, int>(Comparer<int>.Create((x, y) => y - x));
-            //int i = -1;
+            //int start = -1;
             foreach (var gift in gifts)
             {
                 result += gift;
@@ -8562,11 +8607,11 @@ namespace Leetcode2024
             return result;
         }
 
-        //private static void updateIndex(int[] heights, int[] nextMaxIndex, int[] result, int i, int index1, int index2)
+        //private static void updateIndex(int[] heights, int[] nextMaxIndex, int[] result, int start, int index1, int index2)
         //{
         //    if (heights[index1] > heights[index2])
         //    {
-        //        result[i] = index1;
+        //        result[start] = index1;
         //    }
         //    else
         //    {
@@ -8575,7 +8620,7 @@ namespace Leetcode2024
         //        {
         //            nextIndex = nextMaxIndex[nextIndex];
         //        }
-        //        result[i] = nextIndex;
+        //        result[start] = nextIndex;
         //    }
         //}
         #endregion

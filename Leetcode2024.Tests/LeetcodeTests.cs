@@ -6,13 +6,11 @@ namespace Leetcode2024.Tests
 {
     internal class LeetcodeTests
     {
-        /*
         [Test]
         public void Test()
         {
 
         }
-        */
 
 
         #region Setup
@@ -65,6 +63,65 @@ namespace Leetcode2024.Tests
         }
 
 
+        #endregion
+
+        #region 132. Palindrome Partitioning II
+        [Test]
+        public void MinCutTest()
+        {
+            string s = "abcbaxyxyzztzzy";
+            var k = leetcode.MinCut(s);
+
+            Assert.AreEqual(k, 2);
+        }
+        [Test]
+        public void MinCutTest1()
+        {
+            string s = "aab";
+            var k = leetcode.MinCut(s);
+
+            Assert.AreEqual(k, 1);
+        }
+        [Test]
+        public void MinCutTest2()
+        {
+            string s = "cdd";
+            var k = leetcode.MinCut(s);
+
+            Assert.AreEqual(k, 1);
+        }
+        [Test]
+        public void MinCutTest3()
+        {
+            string s = "aaabaa";
+            var k = leetcode.MinCut(s);
+
+            Assert.AreEqual(k, 1);
+        }
+        [Test]
+        public void MinCutTest4()
+        {
+            string s = "cabababcbc";
+            var k = leetcode.MinCut(s);
+
+            Assert.AreEqual(k, 3);
+        }
+        [Test]
+        public void MinCutTest5()
+        {
+            string s = "cabababcbc";
+            var k = leetcode.MinCut(s);
+
+            Assert.AreEqual(k, 3);
+        }
+        [Test]
+        public void MinCutTest6()
+        {
+            string s = "cbbbcc";
+            var k = leetcode.MinCut(s);
+
+            Assert.AreEqual(k, 1);
+        }
         #endregion
         #region 983. Minimum Cost For Tickets
         [Test]
